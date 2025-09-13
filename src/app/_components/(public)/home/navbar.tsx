@@ -22,7 +22,9 @@ export default function NavBar() {
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
-          <NavbarButton variant="primary" href="/auth/sign-in">Get Started</NavbarButton>
+          <NavbarButton variant="primary" href="/auth/sign-in">
+            Get Started
+          </NavbarButton>
         </NavBody>
         <MobileNav>
           <MobileNavHeader>
@@ -43,7 +45,11 @@ export default function NavBar() {
                 {item.name}
               </a>
             ))}
-            <NavbarButton variant="primary" className="mt-2" href="/auth/sign-in">
+            <NavbarButton
+              variant="primary"
+              className="mt-2"
+              href="/auth/sign-in"
+            >
               Get Started
             </NavbarButton>
           </MobileNavMenu>

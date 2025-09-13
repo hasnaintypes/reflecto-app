@@ -202,7 +202,7 @@ export default function HeroSection({
           >
             <Link
               href="/auth/sign-in"
-              className="rounded-3xl bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-4 text-lg font-medium text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:from-indigo-600 hover:to-purple-600 hover:shadow-xl cursor-pointer"
+              className="cursor-pointer rounded-3xl bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-4 text-lg font-medium text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:from-indigo-600 hover:to-purple-600 hover:shadow-xl"
             >
               Get Started
             </Link>

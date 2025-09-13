@@ -1,9 +1,7 @@
-
 import Image from "next/image";
 
 import { AuthForm } from "@/app/_components";
 import { NavbarLogo } from "@/components/ui/resizable-navbar";
-
 
 export const metadata = {
   title: "Sign In | Reflecto",

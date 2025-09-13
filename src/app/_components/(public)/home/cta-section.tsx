@@ -18,10 +18,10 @@ export default function CTASection() {
         </p>
         <TypewriterEffect words={typewriterWords} />
         <div className="mt-10 flex flex-col space-y-4 space-x-0 md:flex-row md:space-y-0 md:space-x-4">
-          <button className="h-12 w-40 rounded-3xl border-transparent bg-gradient-to-r from-indigo-500 to-purple-500 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:from-indigo-600 hover:to-purple-600 hover:shadow-xl cursor-pointer">
+          <button className="h-12 w-40 cursor-pointer rounded-3xl border-transparent bg-gradient-to-r from-indigo-500 to-purple-500 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:from-indigo-600 hover:to-purple-600 hover:shadow-xl">
             Start Reflecting
           </button>
-          <button className="h-12 w-40 rounded-3xl border border-white/20 bg-transparent text-sm font-medium text-white transition-all duration-200 hover:bg-white/5 cursor-pointer">
+          <button className="h-12 w-40 cursor-pointer rounded-3xl border border-white/20 bg-transparent text-sm font-medium text-white transition-all duration-200 hover:bg-white/5">
             Learn More
           </button>
         </div>
