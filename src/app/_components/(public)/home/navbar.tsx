@@ -43,7 +43,7 @@ export default function NavBar() {
                 {item.name}
               </a>
             ))}
-            <NavbarButton variant="primary" className="mt-2">
+            <NavbarButton variant="primary" className="mt-2" href="/auth/sign-in">
               Get Started
             </NavbarButton>
           </MobileNavMenu>

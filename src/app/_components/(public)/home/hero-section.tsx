@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Pacifico } from "next/font/google";
 import { cn } from "@/lib/utils";
 
@@ -199,9 +200,12 @@ export default function HeroSection({
             animate="visible"
             transition={{ delay: 1.1, duration: 1, ease: "easeInOut" }}
           >
-            <button className="rounded-3xl bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-4 text-lg font-medium text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:from-indigo-600 hover:to-purple-600 hover:shadow-xl">
+            <Link
+              href="/auth/sign-in"
+              className="rounded-3xl bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-4 text-lg font-medium text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:from-indigo-600 hover:to-purple-600 hover:shadow-xl cursor-pointer"
+            >
               Get Started
-            </button>
+            </Link>
           </motion.div>
         </div>
       </div>
