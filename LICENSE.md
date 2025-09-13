@@ -1,0 +1,23 @@
+Copyright (c) 2025 Hasnain (@hasnaintypes). All rights reserved.
+
+This software and associated documentation files (the “Software”) are the
+exclusive property of the copyright holder. The Software is proprietary and
+confidential.
+
+Permission is NOT granted to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, in whole or in part, except
+with the prior written consent of the copyright holder.
+
+You may not reverse engineer, decompile, or disassemble the Software except
+as permitted by law.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING
+FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+For licensing inquiries, please contact:  
+mrhasnain.dev [at] gmail.com

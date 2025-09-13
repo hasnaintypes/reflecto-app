@@ -56,19 +56,18 @@ model Session {
 
 model User {
     id            String    @id @default(cuid())
+    email         String    @unique
     name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
+    image         String?   // avatar
+    emailVerified DateTime? // for magic links
+    hashedPassword String?  // only set if using credentials auth
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    isActive     Boolean   @default(true)
+
+    // Relations with NextAuth
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
-
-    @@unique([identifier, token])
-}

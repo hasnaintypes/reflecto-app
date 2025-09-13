@@ -1,0 +1,39 @@
+import { AuthForm } from "@/app/_components/(auth)/auth-form";
+import { GalleryVerticalEnd } from "lucide-react";
+import Image from "next/image";
+
+export const metadata = {
+  title: "Sign Up | Reflecto",
+  description: "Create a new Reflecto account",
+};
+
+export default function SignUpPage() {
+  return (
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="bg-muted relative hidden lg:block">
+        <Image
+          src="https://images.unsplash.com/photo-1743179532094-a0917b396fd5?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Image"
+          fill
+          className="object-cover dark:brightness-[0.2] dark:grayscale"
+          priority
+        />
+      </div>
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <a href="#" className="flex items-center gap-2 font-medium">
+            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+              <GalleryVerticalEnd className="size-4" />
+            </div>
+            Reflecto.
+          </a>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <AuthForm type="signup" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
