@@ -22,7 +22,7 @@ export default function NavBar() {
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
-          <NavbarButton variant="primary">Get Started</NavbarButton>
+          <NavbarButton variant="primary" href="/auth/sign-in">Get Started</NavbarButton>
         </NavBody>
         <MobileNav>
           <MobileNavHeader>
