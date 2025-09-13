@@ -1,8 +1,7 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { typewriterWords } from "@/constants";
-
 
 export default function CTASection() {
   return (
@@ -31,4 +30,3 @@ export default function CTASection() {
     </section>
   );
 }
-

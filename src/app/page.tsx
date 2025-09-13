@@ -1,6 +1,11 @@
 import { Footer } from "@/components/common";
-import React from 'react'
-import { CTASection , HeroSection , TestimonialsSection, NavBar } from "./_components";
+import React from "react";
+import {
+  CTASection,
+  HeroSection,
+  TestimonialsSection,
+  NavBar,
+} from "./_components";
 import { heroContent } from "@/constants";
 
 export default function LandingPage() {
@@ -18,4 +23,3 @@ export default function LandingPage() {
     </div>
   );
 }
-

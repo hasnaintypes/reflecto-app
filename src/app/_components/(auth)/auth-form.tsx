@@ -84,7 +84,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
         toast.success(`Successfully connected with ${provider}!`);
         window.location.href = result.url;
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.dismiss(loadingToast);
       toast.error(`Something went wrong with ${provider} login`);
@@ -94,7 +94,10 @@ export function AuthForm({ type, className }: AuthFormProps) {
   };
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} onSubmit={handleFormSubmit}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      onSubmit={handleFormSubmit}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">
           {type === "signin" ? "Login to your account" : "Create a new account"}
@@ -138,7 +141,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
             {type === "signin" && (
               <button
                 type="button"
-                className="ml-auto text-sm underline-offset-4 hover:underline cursor-pointer"
+                className="ml-auto cursor-pointer text-sm underline-offset-4 hover:underline"
                 onClick={() =>
                   toast.info(
                     "Password reset functionality would be implemented here",
@@ -167,9 +170,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
           {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {type === "signin"
-                ? "Signing in..."
-                : "Creating account..."}
+              {type === "signin" ? "Signing in..." : "Creating account..."}
             </>
           ) : type === "signin" ? (
             "Login"
@@ -229,7 +230,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
             Don&apos;t have an account?{" "}
             <button
               type="button"
-              className="underline underline-offset-4 cursor-pointer"
+              className="cursor-pointer underline underline-offset-4"
               onClick={() => (window.location.href = "/auth/sign-up")}
             >
               Sign up
@@ -240,7 +241,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
             Already have an account?{" "}
             <button
               type="button"
-              className="underline underline-offset-4 cursor-pointer"
+              className="cursor-pointer underline underline-offset-4"
               onClick={() => (window.location.href = "/auth/sign-in")}
             >
               Sign in

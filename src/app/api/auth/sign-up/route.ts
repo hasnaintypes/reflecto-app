@@ -1,10 +1,9 @@
-
-import { NextResponse, type NextRequest } from 'next/server';
-import { z } from 'zod';
-import { hash } from 'bcryptjs';
-import { db } from '@/server/db';
-import createRateLimit from 'next-rate-limit';
-import { AUTH_ERRORS } from '@/constants/errors';
+import { NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
+import { hash } from "bcryptjs";
+import { db } from "@/server/db";
+import createRateLimit from "next-rate-limit";
+import { AUTH_ERRORS } from "@/constants/errors";
 
 const rateLimit = createRateLimit({
   interval: 60 * 1000,
@@ -12,22 +11,22 @@ const rateLimit = createRateLimit({
 });
 
 const signupSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export async function POST(request: NextRequest) {
   try {
     const rateLimitHeaders = rateLimit.checkNext(request, 5);
-    if (rateLimitHeaders.get('x-rl-remaining') === '0') {
+    if (rateLimitHeaders.get("x-rl-remaining") === "0") {
       return NextResponse.json(
         { success: false, error: AUTH_ERRORS.TOO_MANY_REQUESTS },
         { status: 429, headers: rateLimitHeaders },
       );
     }
 
-  const requestBody: unknown = await request.json();
+    const requestBody: unknown = await request.json();
     const validationResult = signupSchema.safeParse(requestBody);
     if (!validationResult.success) {
       return NextResponse.json(

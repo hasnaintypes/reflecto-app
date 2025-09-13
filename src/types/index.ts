@@ -1,4 +1,4 @@
-export type AuthFormType = 'signin' | 'signup';
+export type AuthFormType = "signin" | "signup";
 
 export type AuthFormProps = {
   type: AuthFormType;
@@ -36,20 +36,20 @@ export type User = {
   isActive: boolean;
 };
 
-export type UserProfile = Pick<User, 'id' | 'name' | 'email' | 'image'>;
+export type UserProfile = Pick<User, "id" | "name" | "email" | "image">;
 
 // NextAuth module augmentation for type safety
 
-import type { DefaultSession } from 'next-auth';
+import type { DefaultSession } from "next-auth";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id?: string;
       email?: string | null;
       name?: string | null;
       image?: string | null;
-    } & DefaultSession['user'];
+    } & DefaultSession["user"];
   }
 
   interface User {

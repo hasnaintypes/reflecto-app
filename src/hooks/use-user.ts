@@ -1,11 +1,9 @@
-
 "use client";
 
 import { useCallback, useEffect } from "react";
 import { api } from "@/trpc/react";
 import { useSession } from "next-auth/react";
 import useUserStore from "@/stores/use-user-store";
-
 
 /**
  * Custom hook for user profile management via tRPC userRouter.
@@ -55,8 +53,10 @@ export function useUser() {
 
   // Optionally, you can wrap mutation calls in useCallback for stable references
   const handleUpdateUser = useCallback(
-    (input: Parameters<typeof updateUser.mutate>[0], options?: Parameters<typeof updateUser.mutate>[1]) =>
-      updateUser.mutate(input, options),
+    (
+      input: Parameters<typeof updateUser.mutate>[0],
+      options?: Parameters<typeof updateUser.mutate>[1],
+    ) => updateUser.mutate(input, options),
     [updateUser],
   );
   const handleDeactivateUser = useCallback(

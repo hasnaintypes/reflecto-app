@@ -16,10 +16,16 @@ export default function useAuth() {
   // Sign up mutation
   const signUpMutation = useMutation({
     mutationFn: async (formData: SignUpInput) => {
-      const res = await axios.post<{ success: boolean; data?: { id: string; email: string; name?: string | null; image?: string | null }; error?: string }>(
-        "/api/auth/sign-up",
-        formData
-      );
+      const res = await axios.post<{
+        success: boolean;
+        data?: {
+          id: string;
+          email: string;
+          name?: string | null;
+          image?: string | null;
+        };
+        error?: string;
+      }>("/api/auth/sign-up", formData);
       return res.data;
     },
   });
@@ -35,7 +41,12 @@ export default function useAuth() {
       });
       // If sign in is successful, set user in store (dummy user for now, should be replaced with real user data)
       if (result && typeof result === "object" && "ok" in result && result.ok) {
-        setAuthSignIn({ id: formData.email, email: formData.email, name: null, image: null });
+        setAuthSignIn({
+          id: formData.email,
+          email: formData.email,
+          name: null,
+          image: null,
+        });
       }
       return result;
     },
@@ -50,7 +61,11 @@ export default function useAuth() {
       if (type === "signin") {
         return signInMutation.mutateAsync({ email, password });
       } else {
-        const signUpResult = await signUpMutation.mutateAsync({ name, email, password });
+        const signUpResult = await signUpMutation.mutateAsync({
+          name,
+          email,
+          password,
+        });
         // If sign up returns user data, set it in store
         if (signUpResult && signUpResult.success && signUpResult.data) {
           setAuthSignIn({

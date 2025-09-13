@@ -11,7 +11,6 @@ import {
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 
-
 interface NavbarProps {
   children: React.ReactNode;
   className?: string;
@@ -245,7 +244,9 @@ export const NavbarLogo = () => {
         priority
         className="h-8 w-8 rounded-sm"
       />
-      <span className="font-bold text-xl text-black dark:text-white">Reflecto.</span>
+      <span className="text-xl font-bold text-black dark:text-white">
+        Reflecto.
+      </span>
     </a>
   );
 };

@@ -8,7 +8,6 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/providers";
 
-
 export const metadata: Metadata = {
   title: "Reflecto App",
   description: "A journaling app to reflect on your day",
@@ -35,7 +34,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               {children}
-          </ThemeProvider>
+            </ThemeProvider>
           </TRPCReactProvider>
         </SessionProvider>
         <Toaster richColors />

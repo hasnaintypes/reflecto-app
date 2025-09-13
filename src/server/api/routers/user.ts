@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { protectedProcedure, createTRPCRouter } from "../trpc";
@@ -23,7 +22,6 @@ export type UserProfile = {
   updatedAt: Date;
 };
 
-
 export const userRouter = createTRPCRouter({
   /**
    * Get the current user's profile.
@@ -42,7 +40,8 @@ export const userRouter = createTRPCRouter({
         updatedAt: true,
       },
     });
-    if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+    if (!user)
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
     return {
       id: user.id,
       name: user.name,
@@ -52,7 +51,6 @@ export const userRouter = createTRPCRouter({
       updatedAt: user.updatedAt,
     };
   }),
-
 
   /**
    * Update the current user's profile fields.
@@ -69,7 +67,9 @@ export const userRouter = createTRPCRouter({
           where: { id: userId },
           data: {
             ...(input.name !== undefined ? { name: input.name } : {}),
-            ...(input.avatarUrl !== undefined ? { image: input.avatarUrl } : {}),
+            ...(input.avatarUrl !== undefined
+              ? { image: input.avatarUrl }
+              : {}),
           },
         });
         return {
@@ -81,10 +81,12 @@ export const userRouter = createTRPCRouter({
           updatedAt: updated.updatedAt,
         };
       } catch {
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to update user" });
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to update user",
+        });
       }
     }),
-
 
   /**
    * Soft-deactivate the current user (set isActive = false).
@@ -99,10 +101,12 @@ export const userRouter = createTRPCRouter({
       });
       return { message: "User deactivated successfully." };
     } catch {
-      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to deactivate user" });
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to deactivate user",
+      });
     }
   }),
-
 
   /**
    * Hard delete the current user and cascade delete all related data.
@@ -116,7 +120,10 @@ export const userRouter = createTRPCRouter({
       });
       return { message: "User deleted successfully." };
     } catch {
-      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to delete user" });
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to delete user",
+      });
     }
   }),
 });
