@@ -1,0 +1,114 @@
+"use client";
+
+import React from "react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { Clock } from "lucide-react";
+
+const entries = [
+  {
+    id: "1",
+    category: "THOUGHTS",
+    categoryColor: "text-violet-400",
+    content:
+      "Spent a long moment realizing how often I confuse being busy with actually moving forward. The hours fill themselves easily, but intention doesn’t. Today felt slower, and strangely, more honest. Fewer tasks, more presence. It felt like choosing depth over noise, even if just for a while.",
+    time: "11:40 AM, FRI",
+  },
+  {
+    id: "2",
+    category: "INVOLVED ME",
+    categoryColor: "text-red-400",
+    content:
+      "Decided to sit with discomfort instead of escaping it. No music, no scrolling, no distractions. Just letting unfinished thoughts surface and pass on their own. It wasn’t peaceful, but it was real. There’s something grounding about not running from your own mind.",
+    time: "01:10 PM, FRI",
+  },
+  {
+    id: "3",
+    category: "AROUND ME",
+    categoryColor: "text-blue-400",
+    content:
+      "The evening felt unusually still. Cars moved slower, voices sounded softer, and even the air felt lighter. It reminded me that the world doesn’t demand urgency—most of it is something we manufacture internally and then mistake for reality.",
+    time: "06:30 PM, FRI",
+  },
+  {
+    id: "4",
+    category: "MEMORIES",
+    categoryColor: "text-emerald-400",
+    content:
+      "Remembered a version of myself that needed less validation and more silence. Back then, days weren’t optimized, documented, or shared—they were simply lived. That memory didn’t feel like nostalgia. It felt like a quiet reminder of something recoverable.",
+    time: "09:00 PM, FRI",
+  },
+  {
+    id: "5",
+    category: "THOUGHTS",
+    categoryColor: "text-violet-400",
+    content:
+      "Started to understand that self-discipline isn’t about restriction, but about respect. Respect for future energy, future focus, and future peace. The rules aren’t punishment—they’re boundaries built by someone who finally cares.",
+    time: "11:55 PM, FRI",
+  },
+  {
+    id: "6",
+    category: "MEMORIES",
+    categoryColor: "text-emerald-400",
+    content: "Spent a week in the Mountains, disconnected from the world.",
+    time: "07:00 AM, THU",
+    images: [
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=200",
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=200",
+      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=200",
+    ],
+  },
+];
+
+export function JournalTimeline() {
+  return (
+    <div className="flex flex-col gap-6 py-4">
+      {entries.map((entry, i) => (
+        <motion.div
+          key={entry.id}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 + i * 0.1 }}
+          className="group relative -mx-4 px-6 py-6 rounded-2xl hover:bg-white/[0.02] transition-all cursor-pointer border border-transparent hover:border-white/[0.03]"
+        >
+          <div className="flex flex-col gap-5">
+            <div className="flex items-center justify-between">
+              <span className={cn(
+                "text-[10px] font-black tracking-[0.25em] px-2.5 py-1 rounded-md bg-zinc-900/50 border border-white/5 uppercase",
+                entry.categoryColor
+              )}>
+                {entry.category}
+              </span>
+              
+              <div className="flex items-center gap-2 text-zinc-600 group-hover:text-zinc-400 transition-colors">
+                <Clock size={11} strokeWidth={2.5} />
+                <span className="text-[11px] font-bold tracking-tight">
+                  {entry.time}
+                </span>
+              </div>
+            </div>
+
+            <p className="text-xl text-zinc-100 font-serif leading-relaxed max-w-4xl tracking-tight">
+              {entry.content}
+            </p>
+            
+            {entry.images && (
+              <div className="flex gap-4 mt-2 overflow-x-auto no-scrollbar">
+                {entry.images.map((img, idx) => (
+                  <motion.div
+                    key={idx}
+                    whileHover={{ scale: 1.02 }}
+                    className="shrink-0 w-52 h-52 rounded-2xl overflow-hidden border border-white/5 shadow-xl"
+                  >
+                    <img src={img} alt="entry" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
