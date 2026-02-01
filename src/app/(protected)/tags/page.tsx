@@ -56,8 +56,8 @@ export default function TagsPage() {
               <div className="py-2">
                 <p className="font-mono text-sm text-zinc-500">e.g.</p>
                 <p className="mt-2 ml-4 border-l border-zinc-800 pl-4 text-zinc-500 italic">
-                  "Daybreak <span className="text-[#60A5FA]">#surf</span> at
-                  Pupkea."
+                  &quot;Daybreak <span className="text-[#60A5FA]">#surf</span> at
+                  Pupkea.&quot;
                 </p>
               </div>
 

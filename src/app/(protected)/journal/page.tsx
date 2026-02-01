@@ -2,7 +2,6 @@
 
 import React from "react";
 import {
-  Search,
   Calendar as CalendarIcon,
   PenLine,
   FileText,
@@ -110,8 +109,8 @@ export default function JournalPage() {
           evolving self.
         </p>
         <p className="text-md font-serif text-zinc-400 italic">
-          "We do not learn from experience... we learn from reflecting on
-          experience."
+          &quot;We do not learn from experience... we learn from reflecting on
+          experience.&quot;
         </p>
       </div>
 
@@ -122,7 +121,7 @@ export default function JournalPage() {
             {/* Added a small descriptive label for the timeline */}
             <div className="flex items-center gap-4 opacity-50">
               <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">
-                Today's Narrative
+                Today&apos;s Narrative
               </span>
               <div className="h-px flex-1 bg-zinc-900" />
             </div>

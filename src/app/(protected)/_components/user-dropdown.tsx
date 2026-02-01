@@ -21,7 +21,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { cn } from "@/lib/utils";
 
 export function UserDropdown() {
   const { data: session } = useSession();

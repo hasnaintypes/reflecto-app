@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Search } from "lucide-react";
 import { UserDropdown } from "./user-dropdown";
 import { useSharedEditor } from "./editor-context";

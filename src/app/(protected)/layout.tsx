@@ -4,7 +4,6 @@ import { Header } from "./_components/header";
 import { HelpButton } from "./_components/help-button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "./_components/sidebar";
-import Link from "next/link";
 import Logo from "@/components/common/logo";
 
 export default function ProtectedLayout({

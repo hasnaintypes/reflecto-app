@@ -2,7 +2,7 @@
 
 import React from "react";
 import { format, subDays } from "date-fns";
-import { Plus, ListFilter, Info, Pin, FileText, Sparkles } from "lucide-react";
+import { Plus, ListFilter, Info, FileText, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function ReflectPage() {
@@ -83,8 +83,8 @@ export default function ReflectPage() {
             Evolution of your aspirations
           </p>
           <p className="max-w-xl leading-relaxed text-zinc-400 lowercase">
-            You didn't flag any tags as "do more" or "do less" yet. Click on a
-            tag and open the "Details" tab in order to do so.
+            You didn&apos;t flag any tags as &quot;do more&quot; or &quot;do less&quot; yet. Click on a
+            tag and open the &quot;Details&quot; tab in order to do so.
           </p>
         </section>
 

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { signOut, useSession } from "next-auth/react";
 import {
   Search,
@@ -10,11 +9,7 @@ import {
   User,
   LogOut,
   Settings,
-  Sun,
-  Moon,
   ArrowRight,
-  Circle,
-  Command as CommandIcon,
   PlusCircle,
   Sparkles,
   Tag,
@@ -49,7 +44,6 @@ import { Logo } from "@/components/common";
 
 export default function Header() {
   const { data: session } = useSession();
-  const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

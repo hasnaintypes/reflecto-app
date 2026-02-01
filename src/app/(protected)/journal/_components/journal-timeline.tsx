@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { format } from "date-fns";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Clock } from "lucide-react";
@@ -112,9 +112,11 @@ export function JournalTimeline() {
                     whileHover={{ scale: 1.01, y: -4 }}
                     className="h-48 w-72 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-zinc-900"
                   >
-                    <img
+                    <Image
                       src={img}
                       alt="journal entry"
+                      width={288}
+                      height={192}
                       className="h-full w-full object-cover opacity-70 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
                     />
                   </motion.div>

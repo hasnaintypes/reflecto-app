@@ -8,7 +8,6 @@ import {
   AlignLeft,
   GraduationCap,
   FileText,
-  Search,
   Star,
   ArrowUpDown,
 } from "lucide-react";

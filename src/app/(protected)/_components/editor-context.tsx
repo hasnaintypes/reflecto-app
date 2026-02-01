@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { Editor } from "@tiptap/react";
+import type { Editor } from "@tiptap/react";
 
 interface EditorContextType {
   editor: Editor | null;

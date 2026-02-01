@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Editor } from "@tiptap/react";
+import type { Editor } from "@tiptap/react";
 import {
   Bold,
   Italic,
@@ -165,7 +165,7 @@ export function EditorToolbar({
       {/* AI/Magic group */}
       <div className="flex items-center gap-1 px-1">
         <ToolbarButton
-          onClick={() => {}} // Placeholder for AI
+          onClick={() => undefined} // Placeholder for AI
           className="text-emerald-400/80 hover:bg-emerald-400/10 hover:text-emerald-400"
           tooltip="AI Refine"
         >

@@ -44,7 +44,7 @@ export default function IdeasPage() {
           <div className="max-w-2xl space-y-6">
             <div className="space-y-4 text-lg leading-relaxed tracking-tight text-zinc-400">
               <p>
-                Save all your ideas in one place so that they don't get lost.{" "}
+                Save all your ideas in one place so that they don&apos;t get lost.{" "}
                 <span className="text-[#FB923C] underline decoration-[#FB923C]/30 underline-offset-4">
                   Reflect
                 </span>{" "}

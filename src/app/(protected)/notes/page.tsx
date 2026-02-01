@@ -2,10 +2,8 @@
 
 import React from "react";
 import {
-  StickyNote,
   FileText,
   Plus,
-  Search,
   Star,
   ArrowUpDown,
 } from "lucide-react";
@@ -56,7 +54,7 @@ export default function NotesPage() {
 
               <p>
                 Here you can collect anything, from weekly / monthly / annual
-                summaries, over "lessons learned", to thought experiments and
+                summaries, over &quot;lessons learned&quot;, to thought experiments and
                 more.
               </p>
             </div>

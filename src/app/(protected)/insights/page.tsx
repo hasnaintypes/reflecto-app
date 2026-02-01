@@ -8,8 +8,6 @@ import {
   Hash,
   AtSign,
   Gem,
-  ChevronDown,
-  Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Heatmap } from "./_components/heatmap";

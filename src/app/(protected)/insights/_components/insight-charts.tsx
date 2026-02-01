@@ -78,7 +78,7 @@ export function InsightCharts() {
                 dataKey="month"
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(value) => value.toUpperCase()}
+                tickFormatter={(value: string) => value.toUpperCase()}
                 tick={{
                   fontSize: 9,
                   fill: "#52525b",
@@ -138,7 +138,7 @@ export function InsightCharts() {
                 dataKey="hour"
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(value) => value.toUpperCase()}
+                tickFormatter={(value: string) => value.toUpperCase()}
                 tick={{
                   fontSize: 9,
                   fill: "#52525b",

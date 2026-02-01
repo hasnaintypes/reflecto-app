@@ -3,21 +3,20 @@
 import {
   useEditor,
   EditorContent,
+  type JSONContent,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import Image from "@tiptap/extension-image";
 import CharacterCount from "@tiptap/extension-character-count";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useSharedEditor } from "../../_components/editor-context";
 
 export default function JournalEditor() {
   const { setEditor, isCentered } = useSharedEditor();
-  const [isSaving, setIsSaving] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -41,12 +40,9 @@ export default function JournalEditor() {
       },
     },
     onUpdate: ({ editor }) => {
-      setIsSaving(true);
       // Save to local draft
       const json = editor.getJSON();
       localStorage.setItem("reflecto-draft", JSON.stringify(json));
-      
-      setTimeout(() => setIsSaving(false), 800);
     },
     immediatelyRender: false,
   });
@@ -65,7 +61,7 @@ export default function JournalEditor() {
       const saved = localStorage.getItem("reflecto-draft");
       if (saved) {
         try {
-          editor.commands.setContent(JSON.parse(saved));
+          editor.commands.setContent(JSON.parse(saved) as JSONContent);
         } catch (e) {
           console.error("Failed to load draft", e);
         }
@@ -73,8 +69,7 @@ export default function JournalEditor() {
     }
   }, [editor]);
 
-  const wordCount = editor?.storage.characterCount.words() || 0;
-  const charCount = editor?.storage.characterCount.characters() || 0;
+
 
   return (
     <div className="animate-in fade-in flex h-full flex-col pt-6 pb-4 duration-1000">
