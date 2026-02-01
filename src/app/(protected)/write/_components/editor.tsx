@@ -78,7 +78,6 @@ export default function JournalEditor() {
 
   return (
     <div className="animate-in fade-in flex h-full flex-col pt-6 pb-4 duration-1000">
-      {/* Scrollable Editor Space */}
       <div className="relative flex-1 overflow-y-auto px-2 custom-scrollbar">
         <div className="max-w-none prose prose-neutral dark:prose-invert prose-2xl">
           <EditorContent editor={editor} />

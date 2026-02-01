@@ -1,110 +1,116 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import React from "react";
 import { format, subDays } from "date-fns";
-import { ArrowRight, Plus, ListFilter, Info, Pin, Clock } from "lucide-react";
+import { Plus, ListFilter, Info, Pin, FileText, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function ReflectPage() {
   const yesterday = subDays(new Date(), 1);
   const formattedYesterday = format(yesterday, "EEEE, MMM dd");
 
-
   return (
-    <div className="max-w-6xl relative pb-24 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-      {/* Sticky Header Wrapper - SOLID Background */}
-      <div className="sticky top-0 z-30 bg-[#080808] -mx-8 px-8 py-6 mb-4 border-b border-white/[0.03]">
-        <div className="flex items-center justify-between">
-          <h1 className="text-5xl font-bold text-white tracking-tight">Reflect</h1>
-          <button className="text-zinc-500 hover:text-white transition-colors">
-            <ListFilter size={20} />
+    <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pb-24 duration-1000">
+      <div className="sticky top-0 z-20 -mx-6 mb-8 bg-[#09090b]/80 px-6 backdrop-blur-md transition-all duration-300">
+        <header className="flex flex-col justify-between gap-6 pt-6 md:flex-row md:items-end">
+          <div className="space-y-1">
+            <p className="text-[10px] font-bold tracking-[0.3em] text-[#FCD34D] uppercase">
+              Review
+            </p>
+            <h1 className="font-serif text-6xl font-medium tracking-tight text-white italic">
+              Reflect
+            </h1>
+          </div>
+
+          <button className="mb-2 text-zinc-500 transition-colors hover:text-[#FCD34D]">
+            <ListFilter size={22} strokeWidth={1.5} />
           </button>
-        </div>
+        </header>
+
+        <div className="pointer-events-none absolute -bottom-8 left-0 h-8 w-full bg-gradient-to-b from-[#09090b]/80 to-transparent" />
       </div>
 
-      <div className="space-y-16">
-
-
-      {/* Intro Text */}
-      <p className="text-zinc-500 italic font-serif text-lg">
-        Nothing here yet... you'll find highlights, new tags/mentions, gems and ideas of this week here, once there are any.
-      </p>
-
-      {/* Yesterday Section */}
-      <section className="space-y-4">
-        <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">Yesterday</h2>
-          <p className="text-zinc-500 text-sm font-medium">{formattedYesterday}</p>
-        </div>
-        
-        <p className="text-zinc-500 italic font-serif">
-          There is no entry for {format(yesterday, "MMM dd")} yet.
-        </p>
-
-        <Link href="/write" className="inline-block">
-          <Button variant="outline" className="gap-2 bg-zinc-900/50 border-white/5 hover:bg-zinc-800 hover:border-white/10 transition-all text-zinc-300">
-            <Plus size={14} />
-            Write entry
-          </Button>
-        </Link>
-      </section>
-
-      {/* This Week Section */}
-      <section className="space-y-4">
-        <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">This week</h2>
-          <p className="text-zinc-500 text-sm font-medium">Monday, Jan 26 → Today</p>
-        </div>
-
-        <p className="text-zinc-500 italic font-serif">
-          Nothing here yet... you'll find highlights, new tags/mentions, gems and ideas of this week here, once there are any.
-        </p>
-      </section>
-
-      {/* More / Less Section */}
-      <section className="space-y-4">
-        <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-bold text-white tracking-tight">More / Less</h2>
-          <div className="flex items-center gap-1.5 px-2 py-0.5 bg-zinc-800/50 rounded text-[10px] font-bold tracking-wider text-zinc-400 border border-white/5">
-            PRO
-            <Info size={10} />
+      <div className="space-y-12">
+        <section className="group">
+          <div className="mb-6 flex items-baseline gap-4">
+            <h2 className="text-2xl font-medium text-white">Yesterday</h2>
+            <span className="font-mono text-xs tracking-widest text-zinc-600 uppercase">
+              {formattedYesterday}
+            </span>
           </div>
-        </div>
-        <p className="text-zinc-500 text-sm font-medium">Evolution of your aspirations</p>
-        
-        <p className="text-zinc-500 italic font-serif">
-          You didn't flag any tags as "do more" or "do less" yet. Click on a tag and open the "Details" tab in order to do so.
-        </p>
-      </section>
 
-      {/* Pins Section */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Pins</h2>
-            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-zinc-800/50 rounded text-[10px] font-bold tracking-wider text-zinc-400 border border-white/5">
-              PRO
-              <Info size={10} />
+          <div className="space-y-4">
+            <p className="text-lg text-zinc-400 lowercase">
+              There is no entry for {format(yesterday, "MMM dd")} yet.
+            </p>
+            <Link
+              href="/write"
+              className="group flex items-center gap-2 text-[#FCD34D] transition-all hover:opacity-80"
+            >
+              <div className="rounded-full border border-[#FCD34D]/30 p-1.5 transition-all group-hover:bg-[#FCD34D] group-hover:text-black">
+                <Plus size={14} strokeWidth={3} />
+              </div>
+              <span className="text-xs font-bold tracking-widest uppercase">
+                Write entry
+              </span>
+            </Link>
+          </div>
+        </section>
+
+        <section>
+          <div className="mb-6 flex items-baseline gap-4">
+            <h2 className="text-2xl font-medium text-white">This week</h2>
+            <span className="font-mono text-xs tracking-widest text-zinc-600 uppercase">
+              Jan 26 → Today
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-lg text-zinc-400">
+            <span className="lowercase">
+              Nothing here yet... highlights and ideas will appear shortly
+            </span>
+            <Sparkles size={16} className="fill-[#FCD34D]/10 text-[#FCD34D]" />
+          </div>
+        </section>
+
+        <section>
+          <div className="mb-2 flex items-center gap-3">
+            <h2 className="text-2xl font-medium text-white">More / Less</h2>
+            <div className="flex items-center gap-1 rounded border border-zinc-800 px-1.5 py-0.5 text-[9px] font-bold text-zinc-500">
+              PRO <Info size={10} />
             </div>
           </div>
-          <button className="text-zinc-600 hover:text-zinc-400 transition-colors">
-            <Pin size={16} />
-          </button>
-        </div>
-        <p className="text-zinc-500 text-sm font-medium">Tag- and Group 30-day view</p>
-        
-        <p className="text-zinc-500 italic font-serif">
-          No pins yet, click on the pencil to add pins...
-        </p>
-      </section>
+          <p className="mb-4 text-sm text-zinc-500 lowercase">
+            Evolution of your aspirations
+          </p>
+          <p className="max-w-xl leading-relaxed text-zinc-400 lowercase">
+            You didn't flag any tags as "do more" or "do less" yet. Click on a
+            tag and open the "Details" tab in order to do so.
+          </p>
+        </section>
 
-      {/* Memory Lane Section */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold text-white tracking-tight">Memory lane</h2>
-        
-        <p className="text-zinc-500 italic font-serif">
-          Throwbacks will show up here once you have created 10 or more entries, otherwise it would be quite boring...
-        </p>
-      </section>
-    </div>
+        <section>
+          <h2 className="mb-6 text-2xl font-medium text-white">Memory lane</h2>
+          <div className="flex items-start gap-3 text-lg text-zinc-400">
+            <span className="leading-relaxed lowercase">
+              Throwbacks will show up here once you have created 10 or more
+              entries, otherwise it would be quite boring...
+            </span>
+          </div>
+        </section>
+      </div>
+
+      <div className="mt-24 border-t border-zinc-900 pt-8">
+        <div className="flex items-center gap-1.5 text-sm text-zinc-500">
+          <span className="lowercase">Curious about the process?</span>
+          <a
+            href="#"
+            className="group flex items-center gap-1 text-zinc-400 underline decoration-zinc-800 underline-offset-4 transition-colors hover:text-[#FCD34D] hover:decoration-[#FCD34D]/40"
+          >
+            <FileText size={14} className="opacity-70" />
+            <span className="lowercase">read the guide.</span>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

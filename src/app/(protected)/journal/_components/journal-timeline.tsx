@@ -67,45 +67,70 @@ export function JournalTimeline() {
       {entries.map((entry, i) => (
         <motion.div
           key={entry.id}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 + i * 0.1 }}
-          className="group relative -mx-4 px-6 py-6 rounded-2xl hover:bg-white/[0.02] transition-all cursor-pointer border border-transparent hover:border-white/[0.03]"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.1 }}
+          className="group relative -mx-4 rounded-xl px-4 py-4 transition-all duration-300 hover:bg-white/[0.02]"
         >
-          <div className="flex flex-col gap-5">
-            <div className="flex items-center justify-between">
-              <span className={cn(
-                "text-[10px] font-black tracking-[0.25em] px-2.5 py-1 rounded-md bg-zinc-900/50 border border-white/5 uppercase",
-                entry.categoryColor
-              )}>
+          {/* Timeline Vertical Thread - Visible on Hover for effect */}
+          <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-zinc-800 via-zinc-900 to-transparent opacity-50 transition-all duration-500 group-hover:from-[#FB923C]/40 group-hover:opacity-100" />
+
+          {/* Content Wrapper */}
+          <div className="flex flex-col gap-4">
+            {/* Meta Row */}
+            <div className="flex items-center gap-4">
+              <span
+                className={cn(
+                  "text-[9px] font-bold tracking-[0.3em] uppercase",
+                  entry.categoryColor,
+                )}
+              >
                 {entry.category}
               </span>
-              
-              <div className="flex items-center gap-2 text-zinc-600 group-hover:text-zinc-400 transition-colors">
-                <Clock size={11} strokeWidth={2.5} />
-                <span className="text-[11px] font-bold tracking-tight">
+
+              <div className="h-px w-8 bg-zinc-900" />
+
+              <div className="flex items-center gap-2 text-zinc-600">
+                <Clock size={10} strokeWidth={2} />
+                <span className="text-[10px] font-medium tracking-widest uppercase">
                   {entry.time}
                 </span>
               </div>
             </div>
 
-            <p className="text-xl text-zinc-100 font-serif leading-relaxed max-w-4xl tracking-tight">
+            {/* Content Text */}
+            <p className="max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight text-zinc-300 transition-colors duration-300 group-hover:text-zinc-100">
               {entry.content}
             </p>
-            
+
+            {/* Image Gallery - Refined Aspect Ratios */}
             {entry.images && (
-              <div className="flex gap-4 mt-2 overflow-x-auto no-scrollbar">
+              <div className="no-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2">
                 {entry.images.map((img, idx) => (
                   <motion.div
                     key={idx}
-                    whileHover={{ scale: 1.02 }}
-                    className="shrink-0 w-52 h-52 rounded-2xl overflow-hidden border border-white/5 shadow-xl"
+                    whileHover={{ scale: 1.01, y: -4 }}
+                    className="h-48 w-72 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-zinc-900"
                   >
-                    <img src={img} alt="entry" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <img
+                      src={img}
+                      alt="journal entry"
+                      className="h-full w-full object-cover opacity-70 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
+                    />
                   </motion.div>
                 ))}
               </div>
             )}
+
+            {/* Interaction Footer (Optional/Subtle) */}
+            <div className="mt-2 flex items-center gap-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <button className="text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-[#FB923C] cursor-pointer">
+                Edit
+              </button>
+              <button className="text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-red-400 cursor-pointer">
+                Delete
+              </button>
+            </div>
           </div>
         </motion.div>
       ))}

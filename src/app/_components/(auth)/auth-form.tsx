@@ -58,7 +58,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
         toast.success(
           type === "signin" ? "Welcome back!" : "Account created successfully!",
         );
-        window.location.href = "/dashboard";
+        window.location.href = "/write";
       }
     } catch {
       toast.dismiss(loadingToast);
@@ -72,7 +72,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
 
     try {
       const result = await signIn(provider, {
-        callbackUrl: "/dashboard",
+        callbackUrl: "/write",
         redirect: false,
       });
 

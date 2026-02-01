@@ -1,17 +1,16 @@
 "use client";
 
 import React from "react";
-import { Plus, Lightbulb } from "lucide-react";
+import { Plus, Lightbulb, FileText, Search } from "lucide-react";
 
 export default function IdeasPage() {
-  // Toggle this to see the empty state vs. the list
-  const ideas: any[] = [];
+  const ideas = [];
   const hasIdeas = ideas.length > 0;
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pt-8 pb-8 duration-1000">
+    <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pt-20 pb-24 duration-1000">
       {/* Header Section */}
-      <header className="mb-8 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <header className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div className="space-y-1">
           <p className="text-[10px] font-bold tracking-[0.3em] text-[#FB923C] uppercase">
             Workspace
@@ -19,61 +18,58 @@ export default function IdeasPage() {
           <h1 className="font-serif text-6xl font-medium tracking-tight text-white italic">
             Ideas
           </h1>
-          <p className="max-w-md pt-2 text-sm text-zinc-500">
-            A minimalist space for raw thoughts and evolving concepts. No
-            constraints, just clarity.
-          </p>
         </div>
 
-        <button className="group flex items-center gap-2 text-[#FB923C] transition-colors hover:text-[#FB923C]/80">
-          <div className="rounded-full border border-[#FB923C]/30 p-2 transition-all group-hover:bg-[#FB923C] group-hover:text-black">
-            <Plus size={20} strokeWidth={2.5} />
-          </div>
-          <span className="text-sm font-bold tracking-widest uppercase">
-            Capture
-          </span>
-        </button>
+        {/* Utility Icons matching the reference style */}
+        <div className="mb-2 flex items-center gap-6 text-zinc-500">
+          <Search
+            size={20}
+            className="cursor-pointer transition-colors hover:text-white"
+          />
+          <Plus
+            size={20}
+            className="cursor-pointer transition-colors hover:text-white"
+          />
+        </div>
       </header>
 
       {/* Content Area */}
-      <div className="relative">
+      <div className="mt-16">
         {hasIdeas ? (
-          <div className="space-y-8">
-            {/* Map your ideas here */}
-            {ideas.map((idea, index) => (
-              <div key={index} className="group cursor-pointer">
-                <span className="font-mono text-xs text-zinc-600">
-                  {idea.date}
-                </span>
-                <h3 className="mt-1 text-2xl text-zinc-300 transition-colors group-hover:text-white">
-                  {idea.title}
-                </h3>
-                <div className="mt-4 h-px w-full bg-gradient-to-r from-zinc-800 to-transparent" />
-              </div>
-            ))}
+          <div className="space-y-12">
+            {/* List of ideas would render here */}
           </div>
         ) : (
-          /* Elegant Empty State */
-          <div className="flex flex-col items-start justify-center py-10">
-            <div className="mb-6 inline-flex items-center gap-3 text-zinc-700">
-              <Lightbulb size={18} strokeWidth={1.5} />
-              <span className="font-mono text-xs tracking-widest uppercase">
-                The canvas is empty
-              </span>
+          /* Simple Empty State - Matching the Ideas reference strictly */
+          <div className="max-w-2xl space-y-6">
+            <div className="space-y-4 text-lg leading-relaxed tracking-tight text-zinc-400">
+              <p>
+                Save all your ideas in one place so that they don't get lost.{" "}
+                <span className="text-[#FB923C] underline decoration-[#FB923C]/30 underline-offset-4">
+                  Reflect
+                </span>{" "}
+                will bring them back up occasionally for contemplation.
+              </p>
             </div>
 
-            <h2 className="max-w-md text-3xl leading-relaxed font-light text-zinc-400">
-              Great things start with a{" "}
-              <span className="text-zinc-200">single spark</span>. What’s on
-              your mind?
-            </h2>
+            <div className="flex items-center gap-1.5 text-sm text-zinc-500">
+              <span className="lowercase">More info in our</span>
+              <a
+                href="#"
+                className="group flex items-center gap-1 text-zinc-400 underline decoration-zinc-800 underline-offset-4 transition-colors hover:text-[#FB923C] hover:decoration-[#FB923C]/40"
+              >
+                <FileText size={14} className="opacity-70" />
+                <span className="lowercase">documentation.</span>
+              </a>
+            </div>
 
-            <button className="group mt-10 flex items-center gap-4 text-zinc-500 transition-all hover:text-[#FB923C]">
-              <span className="text-sm font-medium tracking-tighter uppercase transition-all group-hover:tracking-[0.2em]">
-                Start creating
-              </span>
-              <div className="h-px w-12 bg-zinc-800 transition-all group-hover:w-20 group-hover:bg-[#FB923C]" />
-            </button>
+            {/* Custom Styled Add Button from reference */}
+            <div className="pt-6">
+              <button className="flex items-center gap-2 rounded bg-zinc-800/50 px-4 py-2 text-sm font-medium text-zinc-300 transition-all hover:bg-zinc-700 hover:text-white active:scale-95">
+                <Lightbulb size={16} className="text-[#FB923C]" />
+                <span>Add idea</span>
+              </button>
+            </div>
           </div>
         )}
       </div>

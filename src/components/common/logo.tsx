@@ -1,10 +1,10 @@
+"use client";
+
 import Image from "next/image";
-import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const sans = Inter({
-  subsets: ["latin"],
-});
+// If you have a serif font configured in your Tailwind config (like Playfair or New York)
+// use that instead of a standard sans.
 
 interface LogoProps {
   className?: string;
@@ -13,47 +13,60 @@ interface LogoProps {
 }
 
 const sizeMap = {
-  xs: "h-6 w-6",
+  xs: "h-5 w-5",
   sm: "h-7 w-7",
-  md: "h-10 w-10",
-  lg: "h-16 w-16",
-  xl: "h-24 w-24",
+  md: "h-9 w-9",
+  lg: "h-14 w-14",
+  xl: "h-20 w-20",
 };
 
 const textMap = {
-  xs: "text-base",
-  sm: "text-lg",
-  md: "text-xl",
-  lg: "text-3xl",
-  xl: "text-5xl",
+  xs: "text-[12px] tracking-[0.2em]",
+  sm: "text-[14px] tracking-[0.25em]",
+  md: "text-[16px] tracking-[0.3em]",
+  lg: "text-2xl tracking-[0.2em]",
+  xl: "text-4xl tracking-[0.1em]",
 };
 
-export default function Logo({ className, size = "md", showText = true }: LogoProps) {
+export default function Logo({
+  className,
+  size = "md",
+  showText = true,
+}: LogoProps) {
   return (
-    <div className={cn("inline-flex items-center gap-2", className)}>
+    <div
+      className={cn(
+        "group inline-flex cursor-pointer items-center gap-3",
+        className,
+      )}
+    >
+      {/* Logo Container with subtle glow */}
       <div
         className={cn(
-          "relative flex shrink-0 items-center justify-center p-0.5 overflow-hidden",
-          sizeMap[size]
+          "relative flex shrink-0 items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-105",
+          sizeMap[size],
         )}
       >
         <Image
           src="/logo.png"
           alt="Reflecto Logo"
-          width={200}
-          height={200}
-          className="h-full w-full rounded-full object-contain"
+          width={120}
+          height={120}
+          className="h-full w-full object-contain transition-all duration-700 rounded-full"
         />
+
+        {/* Subtle radial overlay to blend the logo image */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent" />
       </div>
+
       {showText && (
         <span
           className={cn(
-            "text-white/90 font-bold tracking-tight",
-            sans.className,
-            textMap[size]
+            "font-serif font-medium text-white/90 uppercase italic transition-colors duration-500 group-hover:text-white",
+            textMap[size],
           )}
         >
-          reflecto
+          Reflecto
         </span>
       )}
     </div>

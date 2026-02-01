@@ -4,64 +4,72 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export function Heatmap() {
-  // Generate mock data: 52 weeks, 7 days
   const weeks = 52;
   const days = 7;
   
-  // Levels for contribution colors
   const levels = [
-    "bg-zinc-900/50",
-    "bg-emerald-900/30",
-    "bg-emerald-700/50",
-    "bg-emerald-500/80",
-    "bg-emerald-400",
+    "bg-zinc-900/40",    // Level 0: Empty
+    "bg-indigo-900/20",  // Level 1: Low
+    "bg-indigo-700/40",  // Level 2: Medium
+    "bg-indigo-500/60",  // Level 3: High
+    "bg-[#6366F1]",      // Level 4: Peak
   ];
 
+  const months = ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb"];
+
   return (
-    <div className="w-full overflow-x-auto no-scrollbar py-4">
-      <div className="flex flex-col gap-1.5 min-w-max">
-        {/* Month labels */}
-        <div className="flex text-[10px] text-zinc-500 mb-1 ml-7">
-          {["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb"].map((month, i) => (
-            <div key={i} className="flex-1 min-w-[38px]">{month}</div>
-          ))}
-        </div>
-        
-        <div className="flex gap-1">
-          {/* Day labels */}
-          <div className="flex flex-col gap-1.5 text-[9px] text-zinc-600 pr-2">
-            <span>Mon</span>
-            <span>Wed</span>
-            <span>Fri</span>
+    <div className="w-full space-y-4 py-2">
+      <div className="overflow-x-auto no-scrollbar">
+        <div className="flex flex-col gap-2 min-w-max">
+          <div className="flex text-[10px] font-bold tracking-[0.2em] text-zinc-600 uppercase mb-2 ml-11">
+            {months.map((month, i) => (
+              <div key={i} className="w-[72px]">{month}</div>
+            ))}
           </div>
           
-          <div className="flex gap-1">
-            {Array.from({ length: weeks }).map((_, weekIndex) => (
-              <div key={weekIndex} className="flex flex-col gap-1">
-                {Array.from({ length: days }).map((_, dayIndex) => {
-                  const level = Math.floor(Math.random() * 5);
-                  return (
-                    <motion.div
-                      key={dayIndex}
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: (weekIndex * 7 + dayIndex) * 0.001 }}
-                      className={`w-[10px] h-[10px] rounded-[2px] ${levels[level]} hover:ring-1 hover:ring-white/20 transition-all cursor-pointer`}
-                    />
-                  );
-                })}
-              </div>
-            ))}
+          <div className="flex gap-4">
+            <div className="flex flex-col justify-between py-1 text-[8px] font-black text-zinc-700 uppercase pr-4">
+              <span>Mon</span>
+              <span>Wed</span>
+              <span>Fri</span>
+            </div>
+            
+            <div className="flex gap-[5px]">
+              {Array.from({ length: weeks }).map((_, weekIndex) => (
+                <div key={weekIndex} className="flex flex-col gap-[5px]">
+                  {Array.from({ length: days }).map((_, dayIndex) => {
+                    const level = Math.floor(Math.random() * 5);
+                    return (
+                      <motion.div
+                        key={dayIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: (weekIndex) * 0.01 }}
+                        className={`w-[12px] h-[12px] rounded-[1.5px] ${levels[level]} hover:ring-1 hover:ring-indigo-400/50 transition-all cursor-pointer`}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
       
-      <div className="flex items-center gap-3 mt-4 text-[11px] text-zinc-500">
-        <div className="flex items-center gap-2 bg-zinc-900/50 px-3 py-1.5 rounded-lg border border-white/5">
-          <span className="font-semibold text-zinc-300">1192</span> entries
+      <div className="flex items-center gap-6 pt-2">
+        <div className="space-y-0.5">
+          <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Total Entries</p>
+          <p className="text-xl font-medium text-white font-mono">1,192</p>
         </div>
-        <div className="flex items-center gap-2 bg-zinc-900/50 px-3 py-1.5 rounded-lg border border-white/5">
-          <span className="font-semibold text-zinc-300">6972</span> bullets
+        <div className="h-8 w-px bg-zinc-900" />
+        <div className="space-y-0.5">
+          <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Bullets Logged</p>
+          <p className="text-xl font-medium text-white font-mono">6,972</p>
+        </div>
+        <div className="h-8 w-px bg-zinc-900" />
+        <div className="space-y-0.5">
+          <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Current Streak</p>
+          <p className="text-xl font-medium text-[#6366F1] font-mono">14 Days</p>
         </div>
       </div>
     </div>

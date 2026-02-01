@@ -34,7 +34,7 @@ export default function useAuth() {
   const signInMutation = useMutation({
     mutationFn: async (formData: SignInInput) => {
       const result = await nextSignIn("credentials", {
-        redirect: true,
+        redirect: false,
         callbackUrl: "/",
         email: formData.email,
         password: formData.password,
