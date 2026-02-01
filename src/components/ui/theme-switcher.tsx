@@ -38,15 +38,20 @@ export const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
 
   if (!mounted) {
     return (
-      <div className={cn("h-8 w-24 rounded-full bg-muted animate-pulse", className)} />
+      <div
+        className={cn(
+          "bg-muted h-8 w-24 animate-pulse rounded-full",
+          className,
+        )}
+      />
     );
   }
 
   return (
     <div
       className={cn(
-        "relative flex h-8 items-center rounded-full bg-secondary/50 p-1 ring-1 ring-border/50 backdrop-blur-sm",
-        className
+        "bg-secondary/50 ring-border/50 relative flex h-8 items-center rounded-full p-1 ring-1 backdrop-blur-sm",
+        className,
       )}
     >
       {themes.map(({ key, icon: Icon, label }) => {
@@ -57,8 +62,10 @@ export const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
             key={key}
             aria-label={label}
             className={cn(
-              "relative flex h-6 w-8 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary",
-              isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+              "focus-visible:ring-primary relative flex h-6 w-8 items-center justify-center rounded-full transition-colors focus-visible:ring-1 focus-visible:outline-none",
+              isActive
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
             onClick={() => setTheme(key)}
             type="button"
@@ -66,7 +73,7 @@ export const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
             {isActive && (
               <motion.div
                 layoutId="theme-pill"
-                className="absolute inset-0 rounded-full bg-background shadow-sm"
+                className="bg-background absolute inset-0 rounded-full shadow-sm"
                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
               />
             )}
@@ -77,5 +84,3 @@ export const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
     </div>
   );
 };
-
-

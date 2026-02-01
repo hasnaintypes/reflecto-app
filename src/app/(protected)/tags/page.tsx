@@ -1,12 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  FileText,
-  PenLine,
-  Star,
-  ArrowUpDown,
-} from "lucide-react";
+import { FileText, PenLine, Star, ArrowUpDown } from "lucide-react";
 
 export default function TagsPage() {
   const tags = [];
@@ -56,8 +51,8 @@ export default function TagsPage() {
               <div className="py-2">
                 <p className="font-mono text-sm text-zinc-500">e.g.</p>
                 <p className="mt-2 ml-4 border-l border-zinc-800 pl-4 text-zinc-500 italic">
-                  &quot;Daybreak <span className="text-[#60A5FA]">#surf</span> at
-                  Pupkea.&quot;
+                  &quot;Daybreak <span className="text-[#60A5FA]">#surf</span>{" "}
+                  at Pupkea.&quot;
                 </p>
               </div>
 

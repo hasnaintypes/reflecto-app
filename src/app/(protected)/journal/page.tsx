@@ -53,7 +53,6 @@ export default function JournalPage() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pb-24 duration-1000">
-   
       <div className="sticky top-0 z-20 -mx-6 mb-8 bg-[#09090b]/80 px-6 backdrop-blur-md transition-all duration-300">
         <header className="flex flex-col justify-between gap-6 pt-6 md:flex-row md:items-end">
           <div className="space-y-1">
@@ -104,9 +103,8 @@ export default function JournalPage() {
 
       <div className="mb-8 max-w-2xl space-y-4">
         <p className="text-sm leading-relaxed text-zinc-500">
-          The journal is your stream of consciousness. A space where the
-          trivial and the profound coexist, forming a narrative of your
-          evolving self.
+          The journal is your stream of consciousness. A space where the trivial
+          and the profound coexist, forming a narrative of your evolving self.
         </p>
         <p className="text-md font-serif text-zinc-400 italic">
           &quot;We do not learn from experience... we learn from reflecting on

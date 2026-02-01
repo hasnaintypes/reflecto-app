@@ -83,8 +83,9 @@ export default function ReflectPage() {
             Evolution of your aspirations
           </p>
           <p className="max-w-xl leading-relaxed text-zinc-400 lowercase">
-            You didn&apos;t flag any tags as &quot;do more&quot; or &quot;do less&quot; yet. Click on a
-            tag and open the &quot;Details&quot; tab in order to do so.
+            You didn&apos;t flag any tags as &quot;do more&quot; or &quot;do
+            less&quot; yet. Click on a tag and open the &quot;Details&quot; tab
+            in order to do so.
           </p>
         </section>
 

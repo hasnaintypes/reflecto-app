@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
-    <body suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <SessionProvider>
           <TRPCReactProvider>
             <ThemeProvider

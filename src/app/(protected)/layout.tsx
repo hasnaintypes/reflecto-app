@@ -14,26 +14,24 @@ export default function ProtectedLayout({
   return (
     <EditorProvider>
       <TooltipProvider delayDuration={400}>
-        <div className="relative h-screen bg-[#080808] selection:bg-white/10 overflow-hidden">
+        <div className="relative h-screen overflow-hidden bg-[#080808] selection:bg-white/10">
           {/* Static Logo Branding */}
-          <div className="fixed top-0 left-12 w-[72px] h-20 flex items-center justify-center z-[110]">
-            <Logo size="sm" className="hover:opacity-80 transition-opacity" />
+          <div className="fixed top-0 left-12 z-[110] flex h-20 w-[72px] items-center justify-center">
+            <Logo size="sm" className="transition-opacity hover:opacity-80" />
           </div>
 
           {/* Sidebar */}
           <Sidebar />
 
           {/* Main Content Area */}
-          <div className="pl-[72px] flex flex-col relative h-screen overflow-hidden">
+          <div className="relative flex h-screen flex-col overflow-hidden pl-[72px]">
             <Header />
-            
-            <main className="flex-1 overflow-y-auto px-8 pb-8 custom-scrollbar">
-              <div className="mx-auto max-w-5xl">
-                {children}
-              </div>
+
+            <main className="custom-scrollbar flex-1 overflow-y-auto px-8 pb-8">
+              <div className="mx-auto max-w-5xl">{children}</div>
             </main>
           </div>
-          
+
           <HelpButton />
         </div>
       </TooltipProvider>

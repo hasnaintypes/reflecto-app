@@ -59,7 +59,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-300">
+      <header className="border-border/50 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur transition-colors duration-300">
         <div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-6 lg:px-10">
           {/* --- Left: Branding --- */}
           <Link
@@ -67,7 +67,9 @@ export default function Header() {
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
             <Logo size="sm" />
-            <span className="text-xl font-bold tracking-tight text-foreground">Reflecto</span>
+            <span className="text-foreground text-xl font-bold tracking-tight">
+              Reflecto
+            </span>
           </Link>
 
           {/* --- Right: Actions --- */}
@@ -76,31 +78,41 @@ export default function Header() {
             <Button
               variant="outline"
               onClick={() => setOpen(true)}
-              className="relative h-9 w-40 justify-start rounded-md border-input bg-muted/50 px-3 text-sm font-normal text-muted-foreground shadow-none hover:bg-muted hover:text-foreground md:w-64"
+              className="border-input bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground relative h-9 w-40 justify-start rounded-md px-3 text-sm font-normal shadow-none md:w-64"
             >
-              <Search className="mr-2 h-4 w-4 text-primary" />
+              <Search className="text-primary mr-2 h-4 w-4" />
               <span>Search reflections...</span>
-              <kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-                <span className="text-xs text-primary">⌘</span>K
+              <kbd className="border-border bg-muted pointer-events-none absolute top-2 right-1.5 hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none sm:flex">
+                <span className="text-primary text-xs">⌘</span>K
               </kbd>
             </Button>
-
 
             {/* Notifications with Popover */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative h-9 w-9 text-muted-foreground hover:text-primary">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-primary relative h-9 w-9"
+                >
                   <Bell className="h-4 w-4" />
-                  <span className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-primary" />
+                  <span className="bg-primary absolute top-2.5 right-2.5 h-1.5 w-1.5 rounded-full" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 border-border bg-popover p-0 shadow-2xl" align="end">
-                <div className="border-b border-border p-4">
-                  <h3 className="font-semibold text-foreground text-sm">Recent Activity</h3>
+              <PopoverContent
+                className="border-border bg-popover w-80 p-0 shadow-2xl"
+                align="end"
+              >
+                <div className="border-border border-b p-4">
+                  <h3 className="text-foreground text-sm font-semibold">
+                    Recent Activity
+                  </h3>
                 </div>
-                <div className="max-h-[300px] overflow-auto p-4 flex flex-col items-center justify-center min-h-[100px]">
-                  <Sparkles className="h-8 w-8 text-primary/40 mb-2" />
-                  <p className="text-center text-xs text-muted-foreground">No new notifications. Start writing to see updates!</p>
+                <div className="flex max-h-[300px] min-h-[100px] flex-col items-center justify-center overflow-auto p-4">
+                  <Sparkles className="text-primary/40 mb-2 h-8 w-8" />
+                  <p className="text-muted-foreground text-center text-xs">
+                    No new notifications. Start writing to see updates!
+                  </p>
                 </div>
               </PopoverContent>
             </Popover>
@@ -110,19 +122,26 @@ export default function Header() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative ml-1 h-8 w-8 rounded-full ring-offset-background transition-all hover:ring-2 hover:ring-primary/50"
+                  className="ring-offset-background hover:ring-primary/50 relative ml-1 h-8 w-8 rounded-full transition-all hover:ring-2"
                 >
-                  <Avatar className="h-8 w-8 border border-border grayscale transition-all hover:grayscale-0">
+                  <Avatar className="border-border h-8 w-8 border grayscale transition-all hover:grayscale-0">
                     <AvatarImage src={session?.user?.image ?? ""} />
-                    <AvatarFallback className="bg-primary/10 text-primary">{session?.user?.name?.[0]}</AvatarFallback>
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {session?.user?.name?.[0]}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 border-border bg-popover" align="end">
+              <DropdownMenuContent
+                className="border-border bg-popover w-56"
+                align="end"
+              >
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium text-foreground">{session?.user?.name}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-foreground text-sm font-medium">
+                      {session?.user?.name}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
                       {session?.user?.email}
                     </p>
                   </div>
@@ -154,38 +173,40 @@ export default function Header() {
 
       {/* --- Reflecto Command Palette --- */}
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-popover shadow-2xl">
+        <div className="border-border bg-popover flex flex-col overflow-hidden rounded-xl border shadow-2xl">
           <CommandInput
             placeholder="Search entries, tags, prompts..."
-            className="h-14 border-none text-foreground focus:ring-0"
+            className="text-foreground h-14 border-none focus:ring-0"
           />
           <CommandList className="max-h-[450px]">
-            <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">No results found.</CommandEmpty>
+            <CommandEmpty className="text-muted-foreground py-6 text-center text-sm">
+              No results found.
+            </CommandEmpty>
 
-            <CommandGroup heading="Actions" className="px-2 text-primary">
-              <CommandItem className="flex items-center gap-3 py-3 text-foreground/80 focus:bg-accent focus:text-accent-foreground">
+            <CommandGroup heading="Actions" className="text-primary px-2">
+              <CommandItem className="text-foreground/80 focus:bg-accent focus:text-accent-foreground flex items-center gap-3 py-3">
                 <PlusCircle className="h-4 w-4" />
                 <span className="font-medium">New Journal Entry</span>
               </CommandItem>
-              <CommandItem className="flex items-center gap-3 py-3 text-foreground/80 focus:bg-accent focus:text-accent-foreground">
+              <CommandItem className="text-foreground/80 focus:bg-accent focus:text-accent-foreground flex items-center gap-3 py-3">
                 <Sparkles className="h-4 w-4" />
                 <span className="font-medium">Get Daily Prompt</span>
               </CommandItem>
             </CommandGroup>
 
-            <CommandGroup heading="Quick Explore" className="px-2 text-primary">
-              <CommandItem className="flex items-center gap-3 py-3 text-foreground/80 focus:bg-accent focus:text-accent-foreground">
+            <CommandGroup heading="Quick Explore" className="text-primary px-2">
+              <CommandItem className="text-foreground/80 focus:bg-accent focus:text-accent-foreground flex items-center gap-3 py-3">
                 <History className="h-4 w-4" />
                 <span className="font-medium">View Reflection History</span>
               </CommandItem>
-              <CommandItem className="flex items-center gap-3 py-3 text-foreground/80 focus:bg-accent focus:text-accent-foreground">
+              <CommandItem className="text-foreground/80 focus:bg-accent focus:text-accent-foreground flex items-center gap-3 py-3">
                 <Tag className="h-4 w-4" />
                 <span className="font-medium">Browse by Tags</span>
               </CommandItem>
             </CommandGroup>
-            
-            <CommandGroup heading="Navigate" className="px-2 text-primary">
-              <CommandItem className="flex items-center gap-3 py-3 text-foreground/80 focus:bg-accent focus:text-accent-foreground">
+
+            <CommandGroup heading="Navigate" className="text-primary px-2">
+              <CommandItem className="text-foreground/80 focus:bg-accent focus:text-accent-foreground flex items-center gap-3 py-3">
                 <ArrowRight className="h-4 w-4" />
                 <span className="font-medium">Dashboard</span>
               </CommandItem>
@@ -193,25 +214,27 @@ export default function Header() {
           </CommandList>
 
           {/* Footer - Project Specific */}
-          <div className="flex items-center justify-between border-t border-border bg-muted/50 px-4 py-3 text-[11px] text-muted-foreground">
+          <div className="border-border bg-muted/50 text-muted-foreground flex items-center justify-between border-t px-4 py-3 text-[11px]">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-border bg-background px-1 text-primary">↵</kbd> Select
+                <kbd className="border-border bg-background text-primary rounded border px-1">
+                  ↵
+                </kbd>{" "}
+                Select
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="flex items-center rounded border border-border bg-background px-1 text-primary">
+                <kbd className="border-border bg-background text-primary flex items-center rounded border px-1">
                   esc
                 </kbd>{" "}
                 Close
               </span>
             </div>
-            <div className="hidden sm:block text-primary/60 font-medium">
+            <div className="text-primary/60 hidden font-medium sm:block">
               Reflecto App v0.1.0
             </div>
           </div>
         </div>
       </CommandDialog>
-
     </>
   );
 }

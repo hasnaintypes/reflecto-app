@@ -126,10 +126,10 @@ export function JournalTimeline() {
 
             {/* Interaction Footer (Optional/Subtle) */}
             <div className="mt-2 flex items-center gap-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <button className="text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-[#FB923C] cursor-pointer">
+              <button className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-[#FB923C]">
                 Edit
               </button>
-              <button className="text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-red-400 cursor-pointer">
+              <button className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-red-400">
                 Delete
               </button>
             </div>

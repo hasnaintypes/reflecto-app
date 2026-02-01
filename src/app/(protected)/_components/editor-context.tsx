@@ -17,7 +17,9 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
   const [isCentered, setIsCentered] = useState(false);
 
   return (
-    <EditorContext.Provider value={{ editor, setEditor, isCentered, setIsCentered }}>
+    <EditorContext.Provider
+      value={{ editor, setEditor, isCentered, setIsCentered }}
+    >
       {children}
     </EditorContext.Provider>
   );

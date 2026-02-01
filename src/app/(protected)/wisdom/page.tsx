@@ -105,7 +105,7 @@ function ActionButton({
   label: string;
 }) {
   return (
-    <button className="flex min-w-[160px] items-center gap-3 rounded bg-zinc-800/40 px-4 py-2 text-sm font-medium text-zinc-300 transition-all hover:bg-zinc-800 hover:text-white active:scale-95 cursor-pointer">
+    <button className="flex min-w-[160px] cursor-pointer items-center gap-3 rounded bg-zinc-800/40 px-4 py-2 text-sm font-medium text-zinc-300 transition-all hover:bg-zinc-800 hover:text-white active:scale-95">
       {icon}
       <span>{label}</span>
     </button>

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useEditor,
-  EditorContent,
-  type JSONContent,
-} from "@tiptap/react";
+import { useEditor, EditorContent, type JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
@@ -69,12 +65,10 @@ export default function JournalEditor() {
     }
   }, [editor]);
 
-
-
   return (
     <div className="animate-in fade-in flex h-full flex-col pt-6 pb-4 duration-1000">
-      <div className="relative flex-1 overflow-y-auto px-2 custom-scrollbar">
-        <div className="max-w-none prose prose-neutral dark:prose-invert prose-2xl">
+      <div className="custom-scrollbar relative flex-1 overflow-y-auto px-2">
+        <div className="prose prose-neutral dark:prose-invert prose-2xl max-w-none">
           <EditorContent editor={editor} />
         </div>
       </div>

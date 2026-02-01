@@ -49,14 +49,17 @@ const ToolbarButton = ({
         onClick={onClick}
         className={cn(
           "flex h-9 w-9 items-center justify-center rounded-xl transition-all hover:bg-white/5 hover:text-white",
-          isActive ? "text-white bg-white/10" : "text-neutral-500",
-          className
+          isActive ? "bg-white/10 text-white" : "text-neutral-500",
+          className,
         )}
       >
         {children}
       </button>
     </TooltipTrigger>
-    <TooltipContent sideOffset={8} className="bg-neutral-800 text-white border-white/5 py-1 px-2">
+    <TooltipContent
+      sideOffset={8}
+      className="border-white/5 bg-neutral-800 px-2 py-1 text-white"
+    >
       <p className="text-[11px] font-medium tracking-wide">{tooltip}</p>
     </TooltipContent>
   </Tooltip>
@@ -69,7 +72,7 @@ export function EditorToolbar({
   addImage,
 }: EditorToolbarProps) {
   return (
-    <div className="flex items-center gap-1.5 rounded-2xl border border-white/5 bg-neutral-900/50 p-1.5 backdrop-blur-xl shadow-[0_8px_32_rgb(0,0,0,0.4)]">
+    <div className="flex items-center gap-1.5 rounded-2xl border border-white/5 bg-neutral-900/50 p-1.5 shadow-[0_8px_32_rgb(0,0,0,0.4)] backdrop-blur-xl">
       {/* Alignment group */}
       <div className="flex items-center gap-1 px-1">
         <ToolbarButton
@@ -81,19 +84,23 @@ export function EditorToolbar({
         </ToolbarButton>
       </div>
 
-      <div className="h-6 w-[1px] bg-white/10 mx-1" />
+      <div className="mx-1 h-6 w-[1px] bg-white/10" />
 
       {/* Block types */}
       <div className="flex items-center gap-1">
         <ToolbarButton
-          onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
+          onClick={() =>
+            editor?.chain().focus().toggleHeading({ level: 1 }).run()
+          }
           isActive={editor?.isActive("heading", { level: 1 })}
           tooltip="Heading 1"
         >
           <Heading1 size={18} />
         </ToolbarButton>
         <ToolbarButton
-          onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() =>
+            editor?.chain().focus().toggleHeading({ level: 2 }).run()
+          }
           isActive={editor?.isActive("heading", { level: 2 })}
           tooltip="Heading 2"
         >
@@ -108,7 +115,7 @@ export function EditorToolbar({
         </ToolbarButton>
       </div>
 
-      <div className="h-6 w-[1px] bg-white/10 mx-1" />
+      <div className="mx-1 h-6 w-[1px] bg-white/10" />
 
       {/* Text Formatting */}
       <div className="flex items-center gap-1">
@@ -142,7 +149,7 @@ export function EditorToolbar({
         </ToolbarButton>
       </div>
 
-      <div className="h-6 w-[1px] bg-white/10 mx-1" />
+      <div className="mx-1 h-6 w-[1px] bg-white/10" />
 
       {/* Insertion */}
       <div className="flex items-center gap-1">
@@ -152,15 +159,12 @@ export function EditorToolbar({
         >
           <Minus size={18} />
         </ToolbarButton>
-        <ToolbarButton
-          onClick={addImage}
-          tooltip="Insert Image"
-        >
+        <ToolbarButton onClick={addImage} tooltip="Insert Image">
           <ImageIcon size={18} />
         </ToolbarButton>
       </div>
-      
-      <div className="h-6 w-[1px] bg-white/10 mx-1" />
+
+      <div className="mx-1 h-6 w-[1px] bg-white/10" />
 
       {/* AI/Magic group */}
       <div className="flex items-center gap-1 px-1">

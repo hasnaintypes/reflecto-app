@@ -1,12 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  FileText,
-  Plus,
-  Star,
-  ArrowUpDown,
-} from "lucide-react";
+import { FileText, Plus, Star, ArrowUpDown } from "lucide-react";
 
 export default function NotesPage() {
   const notes = [];
@@ -54,8 +49,8 @@ export default function NotesPage() {
 
               <p>
                 Here you can collect anything, from weekly / monthly / annual
-                summaries, over &quot;lessons learned&quot;, to thought experiments and
-                more.
+                summaries, over &quot;lessons learned&quot;, to thought
+                experiments and more.
               </p>
             </div>
 

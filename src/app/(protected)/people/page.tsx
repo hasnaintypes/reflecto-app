@@ -1,12 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  FileText,
-  PenLine,
-  Star,
-  ArrowUpDown,
-} from "lucide-react";
+import { FileText, PenLine, Star, ArrowUpDown } from "lucide-react";
 
 export default function PeoplePage() {
   const people = [];
@@ -58,7 +53,8 @@ export default function PeoplePage() {
               <div className="py-2">
                 <p className="font-mono text-sm text-zinc-500">e.g.</p>
                 <p className="mt-2 ml-4 border-l border-zinc-800 pl-4 text-zinc-500 italic">
-                  &quot;Lunch w/ <span className="text-[#34D399]">@Jeremy</span>.&quot;
+                  &quot;Lunch w/ <span className="text-[#34D399]">@Jeremy</span>
+                  .&quot;
                 </p>
               </div>
 

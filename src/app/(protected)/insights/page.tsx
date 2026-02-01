@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  BookOpen,
-  Moon,
-  Heart,
-  Hash,
-  AtSign,
-  Gem,
-} from "lucide-react";
+import { BookOpen, Moon, Heart, Hash, AtSign, Gem } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Heatmap } from "./_components/heatmap";
 import { StatsGrid } from "./_components/stats-grid";
@@ -44,11 +37,11 @@ export default function InsightsPage() {
               Analysis
             </p>
             {/* Heatmap Legend - Perfectly Aligned */}
-            <div className="flex items-center gap-2 text-[9px] font-bold text-zinc-600 uppercase tracking-tighter">
+            <div className="flex items-center gap-2 text-[9px] font-bold tracking-tighter text-zinc-600 uppercase">
               <span>Less</span>
               <div className="flex gap-1.5">
                 {levels.map((lvl, i) => (
-                  <div key={i} className={`w-2.5 h-2.5 rounded-[1px] ${lvl}`} />
+                  <div key={i} className={`h-2.5 w-2.5 rounded-[1px] ${lvl}`} />
                 ))}
               </div>
               <span>More</span>
@@ -94,7 +87,7 @@ export default function InsightsPage() {
             </button>
           ))}
         </nav>
-        
+
         <div className="pointer-events-none absolute -bottom-8 left-0 h-8 w-full bg-gradient-to-b from-[#09090b]/80 to-transparent" />
       </div>
 

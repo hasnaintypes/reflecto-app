@@ -52,7 +52,7 @@ export default function Logo({
           alt="Reflecto Logo"
           width={120}
           height={120}
-          className="h-full w-full object-contain transition-all duration-700 rounded-full"
+          className="h-full w-full rounded-full object-contain transition-all duration-700"
         />
 
         {/* Subtle radial overlay to blend the logo image */}
