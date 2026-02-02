@@ -37,12 +37,12 @@ export function StatsGrid() {
   return (
     <div className="grid grid-cols-1 gap-4 py-8 md:grid-cols-3">
       {/* Primary Hero Card */}
-      <div className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-zinc-900/40 p-8 transition-all hover:bg-zinc-900/60 md:col-span-2">
+      <div className="group border-border/40 bg-muted/40 hover:bg-muted/60 relative flex flex-col justify-between overflow-hidden rounded-3xl border p-8 transition-all md:col-span-2">
         <div className="relative z-10">
           <p className="mb-2 text-[10px] font-bold tracking-[0.3em] text-zinc-500 uppercase">
             Total Volume
           </p>
-          <h2 className="font-serif text-6xl font-medium tracking-tight text-white italic">
+          <h2 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
             100,937{" "}
             <span className="font-sans text-2xl text-zinc-500 not-italic">
               words
@@ -59,13 +59,15 @@ export function StatsGrid() {
                   {stat.label}
                 </span>
               </div>
-              <p className="text-xl font-medium text-zinc-200">{stat.value}</p>
+              <p className="text-foreground/90 text-xl font-medium">
+                {stat.value}
+              </p>
             </div>
           ))}
         </div>
 
         {/* Decorative Abstract Shape */}
-        <div className="pointer-events-none absolute -right-12 -bottom-12 h-64 w-64 rounded-full bg-indigo-500/10 blur-[100px] transition-colors group-hover:bg-indigo-500/20" />
+        <div className="bg-primary/10 group-hover:bg-primary/20 pointer-events-none absolute -right-12 -bottom-12 h-64 w-64 rounded-full blur-[100px] transition-colors" />
       </div>
 
       {/* Secondary Metric Cards Stack */}
@@ -73,14 +75,14 @@ export function StatsGrid() {
         {metrics.map((metric) => (
           <div
             key={metric.label}
-            className="group flex flex-1 items-center justify-between rounded-2xl border border-white/5 bg-zinc-900/40 p-5 transition-all hover:border-white/10"
+            className="group border-border/40 bg-muted/40 hover:border-border/60 flex flex-1 items-center justify-between rounded-2xl border p-5 transition-all"
           >
             <div className="space-y-1">
               <p className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">
                 {metric.label}
               </p>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-xl font-semibold text-white">
+                <span className="text-foreground text-xl font-semibold">
                   {metric.value}
                 </span>
                 <span className="text-[10px] font-medium text-zinc-600">
@@ -88,7 +90,7 @@ export function StatsGrid() {
                 </span>
               </div>
             </div>
-            <div className="rounded-xl bg-white/[0.02] p-2 text-zinc-500 transition-colors group-hover:text-white">
+            <div className="bg-background/40 text-muted-foreground group-hover:text-foreground rounded-xl p-2 transition-colors">
               <metric.icon size={18} strokeWidth={1.5} />
             </div>
           </div>

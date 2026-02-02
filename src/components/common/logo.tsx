@@ -1,10 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/lib/utils";
-
-// If you have a serif font configured in your Tailwind config (like Playfair or New York)
-// use that instead of a standard sans.
+import { BookOpen } from "lucide-react";
 
 interface LogoProps {
   className?: string;
@@ -13,17 +10,17 @@ interface LogoProps {
 }
 
 const sizeMap = {
-  xs: "h-5 w-5",
-  sm: "h-7 w-7",
-  md: "h-9 w-9",
-  lg: "h-14 w-14",
-  xl: "h-20 w-20",
+  xs: "h-4 w-4",
+  sm: "h-5 w-5",
+  md: "h-6 w-6",
+  lg: "h-10 w-10",
+  xl: "h-14 w-14",
 };
 
 const textMap = {
   xs: "text-[12px] tracking-[0.2em]",
-  sm: "text-[14px] tracking-[0.25em]",
-  md: "text-[16px] tracking-[0.3em]",
+  sm: "text-[13px] tracking-[0.25em]",
+  md: "text-[15px] tracking-[0.3em]",
   lg: "text-2xl tracking-[0.2em]",
   xl: "text-4xl tracking-[0.1em]",
 };
@@ -36,33 +33,38 @@ export default function Logo({
   return (
     <div
       className={cn(
-        "group inline-flex cursor-pointer items-center gap-3",
+        "group inline-flex cursor-pointer items-center gap-3 select-none",
         className,
       )}
     >
-      {/* Logo Container with subtle glow */}
+      {/* Icon Container */}
       <div
         className={cn(
-          "relative flex shrink-0 items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-105",
+          "border-primary relative flex shrink-0 items-center justify-center rounded-sm border-2 shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)] transition-all duration-500 group-hover:scale-110",
           sizeMap[size],
         )}
       >
-        <Image
-          src="/logo.png"
-          alt="Reflecto Logo"
-          width={120}
-          height={120}
-          className="h-full w-full rounded-full object-contain transition-all duration-700"
-        />
+        <span
+          className={cn(
+            "text-primary font-mono leading-none font-bold",
+            size === "xs" && "text-[8px]",
+            size === "sm" && "text-[11px]",
+            size === "md" && "text-xs",
+            size === "lg" && "text-2xl",
+            size === "xl" && "text-4xl",
+          )}
+        >
+          R
+        </span>
 
-        {/* Subtle radial overlay to blend the logo image */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent" />
+        {/* Dynamic Glow on hover */}
+        <div className="bg-primary/20 absolute inset-0 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
       </div>
 
       {showText && (
         <span
           className={cn(
-            "font-serif font-medium text-white/90 uppercase italic transition-colors duration-500 group-hover:text-white",
+            "text-foreground/90 group-hover:text-foreground font-serif font-semibold tracking-tight transition-colors duration-500",
             textMap[size],
           )}
         >

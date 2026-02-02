@@ -8,11 +8,11 @@ export function Heatmap() {
   const days = 7;
 
   const levels = [
-    "bg-zinc-900/40", // Level 0: Empty
-    "bg-indigo-900/20", // Level 1: Low
-    "bg-indigo-700/40", // Level 2: Medium
-    "bg-indigo-500/60", // Level 3: High
-    "bg-[#6366F1]", // Level 4: Peak
+    "bg-muted/40", // Level 0: Empty
+    "bg-primary/20", // Level 1: Low
+    "bg-primary/40", // Level 2: Medium
+    "bg-primary/60", // Level 3: High
+    "bg-primary", // Level 4: Peak
   ];
 
   const months = [
@@ -60,7 +60,7 @@ export function Heatmap() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: weekIndex * 0.01 }}
-                        className={`h-[12px] w-[12px] rounded-[1.5px] ${levels[level]} cursor-pointer transition-all hover:ring-1 hover:ring-indigo-400/50`}
+                        className={`h-[12px] w-[12px] rounded-[1.5px] ${levels[level]} hover:ring-primary/50 cursor-pointer transition-all hover:ring-1`}
                       />
                     );
                   })}
@@ -76,23 +76,21 @@ export function Heatmap() {
           <p className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">
             Total Entries
           </p>
-          <p className="font-mono text-xl font-medium text-white">1,192</p>
+          <p className="text-foreground font-mono text-xl font-medium">1,192</p>
         </div>
-        <div className="h-8 w-px bg-zinc-900" />
+        <div className="bg-border/40 h-8 w-px" />
         <div className="space-y-0.5">
           <p className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">
             Bullets Logged
           </p>
-          <p className="font-mono text-xl font-medium text-white">6,972</p>
+          <p className="text-foreground font-mono text-xl font-medium">6,972</p>
         </div>
-        <div className="h-8 w-px bg-zinc-900" />
+        <div className="bg-border/40 h-8 w-px" />
         <div className="space-y-0.5">
           <p className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">
             Current Streak
           </p>
-          <p className="font-mono text-xl font-medium text-[#6366F1]">
-            14 Days
-          </p>
+          <p className="text-primary font-mono text-xl font-medium">14 Days</p>
         </div>
       </div>
     </div>

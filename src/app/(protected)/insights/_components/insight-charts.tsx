@@ -43,9 +43,9 @@ export function InsightCharts() {
     <div className="space-y-24 py-12">
       {/* Word Count Area Chart */}
       <div className="space-y-8">
-        <div className="flex items-end justify-between border-b border-white/[0.03] pb-4">
+        <div className="border-border/40 flex items-end justify-between border-b pb-4">
           <div className="space-y-1">
-            <h3 className="font-serif text-2xl font-medium text-white italic">
+            <h3 className="text-foreground font-serif text-2xl font-medium italic">
               Word count
             </h3>
             <p className="text-[10px] font-bold tracking-[0.2em] text-zinc-600 uppercase">
@@ -65,13 +65,22 @@ export function InsightCharts() {
             >
               <defs>
                 <linearGradient id="colorWords" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366F1" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#6366F1" stopOpacity={0} />
+                  <stop
+                    offset="5%"
+                    stopColor="var(--primary)"
+                    stopOpacity={0.15}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--primary)"
+                    stopOpacity={0}
+                  />
                 </linearGradient>
               </defs>
               <CartesianGrid
                 vertical={false}
-                stroke="#18181b"
+                stroke="var(--border)"
+                strokeOpacity={0.1}
                 strokeDasharray="0"
               />
               <XAxis
@@ -81,7 +90,7 @@ export function InsightCharts() {
                 tickFormatter={(value: string) => value.toUpperCase()}
                 tick={{
                   fontSize: 9,
-                  fill: "#52525b",
+                  fill: "var(--muted-foreground)",
                   fontWeight: 700,
                 }}
                 dy={15}
@@ -89,13 +98,17 @@ export function InsightCharts() {
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 9, fill: "#3f3f46" }}
+                tick={{
+                  fontSize: 9,
+                  fill: "var(--muted-foreground)",
+                  opacity: 0.5,
+                }}
               />
               <Tooltip
-                cursor={{ stroke: "#27272a", strokeWidth: 1 }}
+                cursor={{ stroke: "var(--border)", strokeWidth: 1 }}
                 contentStyle={{
-                  backgroundColor: "#09090b",
-                  border: "1px solid #18181b",
+                  backgroundColor: "var(--popover)",
+                  border: "1px solid var(--border)",
                   borderRadius: "4px",
                   fontSize: "10px",
                   fontFamily: "monospace",
@@ -104,7 +117,7 @@ export function InsightCharts() {
               <Area
                 type="monotone"
                 dataKey="count"
-                stroke="#6366F1"
+                stroke="var(--primary)"
                 fillOpacity={1}
                 fill="url(#colorWords)"
                 strokeWidth={1.5}
@@ -117,9 +130,9 @@ export function InsightCharts() {
 
       {/* Daytime Distribution Bar Chart */}
       <div className="space-y-8">
-        <div className="flex items-end justify-between border-b border-white/[0.03] pb-4">
+        <div className="border-border/40 flex items-end justify-between border-b pb-4">
           <div className="space-y-1">
-            <h3 className="font-serif text-2xl font-medium text-white italic">
+            <h3 className="text-foreground font-serif text-2xl font-medium italic">
               Daytime distribution
             </h3>
             <p className="text-[10px] font-bold tracking-[0.2em] text-zinc-600 uppercase">
@@ -141,7 +154,7 @@ export function InsightCharts() {
                 tickFormatter={(value: string) => value.toUpperCase()}
                 tick={{
                   fontSize: 9,
-                  fill: "#52525b",
+                  fill: "var(--muted-foreground)",
                   fontWeight: 700,
                 }}
                 dy={15}
@@ -150,7 +163,7 @@ export function InsightCharts() {
                 {daytimeData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={entry.energy > 60 ? "#6366F1" : "#18181b"}
+                    fill={entry.energy > 60 ? "var(--primary)" : "var(--muted)"}
                     className="transition-all duration-500 hover:opacity-80"
                   />
                 ))}

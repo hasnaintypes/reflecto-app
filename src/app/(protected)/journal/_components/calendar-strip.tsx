@@ -35,8 +35,8 @@ export function CalendarStrip() {
               className={cn(
                 "mb-3 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors",
                 isToday
-                  ? "text-[#FB923C]"
-                  : "text-zinc-600 group-hover:text-zinc-400",
+                  ? "text-primary"
+                  : "text-muted-foreground/60 group-hover:text-muted-foreground",
               )}
             >
               {dayName}
@@ -48,8 +48,8 @@ export function CalendarStrip() {
                 className={cn(
                   "text-lg font-medium transition-all duration-300",
                   isToday
-                    ? "scale-110 text-white"
-                    : "text-zinc-500 group-hover:text-zinc-200",
+                    ? "text-foreground scale-110 font-semibold"
+                    : "text-muted-foreground group-hover:text-foreground",
                 )}
               >
                 {dayNumber}
@@ -59,7 +59,7 @@ export function CalendarStrip() {
               {isToday && (
                 <motion.div
                   layoutId="activeDay"
-                  className="absolute -bottom-4 h-1 w-1 rounded-full bg-[#FB923C] shadow-[0_0_8px_#FB923C]"
+                  className="bg-primary absolute -bottom-4 h-1 w-1 rounded-full shadow-[0_0_8px_var(--primary)]"
                 />
               )}
             </div>

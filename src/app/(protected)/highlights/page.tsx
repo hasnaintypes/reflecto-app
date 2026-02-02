@@ -14,13 +14,13 @@ export default function HighlightsPage() {
           <p className="text-[10px] font-bold tracking-[0.3em] text-[#F87171] uppercase">
             Workspace
           </p>
-          <h1 className="font-serif text-6xl font-medium tracking-tight text-white italic">
+          <h1 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
             Highlights
           </h1>
         </div>
 
         <button className="group flex items-center gap-2 text-[#F87171] transition-colors hover:text-[#F87171]/80">
-          <div className="rounded-full border border-[#F87171]/30 p-2 transition-all group-hover:bg-[#F87171] group-hover:text-black">
+          <div className="group-hover:text-background rounded-full border border-[#F87171]/30 p-2 transition-all group-hover:bg-[#F87171]">
             <Plus size={20} strokeWidth={2.5} />
           </div>
           <span className="text-sm font-bold tracking-widest uppercase">
@@ -32,7 +32,7 @@ export default function HighlightsPage() {
       <div className="mt-16">
         {!hasHighlights && (
           <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-lg tracking-tight text-zinc-400">
+            <div className="text-muted-foreground flex items-center gap-1.5 text-lg tracking-tight">
               <span className="lowercase">Your highlights</span>
               <Sparkles
                 size={16}
@@ -43,11 +43,11 @@ export default function HighlightsPage() {
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5 text-sm text-zinc-500">
+            <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
               <span className="lowercase">More info in our</span>
               <a
                 href="#"
-                className="group flex items-center gap-1 text-zinc-400 underline decoration-zinc-800 underline-offset-4 transition-colors hover:text-[#F87171] hover:decoration-[#F87171]/40"
+                className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#F87171] hover:decoration-[#F87171]/40"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">documentation.</span>

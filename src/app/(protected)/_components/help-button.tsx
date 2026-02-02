@@ -19,7 +19,7 @@ export function HelpButton() {
           <TooltipTrigger asChild>
             <button
               onClick={() => setIsHelpOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-neutral-900/80 text-neutral-500 shadow-2xl backdrop-blur-xl transition-all hover:border-white/20 hover:bg-neutral-800 hover:text-emerald-400"
+              className="border-border/40 bg-muted/80 text-muted-foreground hover:border-border/60 hover:bg-muted hover:text-primary flex h-10 w-10 items-center justify-center rounded-full border shadow-2xl backdrop-blur-xl transition-all"
             >
               <HelpCircle size={20} />
             </button>
@@ -27,7 +27,7 @@ export function HelpButton() {
           <TooltipContent
             side="top"
             sideOffset={8}
-            className="border-white/5 bg-neutral-800 px-2 py-1 text-[10px] font-medium tracking-wide text-white"
+            className="border-border/50 bg-popover text-popover-foreground px-2 py-1 text-[10px] font-medium tracking-wide"
           >
             <p>Keyboard Shortcuts</p>
           </TooltipContent>

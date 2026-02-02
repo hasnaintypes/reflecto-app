@@ -15,20 +15,20 @@ export default function PeoplePage() {
           <p className="text-[10px] font-bold tracking-[0.3em] text-[#34D399] uppercase">
             Workspace
           </p>
-          <h1 className="font-serif text-6xl font-medium tracking-tight text-white italic">
+          <h1 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
             People
           </h1>
         </div>
 
         {/* Header Utilities from reference */}
-        <div className="mb-2 flex items-center gap-6 text-zinc-500">
+        <div className="text-muted-foreground/60 mb-2 flex items-center gap-6">
           <Star
             size={20}
-            className="cursor-pointer transition-colors hover:text-white"
+            className="hover:text-foreground cursor-pointer transition-colors"
           />
           <ArrowUpDown
             size={20}
-            className="cursor-pointer transition-colors hover:text-white"
+            className="hover:text-foreground cursor-pointer transition-colors"
           />
         </div>
       </header>
@@ -42,7 +42,7 @@ export default function PeoplePage() {
         ) : (
           /* Empty State - Matching the 'People' reference strictly */
           <div className="max-w-2xl space-y-6">
-            <div className="space-y-4 text-lg leading-relaxed tracking-tight text-zinc-400">
+            <div className="text-muted-foreground space-y-4 text-lg leading-relaxed tracking-tight">
               <p>
                 Use <span className="text-[#34D399]">@name</span> in your
                 entries to mention someone. Journalistic will automatically keep
@@ -51,36 +51,38 @@ export default function PeoplePage() {
               </p>
 
               <div className="py-2">
-                <p className="font-mono text-sm text-zinc-500">e.g.</p>
-                <p className="mt-2 ml-4 border-l border-zinc-800 pl-4 text-zinc-500 italic">
+                <p className="text-muted-foreground/60 font-mono text-sm">
+                  e.g.
+                </p>
+                <p className="border-border/60 text-muted-foreground/60 mt-2 ml-4 border-l pl-4 italic">
                   &quot;Lunch w/ <span className="text-[#34D399]">@Jeremy</span>
                   .&quot;
                 </p>
               </div>
 
-              <p className="text-sm text-zinc-500">
+              <p className="text-muted-foreground/60 text-sm">
                 Note: mentions are private, only you can see them here.
               </p>
             </div>
 
             {/* Links Section */}
-            <div className="space-y-3 border-t border-zinc-900 pt-4">
-              <div className="flex items-center gap-1.5 text-sm text-zinc-500">
+            <div className="border-border space-y-3 border-t pt-4">
+              <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
                 <span className="lowercase">More info in the</span>
                 <a
                   href="#"
-                  className="group flex items-center gap-1 text-zinc-400 underline decoration-zinc-800 underline-offset-4 transition-colors hover:text-[#34D399] hover:decoration-[#34D399]/40"
+                  className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#34D399] hover:decoration-[#34D399]/40"
                 >
                   <FileText size={14} className="opacity-70" />
                   <span className="lowercase">documentation.</span>
                 </a>
               </div>
 
-              <div className="flex items-center gap-1.5 text-sm text-zinc-500">
+              <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
                 <span className="lowercase">Try it out in</span>
                 <a
                   href="#"
-                  className="group flex items-center gap-1 text-zinc-400 underline decoration-zinc-800 underline-offset-4 transition-colors hover:text-[#34D399] hover:decoration-[#34D399]/40"
+                  className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#34D399] hover:decoration-[#34D399]/40"
                 >
                   <PenLine
                     size={14}

@@ -48,8 +48,8 @@ const ToolbarButton = ({
       <button
         onClick={onClick}
         className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-xl transition-all hover:bg-white/5 hover:text-white",
-          isActive ? "bg-white/10 text-white" : "text-neutral-500",
+          "hover:bg-muted hover:text-foreground flex h-9 w-9 items-center justify-center rounded-xl transition-all",
+          isActive ? "bg-muted text-foreground" : "text-muted-foreground",
           className,
         )}
       >
@@ -58,7 +58,7 @@ const ToolbarButton = ({
     </TooltipTrigger>
     <TooltipContent
       sideOffset={8}
-      className="border-white/5 bg-neutral-800 px-2 py-1 text-white"
+      className="border-border/50 bg-popover text-popover-foreground px-2 py-1"
     >
       <p className="text-[11px] font-medium tracking-wide">{tooltip}</p>
     </TooltipContent>
@@ -72,7 +72,7 @@ export function EditorToolbar({
   addImage,
 }: EditorToolbarProps) {
   return (
-    <div className="flex items-center gap-1.5 rounded-2xl border border-white/5 bg-neutral-900/50 p-1.5 shadow-[0_8px_32_rgb(0,0,0,0.4)] backdrop-blur-xl">
+    <div className="border-border/40 bg-muted/30 flex items-center gap-1.5 rounded-2xl border p-1.5 shadow-[0_8px_32_rgb(0,0,0,0.4)] backdrop-blur-xl">
       {/* Alignment group */}
       <div className="flex items-center gap-1 px-1">
         <ToolbarButton
@@ -84,7 +84,7 @@ export function EditorToolbar({
         </ToolbarButton>
       </div>
 
-      <div className="mx-1 h-6 w-[1px] bg-white/10" />
+      <div className="bg-border/40 mx-1 h-6 w-[1px]" />
 
       {/* Block types */}
       <div className="flex items-center gap-1">
@@ -115,7 +115,7 @@ export function EditorToolbar({
         </ToolbarButton>
       </div>
 
-      <div className="mx-1 h-6 w-[1px] bg-white/10" />
+      <div className="bg-border/40 mx-1 h-6 w-[1px]" />
 
       {/* Text Formatting */}
       <div className="flex items-center gap-1">
@@ -149,7 +149,7 @@ export function EditorToolbar({
         </ToolbarButton>
       </div>
 
-      <div className="mx-1 h-6 w-[1px] bg-white/10" />
+      <div className="bg-border/40 mx-1 h-6 w-[1px]" />
 
       {/* Insertion */}
       <div className="flex items-center gap-1">
@@ -164,7 +164,7 @@ export function EditorToolbar({
         </ToolbarButton>
       </div>
 
-      <div className="mx-1 h-6 w-[1px] bg-white/10" />
+      <div className="bg-border/40 mx-1 h-6 w-[1px]" />
 
       {/* AI/Magic group */}
       <div className="flex items-center gap-1 px-1">

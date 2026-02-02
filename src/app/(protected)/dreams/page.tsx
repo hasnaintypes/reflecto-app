@@ -13,16 +13,16 @@ export default function DreamsPage() {
       {/* Minimalist Header - Matching the high-end typography style */}
       <header className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div className="space-y-1">
-          <p className="text-[10px] font-bold tracking-[0.3em] text-[#FB923C] uppercase">
+          <p className="text-primary text-[10px] font-bold tracking-[0.3em] uppercase">
             Journal
           </p>
-          <h1 className="font-serif text-6xl font-medium tracking-tight text-white italic">
+          <h1 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
             Dreams
           </h1>
         </div>
 
-        <button className="group flex items-center gap-2 text-[#FB923C] transition-colors hover:text-[#FB923C]/80">
-          <div className="rounded-full border border-[#FB923C]/30 p-2 transition-all group-hover:bg-[#FB923C] group-hover:text-black">
+        <button className="group text-primary hover:text-primary/80 flex items-center gap-2 transition-colors">
+          <div className="border-primary/30 group-hover:bg-primary group-hover:text-background rounded-full border p-2 transition-all">
             <Plus size={20} strokeWidth={2.5} />
           </div>
           <span className="text-sm font-bold tracking-widest uppercase">
@@ -40,22 +40,22 @@ export default function DreamsPage() {
         ) : (
           /* Empty State - Styled based on your provided screenshot */
           <div className="max-w-2xl space-y-6">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xl tracking-tight text-zinc-400">
+            <div className="text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1 text-xl tracking-tight">
               <span>Your dreams</span>
               <Moon
                 size={20}
-                className="inline-block animate-pulse fill-[#FB923C]/20 text-[#FB923C]"
+                className="fill-primary/20 text-primary inline-block animate-pulse"
               />
               <span>
                 will show up here once you start adding them to your entries...
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-zinc-500">
+            <div className="text-muted-foreground/80 flex items-center gap-2 text-sm">
               <span>More info in our</span>
               <a
                 href="#"
-                className="group inline-flex items-center gap-1.5 text-zinc-300 underline decoration-zinc-800 underline-offset-4 transition-all hover:text-[#FB923C] hover:decoration-[#FB923C]/50"
+                className="group text-muted-foreground hover:text-primary hover:decoration-primary/50 inline-flex items-center gap-1.5 transition-all"
               >
                 <FileText
                   size={14}

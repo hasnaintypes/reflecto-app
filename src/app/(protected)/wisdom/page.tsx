@@ -24,20 +24,20 @@ export default function WisdomPage() {
           <p className="text-[10px] font-bold tracking-[0.3em] text-[#F472B6] uppercase">
             Workspace
           </p>
-          <h1 className="font-serif text-6xl font-medium tracking-tight text-white italic">
+          <h1 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
             Wisdom
           </h1>
         </div>
 
         {/* Header Utilities */}
-        <div className="mb-2 flex items-center gap-6 text-zinc-500">
+        <div className="text-muted-foreground/60 mb-2 flex items-center gap-6">
           <Star
             size={20}
-            className="cursor-pointer transition-colors hover:text-white"
+            className="hover:text-foreground cursor-pointer transition-colors"
           />
           <ArrowUpDown
             size={20}
-            className="cursor-pointer transition-colors hover:text-white"
+            className="hover:text-foreground cursor-pointer transition-colors"
           />
         </div>
       </header>
@@ -49,17 +49,17 @@ export default function WisdomPage() {
         ) : (
           /* Empty State - Matching the 'Wisdom' reference strictly */
           <div className="max-w-2xl space-y-8">
-            <p className="text-lg leading-relaxed tracking-tight text-zinc-400">
+            <p className="text-muted-foreground text-lg leading-relaxed tracking-tight">
               Collect shower thoughts, mind-blowing facts, insightful quotes,
               excerpts from good books, and lessons learned as a source of
               inspiration.
             </p>
 
-            <div className="flex items-center gap-1.5 text-sm text-zinc-500">
+            <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
               <span className="lowercase">More info in our</span>
               <a
                 href="#"
-                className="group flex items-center gap-1 text-zinc-400 underline decoration-zinc-800 underline-offset-4 transition-colors hover:text-[#F472B6] hover:decoration-[#F472B6]/40"
+                className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#F472B6] hover:decoration-[#F472B6]/40"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">documentation.</span>
@@ -105,7 +105,7 @@ function ActionButton({
   label: string;
 }) {
   return (
-    <button className="flex min-w-[160px] cursor-pointer items-center gap-3 rounded bg-zinc-800/40 px-4 py-2 text-sm font-medium text-zinc-300 transition-all hover:bg-zinc-800 hover:text-white active:scale-95">
+    <button className="bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground flex min-w-[160px] cursor-pointer items-center gap-3 rounded px-4 py-2 text-sm font-medium transition-all active:scale-95">
       {icon}
       <span>{label}</span>
     </button>

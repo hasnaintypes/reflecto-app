@@ -125,7 +125,7 @@ export function Sidebar() {
       initial={false}
       animate={{ width: isCollapsed ? "72px" : "190px" }}
       transition={{ type: "spring", stiffness: 300, damping: 35 }}
-      className="fixed top-16 bottom-0 left-0 z-[100] flex flex-col border-r border-white/[0.02] bg-[#080808]"
+      className="border-border/10 bg-background fixed top-16 bottom-0 left-0 z-[100] flex flex-col border-r"
     >
       <div className="no-scrollbar mt-10 flex flex-1 flex-col gap-1 overflow-visible px-3.5">
         {primaryNav.map((item) => (

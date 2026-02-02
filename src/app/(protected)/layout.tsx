@@ -14,16 +14,13 @@ export default function ProtectedLayout({
   return (
     <EditorProvider>
       <TooltipProvider delayDuration={400}>
-        <div className="relative h-screen overflow-hidden bg-[#080808] selection:bg-white/10">
-          {/* Static Logo Branding */}
+        <div className="bg-background relative h-screen overflow-hidden selection:bg-white/10">
           <div className="fixed top-0 left-12 z-[110] flex h-20 w-[72px] items-center justify-center">
-            <Logo size="sm" className="transition-opacity hover:opacity-80" />
+            <Logo size="md" className="transition-opacity hover:opacity-80" />
           </div>
 
-          {/* Sidebar */}
           <Sidebar />
 
-          {/* Main Content Area */}
           <div className="relative flex h-screen flex-col overflow-hidden pl-[72px]">
             <Header />
 

@@ -15,20 +15,20 @@ export default function NotesPage() {
           <p className="text-[10px] font-bold tracking-[0.3em] text-[#A78BFA] uppercase">
             Workspace
           </p>
-          <h1 className="font-serif text-6xl font-medium tracking-tight text-white italic">
+          <h1 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
             Notes
           </h1>
         </div>
 
         {/* Utility Icons from reference */}
-        <div className="mb-2 flex items-center gap-6 text-zinc-500">
+        <div className="text-muted-foreground/60 mb-2 flex items-center gap-6">
           <Star
             size={20}
-            className="cursor-pointer transition-colors hover:text-white"
+            className="hover:text-foreground cursor-pointer transition-colors"
           />
           <ArrowUpDown
             size={20}
-            className="cursor-pointer transition-colors hover:text-white"
+            className="hover:text-foreground cursor-pointer transition-colors"
           />
         </div>
       </header>
@@ -40,7 +40,7 @@ export default function NotesPage() {
         ) : (
           /* Empty State - Matching the 'Notes' reference strictly */
           <div className="max-w-2xl space-y-8">
-            <div className="space-y-6 text-lg leading-relaxed tracking-tight text-zinc-400">
+            <div className="text-muted-foreground space-y-6 text-lg leading-relaxed tracking-tight">
               <p>
                 Notes help you capture thoughts in more detail. They can be
                 completely independent of dates or augment entries in your daily
@@ -55,11 +55,11 @@ export default function NotesPage() {
             </div>
 
             {/* Documentation Link */}
-            <div className="flex items-center gap-1.5 pt-2 text-sm text-zinc-500">
+            <div className="text-muted-foreground/80 flex items-center gap-1.5 pt-2 text-sm">
               <span className="lowercase">More info in the</span>
               <a
                 href="#"
-                className="group flex items-center gap-1 text-zinc-400 underline decoration-zinc-800 underline-offset-4 transition-colors hover:text-[#A78BFA] hover:decoration-[#A78BFA]/40"
+                className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#A78BFA] hover:decoration-[#A78BFA]/40"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">documentation.</span>
@@ -68,7 +68,7 @@ export default function NotesPage() {
 
             {/* Custom Styled Add Button from reference */}
             <div className="pt-6">
-              <button className="flex items-center gap-2 rounded bg-zinc-800/50 px-4 py-2 text-sm font-medium text-zinc-300 transition-all hover:bg-zinc-700 hover:text-white active:scale-95">
+              <button className="bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-2 rounded px-4 py-2 text-sm font-medium transition-all active:scale-95">
                 <Plus size={16} className="text-[#A78BFA]" />
                 <span>Add note</span>
               </button>

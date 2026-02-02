@@ -37,7 +37,7 @@ export function Header() {
             addImage={addImage}
           />
         ) : (
-          <button className="group flex w-[300px] items-center gap-3 rounded-full border border-white/5 bg-zinc-900/50 px-4 py-2 transition-all hover:bg-zinc-800/80">
+          <button className="group border-border/40 bg-muted/50 hover:bg-muted/80 flex w-[300px] items-center gap-3 rounded-full border px-4 py-2 transition-all">
             <Search
               size={16}
               className="text-zinc-500 group-hover:text-zinc-300"

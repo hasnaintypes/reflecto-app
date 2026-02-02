@@ -30,7 +30,7 @@ export default function JournalEditor() {
     editorProps: {
       attributes: {
         class: cn(
-          "prose prose-neutral dark:prose-invert prose-2xl max-w-none focus:outline-none font-serif leading-relaxed text-neutral-400 transition-all duration-700",
+          "prose prose-neutral dark:prose-invert prose-2xl max-w-none focus:outline-none font-serif leading-relaxed text-foreground/80 transition-all duration-700",
           isCentered ? "text-center" : "text-left",
         ),
       },
@@ -81,28 +81,30 @@ export default function JournalEditor() {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.05);
+          background: var(--border);
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: var(--border);
         }
         .ProseMirror p.is-editor-empty:first-child::before {
           content: attr(data-placeholder);
           float: left;
-          color: #525252;
+          color: var(--muted-foreground);
+          opacity: 0.4;
           pointer-events: none;
           height: 0;
         }
         .ProseMirror hr {
           border: none;
-          border-top: 1px solid #1f1f1f;
+          border-top: 1px solid var(--border);
           margin: 3rem 0;
+          opacity: 0.2;
         }
         .ProseMirror blockquote {
-          border-left: 2px solid #333;
+          border-left: 2px solid var(--primary);
           padding-left: 1.5rem;
-          color: #a3a3a3;
+          color: var(--muted-foreground);
           font-style: italic;
         }
       `}</style>

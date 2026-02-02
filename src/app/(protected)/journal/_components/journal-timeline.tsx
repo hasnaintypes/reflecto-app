@@ -70,10 +70,10 @@ export function JournalTimeline() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1 }}
-          className="group relative -mx-4 rounded-xl px-4 py-4 transition-all duration-300 hover:bg-white/[0.02]"
+          className="group hover:bg-muted/30 relative -mx-4 cursor-pointer rounded-xl px-4 py-4 transition-all duration-300"
         >
           {/* Timeline Vertical Thread - Visible on Hover for effect */}
-          <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-zinc-800 via-zinc-900 to-transparent opacity-50 transition-all duration-500 group-hover:from-[#FB923C]/40 group-hover:opacity-100" />
+          <div className="from-border/20 via-border/10 group-hover:from-primary/40 absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b to-transparent opacity-50 transition-all duration-500 group-hover:opacity-100" />
 
           {/* Content Wrapper */}
           <div className="flex flex-col gap-4">
@@ -88,7 +88,7 @@ export function JournalTimeline() {
                 {entry.category}
               </span>
 
-              <div className="h-px w-8 bg-zinc-900" />
+              <div className="bg-border/20 h-px w-8" />
 
               <div className="flex items-center gap-2 text-zinc-600">
                 <Clock size={10} strokeWidth={2} />
@@ -99,7 +99,7 @@ export function JournalTimeline() {
             </div>
 
             {/* Content Text */}
-            <p className="max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight text-zinc-300 transition-colors duration-300 group-hover:text-zinc-100">
+            <p className="text-muted-foreground group-hover:text-foreground max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight transition-colors duration-300">
               {entry.content}
             </p>
 
@@ -110,14 +110,14 @@ export function JournalTimeline() {
                   <motion.div
                     key={idx}
                     whileHover={{ scale: 1.01, y: -4 }}
-                    className="h-48 w-72 shrink-0 overflow-hidden rounded-lg border border-white/5 bg-zinc-900"
+                    className="border-border/40 bg-muted h-48 w-72 shrink-0 overflow-hidden rounded-lg border"
                   >
                     <Image
                       src={img}
                       alt="journal entry"
                       width={288}
                       height={192}
-                      className="h-full w-full object-cover opacity-70 grayscale transition-all duration-500 group-hover:opacity-100 group-hover:grayscale-0"
+                      className="h-full w-full cursor-pointer object-cover opacity-70 transition-all duration-500 group-hover:opacity-100"
                     />
                   </motion.div>
                 ))}
