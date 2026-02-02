@@ -88,7 +88,7 @@ export default function FeaturesSection() {
             </div>
             <h3 className="mb-2 text-lg font-semibold">Multi-Modal Capture</h3>
             <p className="text-muted-foreground text-sm">
-              Whether it's a 3am dream or a midday highlight, record it in
+              Whether it&apos;s a 3am dream or a midday highlight, record it in
               seconds.
             </p>
           </div>

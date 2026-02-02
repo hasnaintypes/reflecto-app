@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { BookOpen } from "lucide-react";
 
 interface LogoProps {
   className?: string;

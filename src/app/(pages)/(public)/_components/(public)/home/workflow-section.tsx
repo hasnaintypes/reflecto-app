@@ -58,7 +58,7 @@ export default function WorkflowSection() {
                       </p>
                       <p className="mt-1 font-serif text-sm italic">
                         <span className="bg-primary text-primary-foreground rounded-sm px-1">
-                          "I need more clarity."
+                          &quot;I need more clarity.&quot;
                         </span>
                       </p>
                     </div>

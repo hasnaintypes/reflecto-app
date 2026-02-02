@@ -47,7 +47,7 @@ export default function HeroSection() {
                 </p>
                 <p className="mt-1 font-serif text-sm italic">
                   <span className="bg-primary text-primary-foreground rounded-sm px-1">
-                    "Why am I feeling so restless?"
+                    &quot;Why am I feeling so restless?&quot;
                   </span>
                 </p>
               </div>
@@ -117,14 +117,14 @@ export default function HeroSection() {
                     </span>
                   </div>
                   <p className="text-muted-foreground text-xs">
-                    You've been writing about this for 3 days.
+                    You&apos;ve been writing about this for 3 days.
                   </p>
                 </div>
 
                 <div className="bg-card border-border max-w-[200px] rounded-xl border p-3 shadow-sm">
                   <p className="text-muted-foreground text-xs italic">
-                    "There's a pattern here. Every time you mention 'work', your
-                    energy levels drop."
+                    &quot;There&apos;s a pattern here. Every time you mention
+                    &apos;work&apos;, your energy levels drop.&quot;
                   </p>
                 </div>
               </div>

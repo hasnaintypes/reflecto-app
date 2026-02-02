@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { AuthForm } from "@/app/_components";
+import { AuthForm } from "../../_components";
 import { NavbarLogo } from "@/components/ui/resizable-navbar";
 
 export const metadata = {
