@@ -1,14 +1,81 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { format } from "date-fns";
 import JournalEditor from "./_components/editor";
-import { Sparkles } from "lucide-react";
+import { Loader2, CheckCircle2, Sparkles, Star } from "lucide-react";
+import { api } from "@/trpc/react";
+import { useEntryStore } from "@/stores/use-entry-store";
+import { cn } from "@/lib/utils";
+import type { EntryWithRelations } from "@/server/types/entry.types";
+import type { EntryType } from "@prisma/client";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function WritePage() {
+function WritePageContent() {
   const now = new Date();
   const dateStr = format(now, "MMMM do, yyyy").toLowerCase();
   const dayStr = format(now, "EEEE");
+  const searchParams = useSearchParams();
+  const typeFromUrl = (searchParams.get("type") as EntryType) ?? "journal";
+  const entryId = searchParams.get("id");
+
+  const { setCurrentEntry, currentEntry } = useEntryStore();
+
+  const defaultTitle = `${dayStr}, ${format(now, "MMM d")}`;
+
+  // Load today's entries for the specific type (only if explicit id is NOT provided)
+  const { data: entryData, isLoading } = api.entry.list.useQuery(
+    {
+      limit: 1,
+      type: typeFromUrl,
+      dateFrom: new Date(new Date().setHours(0, 0, 0, 0)),
+    },
+    { enabled: !entryId },
+  );
+
+  // Set current entry if found (only when not loading a specific ID)
+  useEffect(() => {
+    if (!entryId) {
+      if (entryData?.entries?.[0]) {
+        setCurrentEntry(entryData.entries[0]);
+      } else {
+        // Create a mock entry in store with default title
+        setCurrentEntry({
+          id: "",
+          type: typeFromUrl,
+          title: defaultTitle,
+          content: "",
+          isStarred: false,
+          metadata: {},
+          createdAt: now,
+          updatedAt: now,
+        } as EntryWithRelations); // Cast as partial/mock
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entryData, setCurrentEntry, entryId]); // defaultTitle and now are stable enough for this logic, preventing infinite loops
+
+  const updateMutation = api.entry.update.useMutation({
+    onSuccess: (data) => {
+      updateEntry(data.id, data);
+    },
+  });
+
+  const { updateEntry } = useEntryStore();
+
+  const toggleStar = () => {
+    if (!currentEntry) return;
+    const newStarred = !currentEntry.isStarred;
+    updateEntry(currentEntry.id, { isStarred: newStarred });
+
+    if (currentEntry.id) {
+      updateMutation.mutate({
+        id: currentEntry.id,
+        isStarred: newStarred,
+      });
+    }
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-6 pb-24">
@@ -23,14 +90,39 @@ export default function WritePage() {
             </h1>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="border-border/40 bg-muted/50 text-muted-foreground flex items-center gap-1.5 rounded border px-2 py-1 text-[10px] font-bold tracking-wider">
-              <Sparkles size={10} className="text-primary" />
-              CURRENT ENTRY
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="border-border/40 bg-muted/50 text-muted-foreground flex items-center gap-1.5 rounded border px-2 py-1 text-[10px] font-bold tracking-wider">
+                <Sparkles size={10} className="text-primary" />
+                PRESENT MOMENT
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground/60 text-[10px] font-bold tracking-[0.2em] uppercase">
+                  Cloud Sync
+                </span>
+                {isLoading ? (
+                  <Loader2
+                    size={10}
+                    className="text-muted-foreground animate-spin"
+                  />
+                ) : (
+                  <CheckCircle2 size={10} className="text-emerald-500" />
+                )}
+              </div>
             </div>
-            <span className="text-muted-foreground/60 text-[10px] font-bold tracking-[0.2em] uppercase">
-              Session #1
-            </span>
+
+            <div className="flex items-center gap-4">
+              <Star
+                size={18}
+                className={cn(
+                  "cursor-pointer transition-colors",
+                  currentEntry?.isStarred
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-muted-foreground/40 hover:text-primary",
+                )}
+                onClick={toggleStar}
+              />
+            </div>
           </div>
         </header>
 
@@ -39,8 +131,22 @@ export default function WritePage() {
       </div>
 
       <div className="animate-in fade-in slide-in-from-bottom-4 relative min-h-[500px] duration-1000">
-        <JournalEditor />
+        <JournalEditor id={entryId ?? undefined} initialType={typeFromUrl} />
       </div>
     </div>
+  );
+}
+
+export default function WritePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center">
+          <Loader2 className="text-muted-foreground animate-spin" size={24} />
+        </div>
+      }
+    >
+      <WritePageContent />
+    </Suspense>
   );
 }
