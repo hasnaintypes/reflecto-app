@@ -1,73 +1,215 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Reflecto Database Schema - Minimal Implementation
+// Version: 2.1 - Based on Actual UI Analysis
+// Learn more: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// ============================================================================
+// AUTHENTICATION (NextAuth)
+// ============================================================================
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
-// Necessary for Next auth
 model Account {
-    id                       String  @id @default(cuid())
-    userId                   String
-    type                     String
-    provider                 String
-    providerAccountId        String
-    refresh_token            String? // @db.Text
-    access_token             String? // @db.Text
-    expires_at               Int?
-    token_type               String?
-    scope                    String?
-    id_token                 String? // @db.Text
-    session_state            String?
-    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    refresh_token_expires_in Int?
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
 
-    @@unique([provider, providerAccountId])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================================================================
+// USERS & PREFERENCES
+// ============================================================================
 
 model User {
-    id            String    @id @default(cuid())
-    email         String    @unique
-    name          String?
-    image         String?   // avatar
-    emailVerified DateTime? // for magic links
-    hashedPassword String?  // only set if using credentials auth
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
-    isActive     Boolean   @default(true)
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-    // Relations with NextAuth
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+  // Relations
+  accounts        Account[]
+  sessions        Session[]
+  entries         Entry[]
+  tags            Tag[]
+  people          Person[]
+  attachments     Attachment[]
+  activityLogs    ActivityLog[]
+  streaks         Streak[]
+  userPreferences UserPreferences?
+
+  @@index([email])
 }
 
+model UserPreferences {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  theme               String   @default("system") // light, dark, system
+  dailyReminderTime   String? // HH:mm format
+  notificationEnabled Boolean  @default(true)
+  fontSize           String   @default("medium") // small, medium, large
+  preferences         Json? // Additional settings as JSONB
+  updatedAt           DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================================
+// CORE CONTENT (Unified Entry Model)
+// ============================================================================
+
+enum EntryType {
+  journal
+  dream
+  highlight
+  idea
+  wisdom
+  note
+}
+
+model Entry {
+  id        String    @id @default(cuid())
+  userId    String
+  type      EntryType
+  title     String?
+  content   String?   @db.Text
+  isStarred Boolean   @default(false)
+  metadata  Json? // Type-specific fields (JSONB)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+
+  // Relations
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags        Tag[]        @relation("EntryTags")
+  people      Person[]     @relation("EntryPeople")
+  attachments Attachment[]
+
+  @@index([userId, type, createdAt(sort: Desc)])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, isStarred])
+  @@index([type])
+  @@index([deletedAt])
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  color     String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries Entry[] @relation("EntryTags")
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model Person {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String // Extracted from @name mentions
+  createdAt DateTime @default(now())
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries Entry[] @relation("EntryPeople")
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model Attachment {
+  id           String   @id @default(cuid())
+  entryId      String
+  userId       String
+  fileUrl      String
+  fileType     String // MIME type
+  fileSize     Int // bytes
+  thumbnailUrl String?
+  createdAt    DateTime @default(now())
+
+  // Relations
+  entry Entry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([entryId])
+  @@index([userId])
+}
+
+// ============================================================================
+// ANALYTICS & INSIGHTS
+// ============================================================================
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  userId     String
+  date       DateTime @db.Date
+  entryCount Int      @default(0)
+  entryTypes Json? // { journal: 3, dream: 1, note: 2 ... }
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@index([date])
+}
+
+model Streak {
+  id        String    @id @default(cuid())
+  userId    String
+  startDate DateTime  @db.Date
+  endDate   DateTime? @db.Date
+  length    Int
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, isActive])
+}
