@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import Footer from "@/components/common/footer";
-import Header from "@/components/common/header";
-import OriginHero from "../_components/(public)/about/origin-header";
-import ManifestoGrid from "../_components/(public)/about/manifesto-grid";
-import EngineArchitecture from "../_components/(public)/about/engine-architecture";
-import JourneyTimeline from "../_components/(public)/about/journey-timeline";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/app-header";
+import OriginHero from "./_componnets/origin-header";
+import ManifestoGrid from "./_componnets/manifesto-grid";
+import EngineArchitecture from "./_componnets/engine-architecture";
+import JourneyTimeline from "./_componnets/journey-timeline";
 
 export default function About() {
   return (

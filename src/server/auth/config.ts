@@ -62,7 +62,6 @@ export const authConfig = {
 
         if (!user?.hashedPassword) return null;
 
-        // @typescript-eslint/no-unsafe-call
         const isValid = await compare(
           credentials.password as string,
           user.hashedPassword,
@@ -77,12 +76,12 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
+      const isOnDashboard = nextUrl.pathname.startsWith("/write");
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect to login
       } else if (isLoggedIn) {
-        return Response.redirect(new URL("/dashboard", nextUrl));
+        return Response.redirect(new URL("/write", nextUrl));
       }
       return true;
     },

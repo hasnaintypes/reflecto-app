@@ -10,7 +10,7 @@ import {
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { Logo } from "../common";
+import { Logo } from "../layout";
 
 interface NavbarProps {
   children: React.ReactNode;

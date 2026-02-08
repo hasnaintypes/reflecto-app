@@ -1,10 +1,8 @@
 import React from "react";
-import { EditorProvider } from "./_components/editor-context";
-import { Header } from "./_components/header";
-import { HelpButton } from "./_components/help-button";
+import { EditorProvider } from "@/components/journal-editor";
+import { HelpButton } from "@/components/shared";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Sidebar } from "./_components/sidebar";
-import Logo from "@/components/common/logo";
+import { Header, Sidebar, Logo } from "@/components/layout";
 
 export default function ProtectedLayout({
   children,

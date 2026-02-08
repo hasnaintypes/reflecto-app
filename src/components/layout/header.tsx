@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Search } from "lucide-react";
-import { UserDropdown } from "./user-dropdown";
-import { useSharedEditor } from "./editor-context";
-import { EditorToolbar } from "./toolbar";
 import { usePathname } from "next/navigation";
+import { useSharedEditor } from "@/components/journal-editor/editor-context";
+import { EditorToolbar } from "@/components/shared/toolbar";
+import { UserDropdown } from "@/components/shared/user-dropdown";
 
 export function Header() {
   const { editor, isCentered, setIsCentered } = useSharedEditor();
@@ -30,10 +30,8 @@ export function Header() {
 
   return (
     <div className="flex shrink-0 items-center justify-between px-8 py-6">
-      {/* Left: Spacer to keep toolbar centered */}
       <div className="flex-1" />
 
-      {/* Center: Toolbar or Search */}
       <div className="flex-initial">
         {showToolbar ? (
           <EditorToolbar
@@ -63,7 +61,6 @@ export function Header() {
         )}
       </div>
 
-      {/* Right: User Section */}
       <div className="flex flex-1 justify-end">
         <UserDropdown />
       </div>

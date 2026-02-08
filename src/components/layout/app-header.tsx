@@ -3,16 +3,14 @@ import React from "react";
 import Link from "next/link";
 import { Logo } from "./index";
 
-export default function Header() {
+export default function AppHeader() {
   return (
     <header className="bg-background/70 border-border/20 sticky top-0 z-50 border-b backdrop-blur-xl transition-all">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        {/* --- Logo Area --- */}
         <Link href="/">
           <Logo />
         </Link>
 
-        {/* --- Navigation --- */}
         <nav className="hidden items-center gap-1.5 md:flex">
           {[
             { name: "Features", href: "#features" },
@@ -29,7 +27,6 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* --- Action Area --- */}
         <div className="flex items-center gap-4">
           <Link
             href="/auth/sign-in"

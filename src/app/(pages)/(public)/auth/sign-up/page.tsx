@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import { AuthForm } from "../../_components";
-import { Logo } from "@/components/common";
+import { AuthForm } from "@/components/forms";
+import { Logo } from "@/components/layout";
 
 export const metadata = {
   title: "Sign Up | Reflecto",

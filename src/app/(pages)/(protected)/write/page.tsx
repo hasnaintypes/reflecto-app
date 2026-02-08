@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { format } from "date-fns";
-import JournalEditor from "./_components/editor";
+import { JournalEditor } from "@/components/journal-editor";
 import { Loader2, CheckCircle2, Sparkles, Star } from "lucide-react";
 import { api } from "@/trpc/react";
 import { useEntryStore } from "@/stores/use-entry-store";

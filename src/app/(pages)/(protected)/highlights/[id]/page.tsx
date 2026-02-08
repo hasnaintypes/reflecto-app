@@ -11,7 +11,7 @@ import {
   Heart,
   Loader2,
 } from "lucide-react";
-import JournalEditor from "../../write/_components/editor";
+import { JournalEditor } from "@/components/journal-editor";
 import Link from "next/link";
 import { format } from "date-fns";
 import { api } from "@/trpc/react";

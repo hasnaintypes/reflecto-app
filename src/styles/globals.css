@@ -176,9 +176,7 @@ body {
   }
 }
 
-/* Force mention colors - override prose and all other styles */
 @layer utilities {
-  /* Tag mentions - Blue */
   .mention-tag-custom,
   span.mention-tag-custom,
   [data-type="mention-tag"],
@@ -197,7 +195,6 @@ body {
     border: none !important;
   }
 
-  /* Person mentions - Green */
   .mention-person-custom,
   span.mention-person-custom,
   [data-type="mention-person"],

@@ -1,3 +1,5 @@
+import type { DefaultSession } from "next-auth";
+
 export type AuthFormType = "signin" | "signup";
 
 export type AuthFormProps = {
@@ -37,10 +39,6 @@ export type User = {
 };
 
 export type UserProfile = Pick<User, "id" | "name" | "email" | "image">;
-
-// NextAuth module augmentation for type safety
-
-import type { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

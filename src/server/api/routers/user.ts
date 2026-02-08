@@ -95,8 +95,6 @@ export const userRouter = createTRPCRouter({
   deactivateUser: protectedProcedure.mutation(async ({ ctx }) => {
     const userId = ctx.session.user.id!;
     try {
-      // Soft-deactivation logic (e.g., setting a deletedAt or similar)
-      // For now, we'll just log it as a placeholder since isActive is not in the schema
       console.log(`Deactivating user ${userId}`);
       return { message: "User deactivated successfully." };
     } catch {

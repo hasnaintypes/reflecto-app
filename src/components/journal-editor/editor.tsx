@@ -10,7 +10,7 @@ import CharacterCount from "@tiptap/extension-character-count";
 import { cn } from "@/lib/utils";
 
 import React, { useEffect, useRef } from "react";
-import { useSharedEditor } from "../../_components/editor-context";
+import { useSharedEditor } from "./editor-context";
 import { api } from "@/trpc/react";
 import { useEntryStore } from "@/stores/use-entry-store";
 import { toast } from "sonner";
@@ -18,8 +18,9 @@ import Link from "@tiptap/extension-link";
 import Mention from "@tiptap/extension-mention";
 import { useDebounce } from "@/hooks/use-debounce";
 import { createSuggestionConfig } from "./suggestion-config";
+import type { SuggestionItem } from "./suggestion-list";
+
 import "tippy.js/dist/tippy.css";
-import { type SuggestionItem } from "./suggestion-list";
 
 interface JournalEditorProps {
   id?: string;
