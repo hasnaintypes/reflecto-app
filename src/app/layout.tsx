@@ -6,7 +6,7 @@ import { SessionProvider } from "next-auth/react";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/providers";
+import { ThemeProvider } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "Reflecto App",

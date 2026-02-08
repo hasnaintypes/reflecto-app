@@ -20,6 +20,12 @@ export function Header() {
 
   const showToolbar =
     pathname === "/write" ||
+    pathname.startsWith("/dreams/") ||
+    pathname.startsWith("/highlights/") ||
+    pathname.startsWith("/ideas/") ||
+    pathname.startsWith("/wisdom/") ||
+    pathname.startsWith("/notes/") ||
+    pathname.startsWith("/journal/") ||
     (pathname.startsWith("/reflect/") && pathname !== "/reflect");
 
   return (
