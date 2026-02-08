@@ -1,124 +1,136 @@
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { Mic, Search, LineChart, Wind, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
+
 export default function WorkflowSection() {
   const steps = [
     {
       number: "01",
       title: "Capture",
+      tag: "INPUT_STREAM",
       description: "One messy thought. Or a voice note while you walk.",
-      visual: "note",
+      icon: <Mic className="h-6 w-6" />,
     },
     {
       number: "02",
       title: "Reflect",
+      tag: "CORE_PROCESS",
       description: "AI helps you drill deeper into why you feel this way.",
-      visual: "scan",
+      icon: <Search className="h-6 w-6" />,
     },
     {
       number: "03",
       title: "Synthesize",
+      tag: "DATA_MERGE",
       description: "Patterns emerge. Your subconscious becomes conscious.",
-      visual: "draft",
+      icon: <LineChart className="h-6 w-6" />,
     },
     {
       number: "04",
       title: "Grow",
+      tag: "OUTPUT_ACTION",
       description: "Turn insights into action. One day at a time.",
-      visual: "send",
+      icon: <Wind className="h-6 w-6" />,
     },
   ];
 
   return (
-    <section className="bg-secondary/30 py-24">
+    <section className="bg-background border-border/40 relative overflow-hidden border-t py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-16 flex items-start justify-between">
-          <div>
-            <span className="text-muted-foreground font-mono text-xs tracking-wider">
-              ◆ WORKFLOW_AUTOMATION
+        {/* --- Header Section (Compliments EnhancedFeatures) --- */}
+        <div className="border-primary/20 relative mb-24 flex flex-col items-start gap-4 border-l-2 pl-8">
+          <motion.span
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="text-primary font-mono text-xs font-bold tracking-[0.4em] uppercase"
+          >
+            {"// Workflow_Engine.v1"}
+          </motion.span>
+          <h2 className="text-foreground max-w-3xl font-serif text-5xl leading-tight italic md:text-7xl">
+            From chaos <br />
+            <span className="text-muted-foreground/40">
+              to complete clarity.
             </span>
-            <h2 className="mt-4 max-w-md text-4xl leading-tight font-bold tracking-tight md:text-5xl">
-              Four seconds from chaos to clarity.
-            </h2>
-          </div>
-          <p className="text-muted-foreground hidden max-w-xs text-sm md:block">
-            No prompts. No editing. Just you, perfected.
-          </p>
+          </h2>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-4">
-          {steps.map((step, index) => (
-            <div key={step.number} className="relative">
-              <div className="bg-card border-border h-full rounded-2xl border p-6">
-                {/* Visual placeholder */}
-                <div className="bg-secondary/50 relative mb-6 flex aspect-square items-center justify-center overflow-hidden rounded-xl">
-                  {step.visual === "note" && (
-                    <div className="rotate-[-2deg] rounded border border-amber-100 bg-[#fffef0] p-4 shadow-sm">
-                      <p className="mb-2 font-mono text-[10px]">
-                        <span className="bg-primary/10 text-primary block w-fit rounded-sm px-1.5 py-0.5 font-bold">
-                          REFLECTION_INPUT
-                        </span>
-                      </p>
-                      <p className="mt-1 font-serif text-sm italic">
-                        <span className="bg-primary text-primary-foreground rounded-sm px-1">
-                          &quot;I need more clarity.&quot;
-                        </span>
-                      </p>
-                    </div>
-                  )}
-                  {step.visual === "scan" && (
-                    <div className="w-full space-y-2 px-4">
-                      <div className="bg-border h-2 w-3/4 rounded" />
-                      <div className="bg-border h-2 w-full rounded" />
-                      <div className="bg-border h-2 w-2/3 rounded" />
-                      <div className="mt-4 flex gap-1">
-                        <div className="bg-accent h-3 w-3 rounded-full" />
-                        <div className="bg-border h-3 flex-1 rounded" />
-                      </div>
-                    </div>
-                  )}
-                  {step.visual === "draft" && (
-                    <div className="bg-card border-border w-4/5 rounded-lg border p-3 shadow-sm">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-muted-foreground font-mono text-[10px]">
-                          ANALYSIS
-                        </span>
-                        <span className="text-primary font-mono text-[10px]">
-                          GROWTH
-                        </span>
-                      </div>
-                      <div className="space-y-1">
-                        <div className="bg-border h-1.5 w-full rounded" />
-                        <div className="bg-border h-1.5 w-4/5 rounded" />
-                        <div className="bg-border h-1.5 w-3/4 rounded" />
-                      </div>
-                    </div>
-                  )}
-                  {step.visual === "send" && (
-                    <div className="text-center">
-                      <div className="bg-accent/50 inline-flex items-center gap-2 rounded-full px-4 py-2">
-                        <span className="font-mono text-xs">INSIGHT</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+        {/* --- Workflow Grid --- */}
+        <div className="relative grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-8">
+          {/* Desktop Connecting Line with Pulse Effect */}
+          <div className="bg-border/50 absolute top-12 left-0 -z-10 hidden h-[1px] w-full md:block">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: "100%" }}
+              viewport={{ once: true }}
+              transition={{ duration: 2.5, ease: "easeInOut" }}
+              className="bg-primary relative h-full shadow-[0_0_15px_rgba(var(--primary),0.5)]"
+            >
+              <div className="bg-primary absolute top-1/2 right-0 h-2 w-2 -translate-y-1/2 animate-ping rounded-full" />
+            </motion.div>
+          </div>
 
-                <div className="mb-2 flex items-start justify-between">
-                  <span className="text-muted-foreground font-mono text-xs">
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.number}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.15 }}
+              className="group relative flex flex-col items-start"
+            >
+              {/* Visual Indicator (Compliments Bento Cards) */}
+              <div className="relative mb-8">
+                <div className="bg-card border-border text-muted-foreground group-hover:border-primary/50 group-hover:text-primary group-hover:shadow-primary/10 relative z-10 flex h-24 w-24 items-center justify-center rounded-2xl border backdrop-blur-sm transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl">
+                  {step.icon}
+
+                  {/* Subtle Number Overlay */}
+                  <span className="absolute right-2 bottom-2 font-mono text-[10px] opacity-20 transition-opacity group-hover:opacity-100">
                     {step.number}
                   </span>
                 </div>
-                <h3 className="mb-2 text-lg font-medium">{step.title}</h3>
-                <p className="text-muted-foreground text-sm">
+
+                {/* Floating Tag (Compliments System_Modules vibe) */}
+                <div className="bg-primary text-primary-foreground absolute -top-3 -right-3 z-20 rounded-md px-1.5 py-0.5 font-mono text-[8px] font-bold tracking-tighter uppercase">
+                  {step.tag}
+                </div>
+              </div>
+
+              {/* Text Content */}
+              <div className="space-y-3">
+                <h3 className="text-foreground group-hover:text-primary font-serif text-2xl font-medium italic transition-colors">
+                  {step.title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed antialiased md:pr-4">
                   {step.description}
                 </p>
               </div>
 
-              {/* Connector line */}
-              {index < steps.length - 1 && (
-                <div className="border-border absolute top-1/2 -right-3 hidden w-6 border-t border-dashed md:block" />
-              )}
-            </div>
+              {/* Interaction Hint (Matches CTA/Bento styles) */}
+              <motion.button
+                onClick={() =>
+                  toast.success(
+                    `Module Active: ${step.title} protocols initiated.`,
+                    {
+                      description:
+                        "Workflow documentation is now available in your dashboard.",
+                    },
+                  )
+                }
+                className="mt-6 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase opacity-0 transition-all group-hover:opacity-100 hover:gap-3"
+              >
+                <span className="text-primary">Initialize</span>
+                <ArrowRight size={12} className="text-primary" />
+              </motion.button>
+            </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Decorative Blur (Matches Hero/Bento bg) */}
+      <div className="bg-primary/5 absolute -top-24 -right-24 -z-10 h-96 w-96 rounded-full blur-[120px]" />
     </section>
   );
 }
