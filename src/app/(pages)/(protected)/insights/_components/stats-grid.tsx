@@ -1,37 +1,89 @@
-"use client";
-
-import React from "react";
 import { Heart, Hash, AtSign, TrendingUp, Zap, Calendar } from "lucide-react";
+import { type ComprehensiveEntry } from "@/types/entry.types";
 
-export function StatsGrid() {
+interface StatsGridProps {
+  entries: ComprehensiveEntry[];
+}
+
+export function StatsGrid({ entries }: StatsGridProps) {
+  const highlightsCount = entries.filter((e) => e.type === "highlight").length;
+
+  // Extract unique tag IDs and people IDs
+  const uniqueTags = new Set<string>();
+  const uniquePeople = new Set<string>();
+  let totalWordCount = 0;
+
+  entries.forEach((e) => {
+    e.tags?.forEach((t) => uniqueTags.add(t.id || t.name));
+    e.people?.forEach((p) => uniquePeople.add(p.id || p.name));
+    // Simple word count approximation
+    const text =
+      (e.title ?? "") + " " + (e.content ?? "").replace(/<[^>]*>/g, " ");
+    const words = text
+      .trim()
+      .split(/\s+/)
+      .filter((w) => w.length > 0);
+    totalWordCount += words.length;
+  });
+
+  const oldestEntry =
+    entries.length > 0
+      ? new Date(
+          Math.min(...entries.map((e) => new Date(e.createdAt).getTime())),
+        )
+      : new Date();
+
+  const journalAge = Math.max(
+    1,
+    Math.ceil(
+      (new Date().getTime() - oldestEntry.getTime()) / (1000 * 60 * 60 * 24),
+    ),
+  );
+  const writingFrequency = entries.length / Math.ceil(journalAge / 7);
+
   const stats = [
     {
       label: "Highlights",
-      value: "257",
+      value: highlightsCount.toLocaleString(),
       icon: Heart,
       color: "text-red-400",
-      trend: "+12%",
     },
     {
       label: "Tags",
-      value: "4,451",
+      value: uniqueTags.size.toLocaleString(),
       icon: Hash,
       color: "text-blue-400",
-      trend: "+5.2k",
     },
     {
       label: "People",
-      value: "1,575",
+      value: uniquePeople.size.toLocaleString(),
       icon: AtSign,
       color: "text-emerald-400",
-      trend: "Active",
     },
   ];
 
   const metrics = [
-    { label: "Journal age", value: "1,195", unit: "days", icon: Calendar },
-    { label: "Writing frequency", value: "7.0", unit: "per week", icon: Zap },
-    { label: "Word count", value: "100.9k", unit: "total", icon: TrendingUp },
+    {
+      label: "Journal age",
+      value: journalAge.toLocaleString(),
+      unit: "days",
+      icon: Calendar,
+    },
+    {
+      label: "Writing frequency",
+      value: writingFrequency.toFixed(1),
+      unit: "per week",
+      icon: Zap,
+    },
+    {
+      label: "Word count",
+      value:
+        totalWordCount > 1000
+          ? `${(totalWordCount / 1000).toFixed(1)}k`
+          : totalWordCount.toString(),
+      unit: "total",
+      icon: TrendingUp,
+    },
   ];
 
   return (
@@ -43,7 +95,7 @@ export function StatsGrid() {
             Total Volume
           </p>
           <h2 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
-            100,937{" "}
+            {totalWordCount.toLocaleString()}{" "}
             <span className="font-sans text-2xl text-zinc-500 not-italic">
               words
             </span>

@@ -1,8 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { BookOpen, Moon, Heart, Hash, AtSign, Gem } from "lucide-react";
+import {
+  BookOpen,
+  Moon,
+  Heart,
+  Hash,
+  AtSign,
+  Gem,
+  Loader2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { api } from "@/trpc/react";
 import { Heatmap } from "./_components/heatmap";
 import { StatsGrid } from "./_components/stats-grid";
 import { InsightCharts } from "./_components/insight-charts";
@@ -26,6 +35,30 @@ const tabs = [
 
 export default function InsightsPage() {
   const [activeTab, setActiveTab] = useState("journal");
+  const { data: entryData, isLoading } = api.entry.list.useQuery({
+    limit: 1000, // Fetch a large number for insights
+  });
+
+  const entries = React.useMemo(() => entryData?.entries ?? [], [entryData]);
+
+  const filteredEntries = React.useMemo(() => {
+    if (activeTab === "tags" || activeTab === "people") return entries;
+    const typeMap: Record<string, string> = {
+      journal: "journal",
+      dreams: "dream",
+      highlights: "highlight",
+      wisdom: "wisdom",
+    };
+    return entries.filter((e) => e.type === typeMap[activeTab]);
+  }, [entries, activeTab]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="text-primary h-8 w-8 animate-spin opacity-20" />
+      </div>
+    );
+  }
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pb-24 duration-1000">
@@ -93,15 +126,18 @@ export default function InsightsPage() {
 
       <div className="space-y-12">
         <section>
-          <Heatmap />
+          {/* Heatmap always shows all entries for overall activity? 
+              Or should it also filter? Usually heatmap is overall. 
+              Let's keep it overall for now as it makes more sense as a "contribution" graph. */}
+          <Heatmap entries={entries} />
         </section>
 
         <section className="pt-2">
-          <StatsGrid />
+          <StatsGrid entries={filteredEntries} />
         </section>
 
         <section className="pt-2">
-          <InsightCharts />
+          <InsightCharts entries={filteredEntries} />
         </section>
       </div>
     </div>
