@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { BookMarked } from "lucide-react";
 
 interface LogoProps {
   className?: string;
@@ -10,18 +11,34 @@ interface LogoProps {
 
 const sizeMap = {
   xs: "h-4 w-4",
-  sm: "h-5 w-5",
-  md: "h-6 w-6",
-  lg: "h-10 w-10",
-  xl: "h-14 w-14",
+  sm: "h-6 w-6",
+  md: "h-9 w-9",
+  lg: "h-12 w-12",
+  xl: "h-16 w-16",
 };
 
-const textMap = {
-  xs: "text-[12px] tracking-[0.2em]",
-  sm: "text-[13px] tracking-[0.25em]",
-  md: "text-[15px] tracking-[0.3em]",
-  lg: "text-2xl tracking-[0.2em]",
-  xl: "text-4xl tracking-[0.1em]",
+const iconSizeMap = {
+  xs: "h-2 w-2",
+  sm: "h-3.5 w-3.5",
+  md: "h-5 w-5",
+  lg: "h-7 w-7",
+  xl: "h-10 w-10",
+};
+
+const titleSizeMap = {
+  xs: "text-[10px]",
+  sm: "text-[14px]",
+  md: "text-xl",
+  lg: "text-3xl",
+  xl: "text-5xl",
+};
+
+const subtitleSizeMap = {
+  xs: "text-[4px]",
+  sm: "text-[7px]",
+  md: "text-[10px]",
+  lg: "text-[14px]",
+  xl: "text-[20px]",
 };
 
 export default function Logo({
@@ -32,43 +49,41 @@ export default function Logo({
   return (
     <div
       className={cn(
-        "group inline-flex cursor-pointer items-center gap-3 select-none",
+        "inline-flex cursor-pointer items-center gap-2.5 font-sans select-none",
         className,
       )}
     >
       {/* Icon Container */}
       <div
         className={cn(
-          "border-primary relative flex shrink-0 items-center justify-center rounded-sm border-2 shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)] transition-all duration-500 group-hover:scale-110",
+          "bg-primary shadow-primary/20 flex items-center justify-center rounded-xl shadow-lg",
           sizeMap[size],
         )}
       >
-        <span
-          className={cn(
-            "text-primary font-mono leading-none font-bold",
-            size === "xs" && "text-[8px]",
-            size === "sm" && "text-[11px]",
-            size === "md" && "text-xs",
-            size === "lg" && "text-2xl",
-            size === "xl" && "text-4xl",
-          )}
-        >
-          R
-        </span>
-
-        {/* Dynamic Glow on hover */}
-        <div className="bg-primary/20 absolute inset-0 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
+        <BookMarked
+          className={cn("text-primary-foreground", iconSizeMap[size])}
+        />
       </div>
 
       {showText && (
-        <span
-          className={cn(
-            "text-foreground/90 group-hover:text-foreground font-serif font-semibold tracking-tight transition-colors duration-500",
-            textMap[size],
-          )}
-        >
-          Reflecto
-        </span>
+        <div className="flex flex-col leading-none">
+          <span
+            className={cn(
+              "text-foreground font-semibold tracking-tight",
+              titleSizeMap[size],
+            )}
+          >
+            Reflecto
+          </span>
+          <span
+            className={cn(
+              "text-primary font-bold tracking-[0.2em] uppercase",
+              subtitleSizeMap[size],
+            )}
+          >
+            App
+          </span>
+        </div>
       )}
     </div>
   );
