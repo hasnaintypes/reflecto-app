@@ -9,8 +9,8 @@ import {
 } from "motion/react";
 
 import React, { useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { Logo } from "../common";
 
 interface NavbarProps {
   children: React.ReactNode;
@@ -231,21 +231,8 @@ export const MobileNavToggle = ({
 };
 export const NavbarLogo = () => {
   return (
-    <Link
-      href="/"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
-    >
-      <Image
-        src="/logo.png"
-        alt="logo"
-        width={30}
-        height={30}
-        priority
-        className="h-8 w-8 rounded-sm"
-      />
-      <span className="text-xl font-bold text-black dark:text-white">
-        Reflecto.
-      </span>
+    <Link href="/" className="relative z-20 mr-4 flex items-center px-1">
+      <Logo size="md" />
     </Link>
   );
 };
