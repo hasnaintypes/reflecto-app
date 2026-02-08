@@ -1,11 +1,14 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import {
   Calendar as CalendarIcon,
   PenLine,
   FileText,
   Plus,
+  Loader2,
+  Star,
 } from "lucide-react";
 import { CalendarStrip } from "./_components/calendar-strip";
 import { JournalTimeline } from "./_components/journal-timeline";
@@ -15,39 +18,59 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import Link from "next/link";
+
+import { api } from "@/trpc/react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { type JournalMetadata } from "@/types/metadata.types";
 
 export default function JournalPage() {
+  const router = useRouter();
   const [date, setDate] = React.useState<Date | undefined>(new Date());
+  const [isStarredOnly, setIsStarredOnly] = React.useState(false);
 
-  // Your data remains the same
-  const entries = [
-    {
-      id: "1",
-      category: "THOUGHTS",
-      categoryColor: "text-violet-400",
-      content:
-        "Spent a long moment realizing how often I confuse being busy with actually moving forward...",
-      time: "11:40 AM, FRI",
+  const { data: entryData } = api.entry.list.useQuery({
+    type: "journal",
+    limit: 50,
+    isStarred: isStarredOnly || undefined,
+  });
+
+  const createMutation = api.entry.create.useMutation({
+    onSuccess: (data) => {
+      router.push(`/write?id=${data.id}`);
     },
-    {
-      id: "2",
-      category: "INVOLVED ME",
-      categoryColor: "text-red-400",
-      content: "Decided to sit with discomfort instead of escaping it...",
-      time: "01:10 PM, FRI",
-    },
-    {
-      id: "6",
-      category: "MEMORIES",
-      categoryColor: "text-emerald-400",
-      content: "Spent a week in the Mountains...",
-      time: "07:00 AM, THU",
-      images: [
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=200",
-      ],
-    },
-  ];
+  });
+
+  const entries = entryData?.entries ?? [];
+
+  const handleNewEntry = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Check if we already have a journal entry for today
+    const existingToday = entries.find((e) => {
+      const entryDate = new Date(e.createdAt);
+      entryDate.setHours(0, 0, 0, 0);
+      return entryDate.getTime() === today.getTime();
+    });
+
+    if (existingToday) {
+      router.push(`/write?id=${existingToday.id}`);
+      return;
+    }
+
+    const dateStr = format(new Date(), "do MMM");
+
+    createMutation.mutate({
+      type: "journal",
+      title: `${dateStr}: Daily Reflection`,
+      content: "",
+      metadata: {
+        category: "THOUGHTS",
+        tags: ["daily"],
+      } satisfies JournalMetadata,
+    });
+  };
 
   const hasEntries = entries.length > 0;
 
@@ -67,7 +90,7 @@ export default function JournalPage() {
           <div className="text-muted-foreground/60 mb-2 flex items-center gap-6">
             <Popover>
               <PopoverTrigger asChild>
-                <button className="hover:text-foreground relative transition-colors">
+                <button className="hover:text-foreground relative transition-colors outline-none">
                   <CalendarIcon size={20} />
                   <div className="bg-primary absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full" />
                 </button>
@@ -85,12 +108,27 @@ export default function JournalPage() {
                 />
               </PopoverContent>
             </Popover>
-            <Link href="/write">
-              <Plus
-                size={22}
-                className="hover:text-foreground cursor-pointer transition-colors"
-              />
-            </Link>
+            <Star
+              size={20}
+              className={cn(
+                "cursor-pointer transition-all duration-300",
+                isStarredOnly
+                  ? "scale-110 fill-yellow-400 text-yellow-400"
+                  : "text-muted-foreground/60 hover:text-foreground",
+              )}
+              onClick={() => setIsStarredOnly(!isStarredOnly)}
+            />
+            <button
+              onClick={handleNewEntry}
+              disabled={createMutation.isPending}
+              className="hover:text-foreground cursor-pointer transition-colors disabled:opacity-50"
+            >
+              {createMutation.isPending ? (
+                <Loader2 size={22} className="animate-spin" />
+              ) : (
+                <Plus size={22} />
+              )}
+            </button>
           </div>
         </header>
 
@@ -123,7 +161,7 @@ export default function JournalPage() {
               </span>
               <div className="bg-border/40 h-px flex-1" />
             </div>
-            <JournalTimeline />
+            <JournalTimeline entries={entries} />
           </div>
         ) : (
           <div className="max-w-2xl space-y-8 py-4">
@@ -154,12 +192,22 @@ export default function JournalPage() {
             </div>
 
             <div className="pt-6">
-              <Link href="/write">
-                <button className="bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-2 rounded px-4 py-2 text-sm font-medium transition-all active:scale-95">
+              <button
+                onClick={handleNewEntry}
+                disabled={createMutation.isPending}
+                className="bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-2 rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 disabled:opacity-50"
+              >
+                {createMutation.isPending ? (
+                  <Loader2 size={16} className="text-primary animate-spin" />
+                ) : (
                   <PenLine size={16} className="text-primary" />
-                  <span>Write your first entry</span>
-                </button>
-              </Link>
+                )}
+                <span>
+                  {createMutation.isPending
+                    ? "Starting..."
+                    : "Write your first entry"}
+                </span>
+              </button>
             </div>
           </div>
         )}

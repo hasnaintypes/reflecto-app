@@ -1,141 +1,128 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Clock } from "lucide-react";
+import { Clock, Star } from "lucide-react";
 
-const entries = [
-  {
-    id: "1",
-    category: "THOUGHTS",
-    categoryColor: "text-violet-400",
-    content:
-      "Spent a long moment realizing how often I confuse being busy with actually moving forward. The hours fill themselves easily, but intention doesn’t. Today felt slower, and strangely, more honest. Fewer tasks, more presence. It felt like choosing depth over noise, even if just for a while.",
-    time: "11:40 AM, FRI",
-  },
-  {
-    id: "2",
-    category: "INVOLVED ME",
-    categoryColor: "text-red-400",
-    content:
-      "Decided to sit with discomfort instead of escaping it. No music, no scrolling, no distractions. Just letting unfinished thoughts surface and pass on their own. It wasn’t peaceful, but it was real. There’s something grounding about not running from your own mind.",
-    time: "01:10 PM, FRI",
-  },
-  {
-    id: "3",
-    category: "AROUND ME",
-    categoryColor: "text-blue-400",
-    content:
-      "The evening felt unusually still. Cars moved slower, voices sounded softer, and even the air felt lighter. It reminded me that the world doesn’t demand urgency—most of it is something we manufacture internally and then mistake for reality.",
-    time: "06:30 PM, FRI",
-  },
-  {
-    id: "4",
-    category: "MEMORIES",
-    categoryColor: "text-emerald-400",
-    content:
-      "Remembered a version of myself that needed less validation and more silence. Back then, days weren’t optimized, documented, or shared—they were simply lived. That memory didn’t feel like nostalgia. It felt like a quiet reminder of something recoverable.",
-    time: "09:00 PM, FRI",
-  },
-  {
-    id: "5",
-    category: "THOUGHTS",
-    categoryColor: "text-violet-400",
-    content:
-      "Started to understand that self-discipline isn’t about restriction, but about respect. Respect for future energy, future focus, and future peace. The rules aren’t punishment—they’re boundaries built by someone who finally cares.",
-    time: "11:55 PM, FRI",
-  },
-  {
-    id: "6",
-    category: "MEMORIES",
-    categoryColor: "text-emerald-400",
-    content: "Spent a week in the Mountains, disconnected from the world.",
-    time: "07:00 AM, THU",
-    images: [
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=200",
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=200",
-      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=200",
-    ],
-  },
-];
+import { useRouter } from "next/navigation";
+import { format } from "date-fns";
+import { type EntryWithRelations } from "@/server/types/entry.types";
+import { type JournalMetadata } from "@/types/metadata.types";
 
-export function JournalTimeline() {
+const categoryColors: Record<string, string> = {
+  THOUGHTS: "text-violet-400",
+  "INVOLVED ME": "text-red-400",
+  "AROUND ME": "text-blue-400",
+  MEMORIES: "text-emerald-400",
+  GRATITUDE: "text-amber-400",
+  REFLECTIONS: "text-cyan-400",
+  "TINY WINS": "text-pink-400",
+  "DAILY LOG": "text-zinc-400",
+  VENTING: "text-rose-400",
+};
+
+interface JournalTimelineProps {
+  entries: EntryWithRelations[];
+}
+
+export function JournalTimeline({ entries }: JournalTimelineProps) {
+  const router = useRouter();
+
+  if (entries.length === 0) return null;
+
   return (
     <div className="flex flex-col gap-6 py-4">
-      {entries.map((entry, i) => (
-        <motion.div
-          key={entry.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.1 }}
-          className="group hover:bg-muted/30 relative -mx-4 cursor-pointer rounded-xl px-4 py-4 transition-all duration-300"
-        >
-          {/* Timeline Vertical Thread - Visible on Hover for effect */}
-          <div className="from-border/20 via-border/10 group-hover:from-primary/40 absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b to-transparent opacity-50 transition-all duration-500 group-hover:opacity-100" />
+      {entries.map((entry, i) => {
+        const metadata = (entry.metadata ?? {}) as JournalMetadata;
+        const category = metadata.category ?? "OTHER";
+        const categoryColor = categoryColors[category] ?? "text-zinc-400";
+        const tags = metadata.tags ?? [];
+        const timeStr = format(
+          new Date(entry.createdAt),
+          "hh:mm a, EEE",
+        ).toUpperCase();
 
-          {/* Content Wrapper */}
-          <div className="flex flex-col gap-4">
-            {/* Meta Row */}
-            <div className="flex items-center gap-4">
-              <span
-                className={cn(
-                  "text-[9px] font-bold tracking-[0.3em] uppercase",
-                  entry.categoryColor,
-                )}
-              >
-                {entry.category}
-              </span>
+        return (
+          <motion.div
+            key={entry.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            onClick={() => router.push(`/write?id=${entry.id}`)}
+            className="group hover:bg-muted/30 relative -mx-4 cursor-pointer rounded-xl px-4 py-4 transition-all duration-300"
+          >
+            {/* Timeline Vertical Thread - Visible on Hover for effect */}
+            <div className="from-border/20 via-border/10 group-hover:from-primary/40 absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b to-transparent opacity-50 transition-all duration-500 group-hover:opacity-100" />
 
-              <div className="bg-border/20 h-px w-8" />
-
-              <div className="flex items-center gap-2 text-zinc-600">
-                <Clock size={10} strokeWidth={2} />
-                <span className="text-[10px] font-medium tracking-widest uppercase">
-                  {entry.time}
+            {/* Content Wrapper */}
+            <div className="flex flex-col gap-4">
+              {/* Meta Row */}
+              <div className="flex items-center gap-4">
+                <span
+                  className={cn(
+                    "text-[9px] font-bold tracking-[0.3em] uppercase",
+                    categoryColor,
+                  )}
+                >
+                  {category}
                 </span>
-              </div>
-            </div>
 
-            {/* Content Text */}
-            <p className="text-muted-foreground group-hover:text-foreground max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight transition-colors duration-300">
-              {entry.content}
-            </p>
+                <div className="bg-border/20 h-px w-8" />
 
-            {/* Image Gallery - Refined Aspect Ratios */}
-            {entry.images && (
-              <div className="no-scrollbar mt-4 flex gap-3 overflow-x-auto pb-2">
-                {entry.images.map((img, idx) => (
-                  <motion.div
-                    key={idx}
-                    whileHover={{ scale: 1.01, y: -4 }}
-                    className="border-border/40 bg-muted h-48 w-72 shrink-0 overflow-hidden rounded-lg border"
-                  >
-                    <Image
-                      src={img}
-                      alt="journal entry"
-                      width={288}
-                      height={192}
-                      className="h-full w-full cursor-pointer object-cover opacity-70 transition-all duration-500 group-hover:opacity-100"
+                <div className="flex items-center gap-2 text-zinc-600">
+                  <Clock size={10} strokeWidth={2} />
+                  <span className="text-[10px] font-medium tracking-widest uppercase">
+                    {timeStr}
+                  </span>
+                  {entry.isStarred && (
+                    <Star
+                      size={10}
+                      className="fill-yellow-400 text-yellow-400"
                     />
-                  </motion.div>
-                ))}
-              </div>
-            )}
+                  )}
+                </div>
 
-            {/* Interaction Footer (Optional/Subtle) */}
-            <div className="mt-2 flex items-center gap-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <button className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-[#FB923C]">
-                Edit
-              </button>
-              <button className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-red-400">
-                Delete
-              </button>
+                {tags.length > 0 && (
+                  <div className="ml-auto flex items-center gap-2">
+                    {tags.map((tag: string) => (
+                      <span
+                        key={tag}
+                        className="bg-muted border-border/40 text-muted-foreground rounded-full border px-1.5 py-0.5 text-[8px] font-bold tracking-widest uppercase"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Content Text */}
+              <div
+                className="text-muted-foreground group-hover:text-foreground line-clamp-3 max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight transition-colors duration-300"
+                dangerouslySetInnerHTML={{ __html: entry.content ?? "" }}
+              />
+
+              {/* Interaction Footer (Optional/Subtle) */}
+              <div className="mt-2 flex items-center gap-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                <button className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-[#FB923C]">
+                  Edit
+                </button>
+                <button
+                  className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-red-400"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Add delete logic if needed
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        </motion.div>
-      ))}
+          </motion.div>
+        );
+      })}
     </div>
   );
 }

@@ -1,13 +1,71 @@
 "use client";
 
 import React from "react";
-import { format, subDays } from "date-fns";
-import { Plus, ListFilter, Info, FileText, Sparkles } from "lucide-react";
+import { format, subDays, startOfDay, endOfDay, startOfWeek } from "date-fns";
+import {
+  Plus,
+  ListFilter,
+  Info,
+  FileText,
+  Sparkles,
+  Loader2,
+  Moon,
+  Heart,
+  Lightbulb,
+  Gem,
+} from "lucide-react";
 import Link from "next/link";
+import { api } from "@/trpc/react";
+import { type EntryWithRelations } from "@/server/types/entry.types";
 
 export default function ReflectPage() {
   const yesterday = subDays(new Date(), 1);
   const formattedYesterday = format(yesterday, "EEEE, MMM dd");
+
+  const startOfYesterday = startOfDay(yesterday);
+  const endOfYesterday = endOfDay(yesterday);
+  const startOfThisWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
+
+  // Fetch yesterday's entries
+  const { data: yesterdayData, isLoading: isLoadingYesterday } =
+    api.entry.list.useQuery({
+      dateFrom: startOfYesterday,
+      dateTo: endOfYesterday,
+      limit: 10,
+    });
+
+  // Fetch this week's entries
+  const { data: weekData, isLoading: isLoadingWeek } = api.entry.list.useQuery({
+    dateFrom: startOfThisWeek,
+    limit: 50,
+  });
+
+  // Total count for memory lane
+  const { data: totalData } = api.entry.list.useQuery({ limit: 1 });
+
+  const yesterdayEntries = yesterdayData?.entries ?? [];
+  const weekEntries = weekData?.entries ?? [];
+  const totalEntries = totalData?.entries.length ?? 0; // This is not quite right for total count, but good enough to check if > 0
+
+  const getEntryIcon = (type: string) => {
+    switch (type) {
+      case "dream":
+        return <Moon size={14} className="text-yellow-400" />;
+      case "highlight":
+        return <Heart size={14} className="text-red-400" />;
+      case "idea":
+        return <Lightbulb size={14} className="text-blue-400" />;
+      case "wisdom":
+        return <Gem size={14} className="text-pink-400" />;
+      default:
+        return <FileText size={14} className="text-primary" />;
+    }
+  };
+
+  const getEntryLink = (entry: EntryWithRelations) => {
+    if (entry.type === "journal") return `/write?id=${entry.id}`;
+    return `/${entry.type}s/${entry.id}`;
+  };
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pb-24 duration-1000">
@@ -39,37 +97,86 @@ export default function ReflectPage() {
             </span>
           </div>
 
-          <div className="space-y-4">
-            <p className="text-muted-foreground text-lg lowercase">
-              There is no entry for {format(yesterday, "MMM dd")} yet.
-            </p>
-            <Link
-              href="/write"
-              className="group text-primary flex items-center gap-2 transition-all hover:opacity-80"
-            >
-              <div className="border-primary/30 group-hover:bg-primary group-hover:text-background rounded-full border p-1.5 transition-all">
-                <Plus size={14} strokeWidth={3} />
-              </div>
-              <span className="text-xs font-bold tracking-widest uppercase">
-                Write entry
-              </span>
-            </Link>
-          </div>
+          {isLoadingYesterday ? (
+            <Loader2 className="text-primary/40 animate-spin" size={20} />
+          ) : yesterdayEntries.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {yesterdayEntries.map((entry) => (
+                <Link
+                  key={entry.id}
+                  href={getEntryLink(entry)}
+                  className="group/item border-border/40 hover:border-primary/20 bg-muted/5 hover:bg-muted/10 flex items-center gap-3 rounded-lg border p-4 transition-all"
+                >
+                  <div className="bg-background border-border/40 rounded-full border p-2 shadow-sm">
+                    {getEntryIcon(entry.type)}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-foreground group-hover/item:text-primary truncate text-sm font-medium transition-colors">
+                      {entry.title ?? "Untitled Entry"}
+                    </h3>
+                    <p className="text-muted-foreground/60 text-[10px] font-bold tracking-widest uppercase">
+                      {entry.type}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <p className="text-muted-foreground text-lg lowercase">
+                There is no entry for {format(yesterday, "MMM dd")} yet.
+              </p>
+              <Link
+                href="/write"
+                className="group text-primary flex items-center gap-2 transition-all hover:opacity-80"
+              >
+                <div className="border-primary/30 group-hover:bg-primary group-hover:text-background rounded-full border p-1.5 transition-all">
+                  <Plus size={14} strokeWidth={3} />
+                </div>
+                <span className="text-xs font-bold tracking-widest uppercase">
+                  Write entry
+                </span>
+              </Link>
+            </div>
+          )}
         </section>
 
         <section>
           <div className="mb-6 flex items-baseline gap-4">
             <h2 className="text-foreground text-2xl font-medium">This week</h2>
             <span className="text-muted-foreground/60 font-mono text-xs tracking-widest uppercase">
-              Jan 26 → Today
+              {format(startOfThisWeek, "MMM dd")} → Today
             </span>
           </div>
-          <div className="text-muted-foreground flex items-center gap-1.5 text-lg">
-            <span className="lowercase">
-              Nothing here yet... highlights and ideas will appear shortly
-            </span>
-            <Sparkles size={16} className="fill-primary/10 text-primary" />
-          </div>
+
+          {isLoadingWeek ? (
+            <Loader2 className="text-primary/40 animate-spin" size={20} />
+          ) : weekEntries.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {weekEntries.map((entry) => (
+                <Link
+                  key={entry.id}
+                  href={getEntryLink(entry)}
+                  className="border-border/40 hover:border-primary/20 bg-muted/5 hover:bg-muted/10 group flex items-center gap-2 rounded-full border px-4 py-2 transition-all"
+                >
+                  {getEntryIcon(entry.type)}
+                  <span className="text-foreground group-hover:text-primary text-xs font-medium">
+                    {entry.title ?? "Untitled"}
+                  </span>
+                  <span className="text-muted-foreground/40 font-mono text-[9px]">
+                    {format(new Date(entry.createdAt), "EEE")}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-muted-foreground flex items-center gap-1.5 text-lg">
+              <span className="lowercase">
+                Nothing here yet... highlights and ideas will appear shortly
+              </span>
+              <Sparkles size={16} className="fill-primary/10 text-primary" />
+            </div>
+          )}
         </section>
 
         <section>
@@ -97,8 +204,9 @@ export default function ReflectPage() {
           </h2>
           <div className="text-muted-foreground flex items-start gap-3 text-lg">
             <span className="leading-relaxed lowercase">
-              Throwbacks will show up here once you have created 10 or more
-              entries, otherwise it would be quite boring...
+              {totalEntries < 10
+                ? `Throwbacks will show up here once you have created 10 or more entries, otherwise it would be quite boring... (currently ${totalEntries}/10)`
+                : "Looking back at your journey..."}
             </span>
           </div>
         </section>

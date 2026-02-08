@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
-import { FileText, PenLine, Star, ArrowUpDown } from "lucide-react";
+import { FileText, PenLine, ArrowUpDown, Loader2, Hash } from "lucide-react";
+import { api } from "@/trpc/react";
+import Link from "next/link";
 
 export default function TagsPage() {
-  const tags = [];
-  const hasTags = tags.length > 0;
+  const { data: tags, isLoading } = api.tag.list.useQuery();
+  const hasTags = (tags?.length ?? 0) > 0;
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pt-20 pb-24 duration-1000">
@@ -20,12 +22,7 @@ export default function TagsPage() {
           </h1>
         </div>
 
-        {/* Top Right Utility Icons from your Reference */}
         <div className="text-muted-foreground/60 mb-2 flex items-center gap-6">
-          <Star
-            size={20}
-            className="hover:text-foreground cursor-pointer transition-colors"
-          />
           <ArrowUpDown
             size={20}
             className="hover:text-foreground cursor-pointer transition-colors"
@@ -35,10 +32,36 @@ export default function TagsPage() {
 
       {/* Content Area */}
       <div className="mt-16">
-        {hasTags ? (
-          <div className="space-y-8">{/* Tag list logic would go here */}</div>
+        {isLoading ? (
+          <div className="flex h-32 items-center justify-center">
+            <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
+          </div>
+        ) : hasTags ? (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {(tags ?? []).map((tag) => (
+              <Link
+                key={tag.id}
+                href={`/tags/${tag.name}`}
+                className="group border-border/40 hover:border-border/80 bg-card/30 dark:bg-card/10 flex flex-col gap-3 rounded-2xl border p-5 transition-all duration-300 hover:shadow-lg"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#60A5FA]/10 text-[#60A5FA]">
+                    <Hash size={18} />
+                  </div>
+                  <span className="text-muted-foreground/60 text-xs font-medium">
+                    {tag._count.entries} entries
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-foreground text-lg font-medium tracking-tight">
+                    {tag.name}
+                  </h3>
+                </div>
+              </Link>
+            ))}
+          </div>
         ) : (
-          /* Empty State - Matching the "Tags" Reference strictly */
+          /* Empty State */
           <div className="max-w-2xl space-y-6">
             <div className="text-muted-foreground space-y-4 text-lg leading-relaxed tracking-tight">
               <p>
@@ -78,8 +101,8 @@ export default function TagsPage() {
 
               <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
                 <span className="lowercase">Try it out in</span>
-                <a
-                  href="#"
+                <Link
+                  href="/write"
                   className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#60A5FA] hover:decoration-[#60A5FA]/40"
                 >
                   <PenLine
@@ -87,7 +110,7 @@ export default function TagsPage() {
                     className="opacity-70 transition-transform group-hover:-rotate-12"
                   />
                   <span className="lowercase">write.</span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

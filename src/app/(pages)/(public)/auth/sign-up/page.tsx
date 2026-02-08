@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { AuthForm } from "../../_components";
-import { NavbarLogo } from "@/components/ui/resizable-navbar";
+import { Logo } from "@/components/common";
 
 export const metadata = {
   title: "Sign Up | Reflecto",
@@ -22,7 +22,7 @@ export default function SignUpPage() {
       </div>
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <NavbarLogo />
+          <Logo />
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
