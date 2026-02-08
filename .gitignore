@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-
 # testing
 /coverage
 
@@ -17,6 +16,7 @@ db.sqlite
 /.next/
 /out/
 next-env.d.ts
+docs
 
 # production
 /build
