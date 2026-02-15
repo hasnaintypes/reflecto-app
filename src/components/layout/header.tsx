@@ -3,7 +3,7 @@
 import React from "react";
 import { Search } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useSharedEditor } from "@/components/journal-editor/editor-context";
+import { useSharedEditor } from "@/components/journal-editor";
 import { EditorToolbar } from "@/components/shared/toolbar";
 import { UserDropdown } from "@/components/shared/user-dropdown";
 import { useEntryStore } from "@/stores/use-entry-store";

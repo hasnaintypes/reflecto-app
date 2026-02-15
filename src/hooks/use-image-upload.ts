@@ -19,13 +19,18 @@ export function useImageUpload(editor: Editor | null, entryId?: string) {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      // Insert skeleton placeholder
+      // Insert placeholder
       editor
         .chain()
         .focus()
-        .setImage({
-          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23e2e8f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%2364748b' font-size='16'%3EUploading...%3C/text%3E%3C/svg%3E",
-          alt: "Uploading...",
+        .insertContent({
+          type: "resizableImage",
+          attrs: {
+            src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%2318181b'/%3E%3C/svg%3E",
+            alt: "Uploading...",
+            status: "uploading",
+            progress: 0,
+          },
         })
         .run();
 
@@ -35,7 +40,6 @@ export function useImageUpload(editor: Editor | null, entryId?: string) {
           const reader = new FileReader();
           reader.onload = () => {
             const result = reader.result as string;
-            // Remove data URL prefix (e.g., "data:image/jpeg;base64,")
             const base64 = result.split(",")[1];
             resolve(base64 ?? result);
           };
@@ -52,8 +56,7 @@ export function useImageUpload(editor: Editor | null, entryId?: string) {
           entryId,
         });
 
-        // Find and replace the skeleton image with the actual uploaded image
-        // We need to find the image node that was just inserted
+        // Find the skeleton
         const { state } = editor;
         let skeletonPos: number | null = null;
 
@@ -63,48 +66,22 @@ export function useImageUpload(editor: Editor | null, entryId?: string) {
             node.attrs.alt === "Uploading..."
           ) {
             skeletonPos = pos;
-            return false; // Stop searching
+            return false;
           }
         });
 
         if (skeletonPos !== null) {
-          // Delete the skeleton and insert the real image
           editor
             .chain()
             .focus()
             .setNodeSelection(skeletonPos)
-            .deleteSelection()
-            .setImage({
+            .updateAttributes("resizableImage", {
               src: uploadData.url ?? "",
               alt: file.name,
+              status: "complete",
+              fileId: uploadData.fileId,
             })
             .run();
-
-          // Now update the image node to add the fileId attribute
-          // Find the newly inserted image
-          const { state } = editor;
-          let imagePos: number | null = null;
-
-          state.doc.descendants((node, pos) => {
-            if (
-              node.type.name === "resizableImage" &&
-              node.attrs.src === uploadData.url
-            ) {
-              imagePos = pos;
-              return false;
-            }
-          });
-
-          if (imagePos !== null) {
-            editor
-              .chain()
-              .focus()
-              .setNodeSelection(imagePos)
-              .updateAttributes("resizableImage", {
-                fileId: uploadData.fileId,
-              })
-              .run();
-          }
         }
       } catch (error) {
         // Remove skeleton on error

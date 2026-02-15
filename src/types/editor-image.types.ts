@@ -5,6 +5,8 @@ export interface EditorImageAttributes {
   width?: number;
   height?: number;
   fileId?: string;
+  status?: "uploading" | "complete";
+  progress?: number;
 }
 
 export type ImageUploadStatus = "idle" | "uploading" | "success" | "error";

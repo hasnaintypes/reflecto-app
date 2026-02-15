@@ -1,6 +1,6 @@
 import Image from "@tiptap/extension-image";
 import { ReactNodeViewRenderer } from "@tiptap/react";
-import { ResizableImageNodeView } from "./resizable-image-node-view";
+import { ResizableImageNodeView } from "./image-node-view";
 
 export const ResizableImage = Image.extend({
   name: "resizableImage",
@@ -10,27 +10,33 @@ export const ResizableImage = Image.extend({
       ...this.parent?.(),
       width: {
         default: null,
-        parseHTML: (element) => element.getAttribute("width"),
-        renderHTML: (attributes) => {
+        parseHTML: (element: HTMLElement) => element.getAttribute("width"),
+        renderHTML: (attributes: Record<string, string | number | undefined>) => {
           if (!attributes.width) return {};
           return { width: attributes.width };
         },
       },
       height: {
         default: null,
-        parseHTML: (element) => element.getAttribute("height"),
-        renderHTML: (attributes) => {
+        parseHTML: (element: HTMLElement) => element.getAttribute("height"),
+        renderHTML: (attributes: Record<string, string | number | undefined>) => {
           if (!attributes.height) return {};
           return { height: attributes.height };
         },
       },
       fileId: {
         default: null,
-        parseHTML: (element) => element.getAttribute("data-file-id"),
-        renderHTML: (attributes) => {
+        parseHTML: (element: HTMLElement) => element.getAttribute("data-file-id"),
+        renderHTML: (attributes: Record<string, string | number | undefined>) => {
           if (!attributes.fileId) return {};
           return { "data-file-id": attributes.fileId };
         },
+      },
+      status: {
+        default: "complete",
+      },
+      progress: {
+        default: 0,
       },
     };
   },

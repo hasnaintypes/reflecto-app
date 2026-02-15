@@ -7,13 +7,7 @@ import React, {
   useState,
 } from "react";
 import { cn } from "@/lib/utils";
-
-export interface SuggestionItem {
-  id: string | null;
-  name?: string;
-  label?: string | null;
-  isNew?: boolean;
-}
+import type { SuggestionItem } from "../../core/types";
 
 export interface SuggestionListRef {
   onKeyDown: (props: { event: KeyboardEvent }) => boolean;
@@ -37,7 +31,7 @@ export const SuggestionList = forwardRef<
   const selectItem = (index: number) => {
     const item = props.items[index];
     if (item) {
-      props.command({ id: item.id, label: item.label ?? item.name ?? "" });
+      props.command({ id: item.id, label: item.label ?? "" });
     }
   };
 
@@ -97,8 +91,8 @@ export const SuggestionList = forwardRef<
             >
               <span className="text-foreground/80 font-medium">
                 {item.isNew
-                  ? `+ Create "${item.label ?? item.name}"`
-                  : (item.label ?? item.name)}
+                  ? `+ Create "${item.label}"`
+                  : item.label}
               </span>
             </button>
           ))}

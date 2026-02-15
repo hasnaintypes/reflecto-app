@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import type { Editor } from "@tiptap/react";
 
 interface EditorContextType {
@@ -10,7 +10,7 @@ interface EditorContextType {
   setIsCentered: (isCentered: boolean) => void;
 }
 
-const EditorContext = createContext<EditorContextType | undefined>(undefined);
+export const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
 export function EditorProvider({ children }: { children: React.ReactNode }) {
   const [editor, setEditor] = useState<Editor | null>(null);
@@ -23,12 +23,4 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
       {children}
     </EditorContext.Provider>
   );
-}
-
-export function useSharedEditor() {
-  const context = useContext(EditorContext);
-  if (context === undefined) {
-    throw new Error("useSharedEditor must be used within an EditorProvider");
-  }
-  return context;
 }
