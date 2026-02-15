@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
+import Image from "next/image";
 import { NodeViewWrapper, type ReactNodeViewProps } from "@tiptap/react";
 import { X, Maximize2, Loader2 } from "lucide-react";
 import { DeleteImageDialog } from "@/components/shared";
@@ -95,16 +96,25 @@ export const ResizableImageNodeView = ({
           "group-hover:shadow-md",
         )}
       >
-        <img
+        <Image
           ref={imageRef}
           src={attrs.src}
           alt={attrs.alt ?? ""}
+          width={attrs.width ?? 800}
+          height={attrs.height ?? 600}
+          unoptimized
           style={{
             width: attrs.width ? `${attrs.width}px` : "100%",
-            // If we have both width and height, we use height: auto to let aspect-ratio 
-            // handle the height when the width is constrained by the editor.
-            height: attrs.width && attrs.height ? "auto" : (attrs.height ? `${attrs.height}px` : "auto"),
-            aspectRatio: attrs.width && attrs.height ? `${attrs.width} / ${attrs.height}` : "auto",
+            height:
+              attrs.width && attrs.height
+                ? "auto"
+                : attrs.height
+                  ? `${attrs.height}px`
+                  : "auto",
+            aspectRatio:
+              attrs.width && attrs.height
+                ? `${attrs.width} / ${attrs.height}`
+                : "auto",
             display: "block",
             objectFit: "cover",
           }}

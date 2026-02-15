@@ -90,9 +90,7 @@ export const SuggestionList = forwardRef<
               )}
             >
               <span className="text-foreground/80 font-medium">
-                {item.isNew
-                  ? `+ Create "${item.label}"`
-                  : item.label}
+                {item.isNew ? `+ Create "${item.label}"` : item.label}
               </span>
             </button>
           ))}

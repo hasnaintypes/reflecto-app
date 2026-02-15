@@ -3,7 +3,11 @@
 import Mention from "@tiptap/extension-mention";
 import type { Editor, Range } from "@tiptap/core";
 import { createSuggestionConfig } from "../suggestions/suggestion-config";
-import type { SuggestionItem, TrpcResponse, MentionNodeAttributes } from "../../core/types";
+import type {
+  SuggestionItem,
+  TrpcResponse,
+  MentionNodeAttributes,
+} from "../../core/types";
 
 export const PeopleMention = Mention.extend({
   name: "mention-person",
@@ -35,7 +39,7 @@ export const PeopleMention = Mention.extend({
       {
         tag: 'span[data-type="mention-person"]',
         getAttrs: (dom) => {
-          const element = dom as HTMLElement;
+          const element = dom;
           return {
             id: element.getAttribute("data-id"),
             label: element.getAttribute("data-label"),
@@ -74,7 +78,7 @@ export const PeopleMention = Mention.extend({
     }: {
       editor: Editor;
       range: Range;
-      props: any;
+      props: SuggestionItem;
     }) => {
       const executeCommand = async () => {
         if (props.isNew) {
@@ -89,11 +93,10 @@ export const PeopleMention = Mention.extend({
                 }),
               },
             );
-            const createData =
-              (await createResponse.json()) as TrpcResponse<{
-                id: string;
-                name: string;
-              }>[];
+            const createData = (await createResponse.json()) as TrpcResponse<{
+              id: string;
+              name: string;
+            }>[];
             const newPerson = createData[0]?.result?.data?.json;
 
             if (newPerson) {
@@ -118,24 +121,16 @@ export const PeopleMention = Mention.extend({
 
       void executeCommand();
     },
-    items: async ({
-      query,
-    }: {
-      query: string;
-    }): Promise<SuggestionItem[]> => {
+    items: async ({ query }: { query: string }): Promise<SuggestionItem[]> => {
       const response = await fetch(
         `/api/trpc/person.search?batch=1&input=${encodeURIComponent(JSON.stringify({ "0": { json: { query } } }))}`,
       );
-      const data = (await response.json()) as TrpcResponse<
-        SuggestionItem[]
-      >[];
+      const data = (await response.json()) as TrpcResponse<SuggestionItem[]>[];
       const results: SuggestionItem[] = data[0]?.result?.data?.json ?? [];
 
       if (
         query.trim() &&
-        !results.some(
-          (r) => r.label?.toLowerCase() === query.toLowerCase(),
-        )
+        !results.some((r) => r.label?.toLowerCase() === query.toLowerCase())
       ) {
         return [{ id: "new", label: query, isNew: true }, ...results];
       }

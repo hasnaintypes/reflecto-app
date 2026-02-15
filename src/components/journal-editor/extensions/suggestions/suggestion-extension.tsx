@@ -3,7 +3,11 @@
 import Mention from "@tiptap/extension-mention";
 import type { Editor, Range } from "@tiptap/core";
 import { createSuggestionConfig } from "./suggestion-config";
-import type { SuggestionItem, TrpcResponse, MentionNodeAttributes } from "../../core/types";
+import type {
+  SuggestionItem,
+  TrpcResponse,
+  MentionNodeAttributes,
+} from "../../core/types";
 
 export const TagMention = Mention.extend({
   name: "mention-tag",
@@ -35,7 +39,7 @@ export const TagMention = Mention.extend({
       {
         tag: 'span[data-type="mention-tag"]',
         getAttrs: (dom) => {
-          const element = dom as HTMLElement;
+          const element = dom;
           return {
             id: element.getAttribute("data-id"),
             label: element.getAttribute("data-label"),
@@ -74,26 +78,24 @@ export const TagMention = Mention.extend({
     }: {
       editor: Editor;
       range: Range;
-      props: any;
+      props: SuggestionItem;
     }) => {
       const executeCommand = async () => {
         if (props.isNew) {
           try {
-            const createResponse = await fetch(
-              "/api/trpc/tag.create?batch=1",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  "0": { json: { name: props.label, color: "#60A5FA" } },
-                }),
-              },
-            );
-            const createData =
-              (await createResponse.json()) as TrpcResponse<{
-                id: string;
-                name: string;
-              }>[];
+            const createResponse = await fetch("/api/trpc/tag.create?batch=1", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                "0": { json: { name: props.label, color: "#60A5FA" } },
+              }),
+            });
+            // The type assertion is necessary here to inform TypeScript about the expected structure.
+            // The original code already uses optional chaining for safe access.
+            const createData = (await createResponse.json()) as TrpcResponse<{
+              id: string;
+              name: string;
+            }>[];
             const newTag = createData[0]?.result?.data?.json;
 
             if (newTag) {
@@ -118,24 +120,16 @@ export const TagMention = Mention.extend({
 
       void executeCommand();
     },
-    items: async ({
-      query,
-    }: {
-      query: string;
-    }): Promise<SuggestionItem[]> => {
+    items: async ({ query }: { query: string }): Promise<SuggestionItem[]> => {
       const response = await fetch(
         `/api/trpc/tag.search?batch=1&input=${encodeURIComponent(JSON.stringify({ "0": { json: { query } } }))}`,
       );
-      const data = (await response.json()) as TrpcResponse<
-        SuggestionItem[]
-      >[];
+      const data = (await response.json()) as TrpcResponse<SuggestionItem[]>[];
       const results: SuggestionItem[] = data[0]?.result?.data?.json ?? [];
 
       if (
         query.trim() &&
-        !results.some(
-          (r) => r.label?.toLowerCase() === query.toLowerCase(),
-        )
+        !results.some((r) => r.label?.toLowerCase() === query.toLowerCase())
       ) {
         return [{ id: "new", label: query, isNew: true }, ...results];
       }

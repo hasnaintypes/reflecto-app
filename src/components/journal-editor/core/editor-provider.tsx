@@ -10,7 +10,9 @@ interface EditorContextType {
   setIsCentered: (isCentered: boolean) => void;
 }
 
-export const EditorContext = createContext<EditorContextType | undefined>(undefined);
+export const EditorContext = createContext<EditorContextType | undefined>(
+  undefined,
+);
 
 export function EditorProvider({ children }: { children: React.ReactNode }) {
   const [editor, setEditor] = useState<Editor | null>(null);

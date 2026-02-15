@@ -11,7 +11,9 @@ export const ResizableImage = Image.extend({
       width: {
         default: null,
         parseHTML: (element: HTMLElement) => element.getAttribute("width"),
-        renderHTML: (attributes: Record<string, string | number | undefined>) => {
+        renderHTML: (
+          attributes: Record<string, string | number | undefined>,
+        ) => {
           if (!attributes.width) return {};
           return { width: attributes.width };
         },
@@ -19,15 +21,20 @@ export const ResizableImage = Image.extend({
       height: {
         default: null,
         parseHTML: (element: HTMLElement) => element.getAttribute("height"),
-        renderHTML: (attributes: Record<string, string | number | undefined>) => {
+        renderHTML: (
+          attributes: Record<string, string | number | undefined>,
+        ) => {
           if (!attributes.height) return {};
           return { height: attributes.height };
         },
       },
       fileId: {
         default: null,
-        parseHTML: (element: HTMLElement) => element.getAttribute("data-file-id"),
-        renderHTML: (attributes: Record<string, string | number | undefined>) => {
+        parseHTML: (element: HTMLElement) =>
+          element.getAttribute("data-file-id"),
+        renderHTML: (
+          attributes: Record<string, string | number | undefined>,
+        ) => {
           if (!attributes.fileId) return {};
           return { "data-file-id": attributes.fileId };
         },
