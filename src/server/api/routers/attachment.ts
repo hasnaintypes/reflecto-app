@@ -1,33 +1,52 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
-  generatePresignedUrlSchema,
-  createAttachmentSchema,
   deleteAttachmentSchema,
+  uploadImageSchema,
+  createImageAttachmentSchema,
 } from "@/server/schemas/attachment.schema";
 import { attachmentService } from "@/server/services/attachment/attachment.service";
-import { storageService } from "@/server/services/attachment/storage.service";
+import { uploadService } from "@/server/services/attachment/upload.service";
 
 export const attachmentRouter = createTRPCRouter({
   /**
-   * Get a presigned URL for direct client-to-storage upload
+   * Upload an image file (server-side)
    */
-  getPresignedUrl: protectedProcedure
-    .input(generatePresignedUrlSchema)
+  uploadImage: protectedProcedure
+    .input(uploadImageSchema)
     .mutation(async ({ ctx, input }) => {
-      return storageService.getPresignedUrl(
+      const result = await uploadService.uploadImage(
         ctx.session.user.id!,
+        input.fileData,
         input.fileName,
         input.fileType,
+        input.fileSize,
       );
+
+      // Optionally register the attachment in the database
+      if (input.entryId) {
+        await attachmentService.createImageAttachment(
+          ctx.db,
+          ctx.session.user.id!,
+          {
+            entryId: input.entryId,
+            fileUrl: result.url,
+            filePath: result.filePath,
+            fileType: result.fileType,
+            fileSize: result.size,
+          },
+        );
+      }
+
+      return result;
     }),
 
   /**
-   * Register a successfully uploaded file
+   * Register a successfully uploaded image
    */
-  registerAttachment: protectedProcedure
-    .input(createAttachmentSchema)
+  registerImageAttachment: protectedProcedure
+    .input(createImageAttachmentSchema)
     .mutation(async ({ ctx, input }) => {
-      return attachmentService.createAttachment(
+      return attachmentService.createImageAttachment(
         ctx.db,
         ctx.session.user.id!,
         input,

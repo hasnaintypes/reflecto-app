@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactRenderer } from "@tiptap/react";
 import tippy, { type Instance, type GetReferenceClientRect } from "tippy.js";
 import {

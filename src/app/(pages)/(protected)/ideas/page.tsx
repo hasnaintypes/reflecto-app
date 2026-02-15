@@ -49,7 +49,6 @@ export default function IdeasPage() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pt-20 pb-24 duration-1000">
-      {/* Header Section */}
       <header className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div className="space-y-1">
           <p className="text-primary text-[10px] font-bold tracking-[0.3em] uppercase">
@@ -60,7 +59,6 @@ export default function IdeasPage() {
           </h1>
         </div>
 
-        {/* Utility Icons */}
         <div className="text-muted-foreground/60 mb-2 flex items-center gap-6">
           <button
             onClick={handleNewIdea}
@@ -86,7 +84,6 @@ export default function IdeasPage() {
         </div>
       </header>
 
-      {/* Content Area */}
       <div className="mt-16">
         {hasIdeas ? (
           <div className="space-y-4">
@@ -130,7 +127,6 @@ export default function IdeasPage() {
             ))}
           </div>
         ) : (
-          /* Simple Empty State - Matching the Ideas reference strictly */
           <div className="max-w-2xl space-y-6">
             <div className="text-muted-foreground space-y-4 text-lg leading-relaxed tracking-tight">
               <p>
@@ -154,7 +150,6 @@ export default function IdeasPage() {
               </a>
             </div>
 
-            {/* Custom Styled Add Button from reference */}
             <div className="pt-6">
               <button
                 onClick={handleNewIdea}

@@ -1,35 +1,47 @@
+import { imagekitClient } from "@/lib/imagekit/client";
+import type {
+  ImageKitUploadResponse,
+  ImageUploadInput,
+} from "@/server/types/imagekit.types";
+import { env } from "@/env";
+
 export interface IStorageService {
-  /**
-   * Generate a presigned URL for client-side upload
-   */
-  getPresignedUrl(
-    userId: string,
-    fileName: string,
-    fileType: string,
-  ): Promise<{ uploadUrl: string; fileUrl: string }>;
-
-  /**
-   * Delete a file from storage
-   */
-  deleteFile(fileUrl: string): Promise<void>;
+  uploadFile(input: ImageUploadInput): Promise<ImageKitUploadResponse>;
+  deleteFile(fileId: string): Promise<void>;
+  getFileUrl(
+    filePath: string,
+    transformations?: Record<string, string>,
+  ): string;
 }
 
-/**
- * Mock Storage Service (to be replaced with S3/Vercel Blob)
- */
-export class MockStorageService implements IStorageService {
-  async getPresignedUrl(userId: string, fileName: string, _fileType: string) {
-    // In a real app, this would use S3 presigned Post or Vercel Blob put
-    const key = `uploads/${userId}/${Date.now()}-${fileName}`;
-    return {
-      uploadUrl: `https://fake-s3-upload.com/${key}`,
-      fileUrl: `https://fake-cdn.com/${key}`,
-    };
+export class ImageKitStorageService implements IStorageService {
+  async uploadFile(input: ImageUploadInput): Promise<ImageKitUploadResponse> {
+    const result = await imagekitClient.files.upload({
+      file: input.file,
+      fileName: input.fileName,
+      folder: "/reflecto-app",
+    });
+
+    return result as ImageKitUploadResponse;
   }
 
-  async deleteFile(fileUrl: string) {
-    console.log(`Deleting file from storage: ${fileUrl}`);
+  async deleteFile(fileId: string): Promise<void> {
+    await imagekitClient.files.delete(fileId);
+  }
+
+  getFileUrl(
+    filePath: string,
+    transformations?: Record<string, string>,
+  ): string {
+    const url = `${env.IMAGEKIT_URL_ENDPOINT}/${filePath}`;
+    if (!transformations) return url;
+
+    const transformStr = Object.entries(transformations)
+      .map(([key, value]) => `${key}-${value}`)
+      .join(",");
+
+    return `${env.IMAGEKIT_URL_ENDPOINT}/tr:${transformStr}/${filePath}`;
   }
 }
 
-export const storageService = new MockStorageService();
+export const storageService = new ImageKitStorageService();

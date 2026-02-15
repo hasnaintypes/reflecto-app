@@ -5,9 +5,9 @@ import type { Editor, Range } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
-import Image from "@tiptap/extension-image";
 import CharacterCount from "@tiptap/extension-character-count";
 import { cn } from "@/lib/utils";
+import { ResizableImage } from "./extensions";
 
 import React, { useEffect, useRef } from "react";
 import { useSharedEditor } from "./editor-context";
@@ -98,7 +98,7 @@ export default function JournalEditor({
         horizontalRule: false,
       }),
       Underline,
-      Image,
+      ResizableImage,
       CharacterCount,
       Link.configure({
         openOnClick: false,

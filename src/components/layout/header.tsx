@@ -6,17 +6,14 @@ import { usePathname } from "next/navigation";
 import { useSharedEditor } from "@/components/journal-editor/editor-context";
 import { EditorToolbar } from "@/components/shared/toolbar";
 import { UserDropdown } from "@/components/shared/user-dropdown";
+import { useEntryStore } from "@/stores/use-entry-store";
+import { useImageUpload } from "@/hooks/use-image-upload";
 
 export function Header() {
   const { editor, isCentered, setIsCentered } = useSharedEditor();
+  const { currentEntry } = useEntryStore();
+  const { uploadImage } = useImageUpload(editor, currentEntry?.id);
   const pathname = usePathname();
-
-  const addImage = () => {
-    const url = window.prompt("URL");
-    if (url) {
-      editor?.chain().focus().setImage({ src: url }).run();
-    }
-  };
 
   const showToolbar =
     pathname === "/write" ||
@@ -38,7 +35,7 @@ export function Header() {
             editor={editor}
             isCentered={isCentered}
             onToggleAlignment={() => setIsCentered(!isCentered)}
-            addImage={addImage}
+            addImage={uploadImage}
           />
         ) : (
           <button className="group border-border/40 bg-muted/50 hover:bg-muted/80 flex w-[300px] items-center gap-3 rounded-full border px-4 py-2 transition-all">

@@ -10,7 +10,7 @@ export function Heatmap({ entries }: HeatmapProps) {
   const weeksToShow = 52;
   const endDate = new Date();
   const startDate = subWeeks(endDate, weeksToShow - 1);
-  startDate.setDate(startDate.getDate() - startDate.getDay() + 1); // Align to Monday
+  startDate.setDate(startDate.getDate() - startDate.getDay() + 1);
 
   const days = eachDayOfInterval({ start: startDate, end: endDate });
 

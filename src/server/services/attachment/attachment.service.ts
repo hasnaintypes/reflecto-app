@@ -56,14 +56,60 @@ export class AttachmentService {
       });
     }
 
+    // Extract fileId from the attachment (assuming it's stored in metadata or a dedicated field)
+    const fileId = attachment.fileUrl.split("/").pop()?.split("?")[0];
+
     // 1. Delete from storage
-    await storageService.deleteFile(attachment.fileUrl).catch((err) => {
-      console.error("Failed to delete file from storage:", err);
-    });
+    if (fileId) {
+      await storageService.deleteFile(fileId).catch((err) => {
+        console.error("Failed to delete file from storage:", err);
+      });
+    }
 
     // 2. Delete from database
     return db.attachment.delete({
       where: { id: attachmentId },
+    });
+  }
+
+  /**
+   * Create an image attachment with thumbnail
+   */
+  async createImageAttachment(
+    db: PrismaClient,
+    userId: string,
+    data: {
+      entryId: string;
+      fileUrl: string;
+      filePath: string;
+      fileType: string;
+      fileSize: number;
+    },
+  ) {
+    const entry = await db.entry.findFirst({
+      where: { id: data.entryId, userId },
+    });
+
+    if (!entry) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Entry not found",
+      });
+    }
+
+    // Generate thumbnail URL using ImageKit transformations
+    const { uploadService } = await import("./upload.service");
+    const thumbnailUrl = uploadService.generateThumbnailUrl(data.filePath);
+
+    return db.attachment.create({
+      data: {
+        userId,
+        entryId: data.entryId,
+        fileUrl: data.fileUrl,
+        fileType: data.fileType,
+        fileSize: data.fileSize,
+        thumbnailUrl,
+      },
     });
   }
 
