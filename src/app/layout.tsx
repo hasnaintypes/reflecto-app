@@ -7,6 +7,8 @@ import { SessionProvider } from "next-auth/react";
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers";
+import { PreferencesProvider } from "@/components/providers/preferences-provider";
+import { ThemeApplier } from "@/components/providers/theme-applier";
 
 export const metadata: Metadata = {
   title: "Reflecto App",
@@ -42,7 +44,10 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              <PreferencesProvider>
+                <ThemeApplier />
+                {children}
+              </PreferencesProvider>
             </ThemeProvider>
           </TRPCReactProvider>
         </SessionProvider>
