@@ -10,17 +10,17 @@ import { db } from "@/server/db";
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      id?: string;
-      email?: string | null;
-      name?: string | null;
+      id: string;
+      email: string;
+      name: string;
       image?: string | null;
     } & DefaultSession["user"];
   }
+}
 
-  interface User {
+declare module "next-auth/jwt" {
+  interface JWT {
     id?: string;
-    email?: string | null;
-    name?: string | null;
     image?: string | null;
   }
 }
@@ -68,7 +68,12 @@ export const authConfig = {
         );
         if (!isValid) return null;
 
-        return user;
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        };
       },
     }),
   ],
@@ -76,27 +81,64 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/write");
-      if (isOnDashboard) {
+      const protectedRoutes = [
+        "/write",
+        "/journal",
+        "/reflect",
+        "/insights",
+        "/dreams",
+        "/highlights",
+        "/ideas",
+        "/notes",
+        "/people",
+        "/tags",
+        "/wisdom",
+      ];
+      const isProtectedRoute = protectedRoutes.some((route) =>
+        nextUrl.pathname.startsWith(route),
+      );
+      const isAuthPage = nextUrl.pathname.startsWith("/auth");
+
+      if (isProtectedRoute) {
         if (isLoggedIn) return true;
         return false; // Redirect to login
-      } else if (isLoggedIn) {
+      }
+
+      if (isAuthPage && isLoggedIn) {
         return Response.redirect(new URL("/write", nextUrl));
       }
+
       return true;
     },
-    async jwt({ token, user }) {
-      if (user) token.id = user.id;
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.picture = user.image;
+        token.image = user.image;
+      }
+
+      if (trigger === "update" && session && typeof session === "object") {
+        const s = session as Record<string, unknown>;
+        if (s.name) token.name = s.name as string;
+        if (s.email) token.email = s.email as string;
+        if (s.image) {
+          token.picture = s.image as string;
+          token.image = s.image as string;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id as string,
-        },
-      };
+      if (token.id && session.user) {
+        session.user.id = token.id;
+        if (token.name) session.user.name = token.name;
+        if (token.email) session.user.email = token.email;
+        session.user.image = (token.image ?? token.picture) as string | null;
+      }
+      return session;
     },
   },
 } satisfies NextAuthConfig;

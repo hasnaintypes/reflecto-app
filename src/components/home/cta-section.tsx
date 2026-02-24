@@ -11,8 +11,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function CTASection() {
+  const { data: session } = useSession();
+
   return (
     <section className="bg-[#fafafa] py-24 dark:bg-[#050505]">
       <div className="mx-auto max-w-7xl px-6">
@@ -91,9 +94,11 @@ export default function CTASection() {
               </p>
 
               <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
-                <Link href="/auth/sign-up">
+                <Link href={session ? "/write" : "/auth/sign-up"}>
                   <button className="bg-primary text-primary-foreground hover:shadow-primary/25 group relative flex cursor-pointer items-center gap-2 overflow-hidden rounded-full px-10 py-5 text-sm font-bold tracking-widest uppercase transition-all hover:scale-105 active:scale-95">
-                    <span className="relative z-10">Start Your Journey</span>
+                    <span className="relative z-10">
+                      {session ? "Open Your Journal" : "Start Your Journey"}
+                    </span>
                     <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
                   </button>

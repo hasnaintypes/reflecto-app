@@ -17,6 +17,7 @@ export type JournalMetadata = {
     | (string & {});
   tags?: string[];
   mood?: number; // 1-5
+  bullets?: number;
 };
 
 // Dream metadata

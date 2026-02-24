@@ -15,7 +15,9 @@ import { api } from "@/trpc/react";
 import { useEntryStore } from "@/stores/use-entry-store";
 import { toast } from "sonner";
 import { useDebounce } from "@/hooks/use-debounce";
+import { usePreferencesStore } from "@/stores/use-preferences-store";
 import type { JournalEditorProps } from "./types";
+import type { EntryMetadata } from "@/types/metadata.types";
 
 import "tippy.js/dist/tippy.css";
 
@@ -25,22 +27,26 @@ export default function JournalEditor({
 }: JournalEditorProps) {
   const { setEditor, isCentered } = useSharedEditor();
   const { currentEntry, setCurrentEntry, updateEntry } = useEntryStore();
+  const preferences = usePreferencesStore((state) => state.preferences);
+
+  const bulletedJournal = preferences?.preferences?.bulletedMode ?? true;
+  const spellChecking = preferences?.preferences?.spellChecking ?? true;
+  const newlineOnEnter = preferences?.preferences?.newlineOnEnter ?? false;
+  const autocomplete = preferences?.preferences?.autocomplete ?? true;
+
   const lastSavedContent = useRef<string>("");
 
-  // Use either the prop ID or the current entry ID from the store
   const effectiveId = propId ?? currentEntry?.id;
   const effectiveType = currentEntry?.type ?? initialType;
 
-  // Fetch entry if ID is provided but not in store or doesn't match
   const { data: fetchedEntry } = api.entry.getById.useQuery(
     { id: propId! },
     {
       enabled: !!propId && currentEntry?.id !== propId,
-      staleTime: Infinity, // Only fetch once per ID mount
+      staleTime: Infinity,
     },
   );
 
-  // Sync fetched entry to store
   useEffect(() => {
     if (fetchedEntry) {
       setCurrentEntry(fetchedEntry);
@@ -48,7 +54,6 @@ export default function JournalEditor({
     }
   }, [fetchedEntry, setCurrentEntry]);
 
-  // tRPC mutations
   const createEntry = api.entry.create.useMutation({
     onSuccess: (data) => {
       setCurrentEntry(data);
@@ -72,7 +77,7 @@ export default function JournalEditor({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        bulletList: false,
+        bulletList: {},
         orderedList: false,
         horizontalRule: false,
       }),
@@ -88,8 +93,7 @@ export default function JournalEditor({
       Placeholder.configure({
         placeholder: "Write here...",
       }),
-      TagMention,
-      PeopleMention,
+      ...(autocomplete ? [TagMention, PeopleMention] : []),
     ],
     editorProps: {
       attributes: {
@@ -97,37 +101,66 @@ export default function JournalEditor({
           "prose prose-neutral dark:prose-invert prose-2xl max-w-none focus:outline-none font-serif leading-relaxed text-foreground/80 transition-all duration-700",
           isCentered ? "text-center" : "text-left",
         ),
+        spellcheck: spellChecking ? "true" : "false",
       },
+      handleKeyDown: (view, event) => {
+        if (event.key === "Enter" && !event.shiftKey && !newlineOnEnter) {
+          handleAutoSave.flush();
+          toast.success("Entry saved", { duration: 1000 });
+          return true;
+        }
+        return false;
+      },
+    },
+    onCreate: ({ editor }) => {
+      if (bulletedJournal && editor.isEmpty) {
+        editor.commands.toggleBulletList();
+      }
+    },
+    onTransaction: ({ editor, transaction }) => {
+      if (bulletedJournal && transaction.docChanged && editor.isEmpty) {
+        editor.commands.toggleBulletList();
+      }
     },
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       if (html === lastSavedContent.current) return;
 
-      handleAutoSave(html);
+      const bulletCount = (html.match(/<li[^>]*>/g) ?? []).length;
+
+      const updatedMetadata = {
+        ...(currentEntry?.metadata as EntryMetadata),
+        bullets: bulletCount,
+      } as EntryMetadata;
+
+      handleAutoSave(html, updatedMetadata);
     },
     immediatelyRender: false,
   });
 
-  const handleAutoSave = useDebounce((content: string) => {
-    if (!effectiveId && (!content || content === "<p></p>")) return;
+  const handleAutoSave = useDebounce(
+    (content: string, metadata?: EntryMetadata) => {
+      if (!effectiveId && (!content || content === "<p></p>")) return;
 
-    if (effectiveId) {
-      updateEntryMutation.mutate({
-        id: effectiveId,
-        content,
-        isStarred: currentEntry?.isStarred,
-        metadata: currentEntry?.metadata as Record<string, unknown>,
-      });
-    } else {
-      createEntry.mutate({
-        type: effectiveType as EntryType,
-        content,
-        isStarred: currentEntry?.isStarred,
-        title: currentEntry?.title ?? "New Entry",
-        metadata: currentEntry?.metadata as Record<string, unknown>,
-      });
-    }
-  }, 3000);
+      if (effectiveId) {
+        updateEntryMutation.mutate({
+          id: effectiveId,
+          content,
+          isStarred: currentEntry?.isStarred,
+          metadata: metadata ?? (currentEntry?.metadata as EntryMetadata),
+        });
+      } else {
+        createEntry.mutate({
+          type: effectiveType as EntryType,
+          content,
+          isStarred: currentEntry?.isStarred,
+          title: currentEntry?.title ?? "New Entry",
+          metadata: metadata ?? (currentEntry?.metadata as EntryMetadata),
+        });
+      }
+    },
+    3000,
+  );
 
   useEffect(() => {
     if (editor) {
@@ -140,11 +173,19 @@ export default function JournalEditor({
     if (editor && currentEntry && !editor.isFocused) {
       const currentHTML = editor.getHTML();
       if (currentEntry.content && currentEntry.content !== currentHTML) {
-        editor.commands.setContent(currentEntry.content);
-        lastSavedContent.current = currentEntry.content;
+        setTimeout(() => {
+          if (editor && !editor.isDestroyed) {
+            editor.commands.setContent(currentEntry.content);
+            lastSavedContent.current = currentEntry.content!;
+
+            if (bulletedJournal && editor.isEmpty) {
+              editor.commands.toggleBulletList();
+            }
+          }
+        }, 0);
       }
     }
-  }, [editor, currentEntry]);
+  }, [editor, currentEntry, bulletedJournal]);
 
   return (
     <div className="animate-in fade-in flex h-full flex-col pt-6 pb-4 duration-1000">

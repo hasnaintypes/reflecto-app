@@ -1,5 +1,3 @@
-import type { DefaultSession } from "next-auth";
-
 export type AuthFormType = "signin" | "signup";
 
 export type AuthFormProps = {
@@ -39,21 +37,3 @@ export type User = {
 };
 
 export type UserProfile = Pick<User, "id" | "name" | "email" | "image">;
-
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: {
-      id?: string;
-      email?: string | null;
-      name?: string | null;
-      image?: string | null;
-    } & DefaultSession["user"];
-  }
-
-  interface User {
-    id?: string;
-    email?: string | null;
-    name?: string | null;
-    image?: string | null;
-  }
-}

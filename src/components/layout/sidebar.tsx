@@ -17,6 +17,7 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePreferencesStore } from "@/stores/use-preferences-store";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -100,8 +101,15 @@ const NavItem = ({
 };
 
 export function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname();
+  const preferences = usePreferencesStore((state) => state.preferences);
+  const autoHideNav = preferences?.preferences?.autoHideNav ?? false;
+  const enableDreams = preferences?.preferences?.enableDreams ?? true;
+  const enableNotes = preferences?.preferences?.enableNotes ?? true;
+
+  const resolvedIsCollapsed = autoHideNav ? !isHovered : isCollapsed;
 
   const primaryNav = [
     { icon: Feather, label: "Write", href: "/write" },
@@ -111,28 +119,55 @@ export function Sidebar() {
   ];
 
   const secondaryNav = [
-    { icon: Moon, label: "Dreams", href: "/dreams", color: "#FACC15" },
+    {
+      icon: Moon,
+      label: "Dreams",
+      href: "/dreams",
+      color: "#FACC15",
+      enabled: enableDreams,
+    },
     { icon: Heart, label: "Highlights", href: "/highlights", color: "#F87171" },
     { icon: Hash, label: "Tags", href: "/tags", color: "#60A5FA" },
     { icon: AtSign, label: "People", href: "/people", color: "#34D399" },
-    { icon: Pin, label: "Notes", href: "/notes", color: "#A78BFA" },
+    {
+      icon: Pin,
+      label: "Notes",
+      href: "/notes",
+      color: "#A78BFA",
+      enabled: enableNotes,
+    },
     { icon: Gem, label: "Wisdom", href: "/wisdom", color: "#F472B6" },
     { icon: Lightbulb, label: "Ideas", href: "/ideas", color: "#FB923C" },
-  ];
+  ].filter((item) => item.enabled !== false);
 
   return (
     <motion.div
       initial={false}
-      animate={{ width: isCollapsed ? "72px" : "190px" }}
+      onMouseEnter={() => autoHideNav && setIsHovered(true)}
+      onMouseLeave={() => autoHideNav && setIsHovered(false)}
+      animate={{
+        width: resolvedIsCollapsed ? (autoHideNav ? "12px" : "72px") : "190px",
+        opacity: autoHideNav && resolvedIsCollapsed ? 0.3 : 1,
+      }}
       transition={{ type: "spring", stiffness: 300, damping: 35 }}
-      className="border-border/10 bg-background fixed top-16 bottom-0 left-0 z-[100] flex flex-col border-r"
+      className={cn(
+        "border-border/10 bg-background fixed top-16 bottom-0 left-0 z-[100] flex flex-col border-r transition-opacity duration-500",
+        autoHideNav && resolvedIsCollapsed && "border-r-0",
+      )}
     >
-      <div className="no-scrollbar mt-10 flex flex-1 flex-col gap-1 overflow-visible px-3.5">
+      <div
+        className={cn(
+          "no-scrollbar mt-10 flex flex-1 flex-col gap-1 overflow-visible px-3.5 transition-opacity duration-300",
+          autoHideNav && resolvedIsCollapsed
+            ? "pointer-events-none opacity-0"
+            : "opacity-100",
+        )}
+      >
         {primaryNav.map((item) => (
           <NavItem
             key={item.label}
             {...item}
-            isCollapsed={isCollapsed}
+            isCollapsed={resolvedIsCollapsed}
             isActive={pathname === item.href}
           />
         ))}
@@ -140,7 +175,7 @@ export function Sidebar() {
         <div className="mx-3 my-4 h-px shrink-0 bg-white/5" />
 
         <div className="flex flex-col gap-1">
-          {!isCollapsed && (
+          {!resolvedIsCollapsed && (
             <p className="mb-2 px-3 text-[9px] font-bold tracking-[0.3em] text-zinc-700 uppercase">
               Categories
             </p>
@@ -149,7 +184,7 @@ export function Sidebar() {
             <NavItem
               key={item.label}
               {...item}
-              isCollapsed={isCollapsed}
+              isCollapsed={resolvedIsCollapsed}
               isActive={pathname.includes(item.href) || pathname === item.href}
             />
           ))}

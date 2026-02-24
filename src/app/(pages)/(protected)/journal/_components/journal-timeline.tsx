@@ -4,12 +4,12 @@ import React from "react";
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Clock, Star } from "lucide-react";
+import { Clock, Star, Paperclip } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { type EntryWithRelations } from "@/server/types/entry.types";
-import { type JournalMetadata } from "@/types/metadata.types";
+import { usePreferencesStore } from "@/stores/use-preferences-store";
 
 const categoryColors: Record<string, string> = {
   THOUGHTS: "text-violet-400",
@@ -29,16 +29,20 @@ interface JournalTimelineProps {
 
 export function JournalTimeline({ entries }: JournalTimelineProps) {
   const router = useRouter();
+  const preferences = usePreferencesStore((state) => state.preferences);
+  const collapseLongBullets =
+    preferences?.preferences?.collapseLongBullets === true;
+  const itemIndicators = preferences?.preferences?.itemIndicators !== false;
 
   if (entries.length === 0) return null;
 
   return (
     <div className="flex flex-col gap-6 py-4">
       {entries.map((entry, i) => {
-        const metadata = (entry.metadata ?? {}) as JournalMetadata;
-        const category = metadata.category ?? "OTHER";
+        const metadata = (entry.metadata ?? {}) as Record<string, unknown>;
+        const category = (metadata.category as string | undefined) ?? "OTHER";
         const categoryColor = categoryColors[category] ?? "text-zinc-400";
-        const tags = metadata.tags ?? [];
+        const tags = (metadata.tags as string[] | undefined) ?? [];
         const timeStr = format(
           new Date(entry.createdAt),
           "hh:mm a, EEE",
@@ -82,6 +86,9 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                       className="fill-yellow-400 text-yellow-400"
                     />
                   )}
+                  {itemIndicators && entry.attachments.length > 0 && (
+                    <Paperclip size={10} className="text-zinc-600" />
+                  )}
                 </div>
 
                 {tags.length > 0 && (
@@ -100,7 +107,10 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
 
               {/* Content Text */}
               <div
-                className="text-muted-foreground group-hover:text-foreground line-clamp-3 max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight transition-colors duration-300"
+                className={cn(
+                  "text-muted-foreground group-hover:text-foreground max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight transition-colors duration-300",
+                  collapseLongBullets && "line-clamp-3",
+                )}
                 dangerouslySetInnerHTML={{ __html: entry.content ?? "" }}
               />
 

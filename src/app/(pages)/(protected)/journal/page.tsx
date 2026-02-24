@@ -23,11 +23,14 @@ import { api } from "@/trpc/react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { type JournalMetadata } from "@/types/metadata.types";
+import { usePreferencesStore } from "@/stores/use-preferences-store";
 
 export default function JournalPage() {
   const router = useRouter();
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [isStarredOnly, setIsStarredOnly] = React.useState(false);
+  const preferences = usePreferencesStore((state) => state.preferences);
+  const dayEndsAt = parseInt(preferences?.preferences?.dayEndsAt ?? "0");
 
   const { data: entryData } = api.entry.list.useQuery({
     type: "journal",
@@ -44,14 +47,20 @@ export default function JournalPage() {
   const entries = entryData?.entries ?? [];
 
   const handleNewEntry = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const adjustedToday = new Date(now);
 
-    // Check if we already have a journal entry for today
+    // If current hour is before dayEndsAt (e.g. 2 AM < 3 AM), it's still "today" but relative to yesterday
+    if (now.getHours() < dayEndsAt) {
+      adjustedToday.setDate(now.getDate() - 1);
+    }
+    adjustedToday.setHours(0, 0, 0, 0);
+
+    // Check if we already have a journal entry for this adjusted day
     const existingToday = entries.find((e) => {
       const entryDate = new Date(e.createdAt);
       entryDate.setHours(0, 0, 0, 0);
-      return entryDate.getTime() === today.getTime();
+      return entryDate.getTime() === adjustedToday.getTime();
     });
 
     if (existingToday) {
@@ -59,7 +68,7 @@ export default function JournalPage() {
       return;
     }
 
-    const dateStr = format(new Date(), "do MMM");
+    const dateStr = format(adjustedToday, "do MMM");
 
     createMutation.mutate({
       type: "journal",

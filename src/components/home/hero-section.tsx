@@ -5,8 +5,11 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 export default function CenteredHero() {
+  const { data: session } = useSession();
+
   return (
     <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-[#fafafa] py-12 dark:bg-[#050505]">
       {/* --- Ambient Background Visuals --- */}
@@ -108,9 +111,9 @@ export default function CenteredHero() {
 
           {/* Buttons */}
           <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
-            <Link href="/auth/sign-up">
+            <Link href={session ? "/write" : "/auth/sign-up"}>
               <button className="bg-primary text-primary-foreground hover:shadow-primary/25 group inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-10 py-5 text-sm font-semibold transition-all hover:scale-105 hover:shadow-xl active:scale-95">
-                Start Your Sanctuary
+                {session ? "Continue Writing" : "Start Your Sanctuary"}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
             </Link>

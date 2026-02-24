@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import React from "react";
 import {
@@ -11,15 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  User,
-  Settings,
-  Keyboard,
-  BookOpen,
-  Zap,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+import { User, LogOut, History as HistoryIcon, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 
 export function UserDropdown() {
@@ -55,7 +48,6 @@ export function UserDropdown() {
               <span className="text-foreground font-serif text-[11px] font-bold tracking-widest uppercase italic">
                 {session?.user?.name ?? "Explorer"}
               </span>
-              <Sparkles size={10} className="text-[#FB923C] opacity-80" />
             </div>
             {session?.user?.email ?? "user@reflecto.app"}
           </div>
@@ -65,52 +57,28 @@ export function UserDropdown() {
 
         <DropdownMenuGroup className="py-1">
           {[
-            { icon: User, label: "Profile" },
-            { icon: Settings, label: "Settings" },
-            { icon: Keyboard, label: "Shortcuts" },
+            { icon: User, label: "Profile", href: "/profile" },
+            { icon: Settings, label: "Settings", href: "/settings" },
+            { icon: HistoryIcon, label: "Changelog", href: "/changelog" },
           ].map((item) => (
-            <DropdownMenuItem
-              key={item.label}
-              className="group text-muted-foreground focus:bg-muted focus:text-foreground flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-all"
-            >
-              <item.icon
-                size={14}
-                className="opacity-40 transition-opacity group-focus:opacity-100"
-              />
-              <span className="text-[11px] font-bold tracking-[0.15em] uppercase">
-                {item.label}
-              </span>
-            </DropdownMenuItem>
+            <Link key={item.label} href={item.href}>
+              <DropdownMenuItem className="group text-muted-foreground focus:bg-muted focus:text-foreground flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-all">
+                <item.icon
+                  size={14}
+                  className="opacity-40 transition-opacity group-focus:opacity-100"
+                />
+                <span className="text-[11px] font-bold tracking-[0.15em] uppercase">
+                  {item.label}
+                </span>
+              </DropdownMenuItem>
+            </Link>
           ))}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator className="bg-border/40 mx-1" />
 
-        <DropdownMenuGroup className="py-1">
-          <DropdownMenuItem className="group text-muted-foreground focus:bg-muted focus:text-foreground flex cursor-pointer items-center gap-3 rounded-md px-3 py-2">
-            <BookOpen
-              size={14}
-              className="opacity-40 group-focus:opacity-100"
-            />
-            <span className="text-[11px] font-bold tracking-[0.15em] uppercase">
-              Library
-            </span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="group text-muted-foreground focus:bg-muted focus:text-foreground flex cursor-pointer items-center gap-3 rounded-md px-3 py-2">
-            <Zap
-              size={14}
-              className="text-[#FB923C] opacity-40 group-focus:opacity-100"
-            />
-            <span className="text-[11px] font-bold tracking-[0.15em] uppercase">
-              Changelog
-            </span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-
-        <DropdownMenuSeparator className="bg-border/40 mx-1" />
-
         <DropdownMenuItem
-          onClick={() => signOut()}
+          onClick={() => signOut({ callbackUrl: "/" })}
           className="mt-1 flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-red-500/60 focus:bg-red-500/5 focus:text-red-400"
         >
           <LogOut size={14} className="opacity-60" />
