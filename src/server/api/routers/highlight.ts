@@ -8,7 +8,7 @@ export const highlightRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return highlightService.listHighlights(
         ctx.db,
-        ctx.session.user.id!,
+        ctx.session.user.id,
         input,
       );
     }),

@@ -6,6 +6,6 @@ export const wisdomRouter = createTRPCRouter({
   list: protectedProcedure
     .input(wisdomFiltersSchema)
     .query(async ({ ctx, input }) => {
-      return wisdomService.listWisdom(ctx.db, ctx.session.user.id!, input);
+      return wisdomService.listWisdom(ctx.db, ctx.session.user.id, input);
     }),
 });

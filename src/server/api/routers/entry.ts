@@ -19,7 +19,7 @@ export const entryRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createEntrySchema)
     .mutation(async ({ ctx, input }) => {
-      return entryService.create(ctx.db, ctx.session.user.id!, input);
+      return entryService.create(ctx.db, ctx.session.user.id, input);
     }),
 
   /**
@@ -28,7 +28,7 @@ export const entryRouter = createTRPCRouter({
   getById: protectedProcedure
     .input(getEntrySchema)
     .query(async ({ ctx, input }) => {
-      return entryService.getById(ctx.db, ctx.session.user.id!, input.id);
+      return entryService.getById(ctx.db, ctx.session.user.id, input.id);
     }),
 
   /**
@@ -37,7 +37,7 @@ export const entryRouter = createTRPCRouter({
   list: protectedProcedure
     .input(listEntriesSchema)
     .query(async ({ ctx, input }) => {
-      return entryService.list(ctx.db, ctx.session.user.id!, input);
+      return entryService.list(ctx.db, ctx.session.user.id, input);
     }),
 
   /**
@@ -49,7 +49,7 @@ export const entryRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { id, ...updateData } = input;
-      return entryService.update(ctx.db, ctx.session.user.id!, id, updateData);
+      return entryService.update(ctx.db, ctx.session.user.id, id, updateData);
     }),
 
   /**
@@ -58,6 +58,6 @@ export const entryRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(deleteEntrySchema)
     .mutation(async ({ ctx, input }) => {
-      return entryService.delete(ctx.db, ctx.session.user.id!, input.id);
+      return entryService.delete(ctx.db, ctx.session.user.id, input.id);
     }),
 });

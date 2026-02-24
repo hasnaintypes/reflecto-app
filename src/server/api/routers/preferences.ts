@@ -7,7 +7,7 @@ export const preferencesRouter = createTRPCRouter({
    * Get current user's preferences
    */
   get: protectedProcedure.query(async ({ ctx }) => {
-    return userService.getPreferences(ctx.db, ctx.session.user.id!);
+    return userService.getPreferences(ctx.db, ctx.session.user.id);
   }),
 
   /**
@@ -16,6 +16,6 @@ export const preferencesRouter = createTRPCRouter({
   update: protectedProcedure
     .input(updatePreferencesSchema)
     .mutation(async ({ ctx, input }) => {
-      return userService.updatePreferences(ctx.db, ctx.session.user.id!, input);
+      return userService.updatePreferences(ctx.db, ctx.session.user.id, input);
     }),
 });

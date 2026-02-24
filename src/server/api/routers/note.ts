@@ -6,6 +6,6 @@ export const noteRouter = createTRPCRouter({
   list: protectedProcedure
     .input(noteFiltersSchema)
     .query(async ({ ctx, input }) => {
-      return noteService.listNotes(ctx.db, ctx.session.user.id!, input);
+      return noteService.listNotes(ctx.db, ctx.session.user.id, input);
     }),
 });

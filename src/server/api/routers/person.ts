@@ -5,7 +5,7 @@ import { deletePersonSchema } from "@/server/schemas/organization.schema";
 
 export const personRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
-    return personService.listPeople(ctx.db, ctx.session.user.id!);
+    return personService.listPeople(ctx.db, ctx.session.user.id);
   }),
 
   search: protectedProcedure
@@ -13,7 +13,7 @@ export const personRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return personService.searchPeople(
         ctx.db,
-        ctx.session.user.id!,
+        ctx.session.user.id,
         input.query,
       );
     }),
@@ -21,6 +21,6 @@ export const personRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(deletePersonSchema)
     .mutation(async ({ ctx, input }) => {
-      return personService.deletePerson(ctx.db, ctx.session.user.id!, input.id);
+      return personService.deletePerson(ctx.db, ctx.session.user.id, input.id);
     }),
 });

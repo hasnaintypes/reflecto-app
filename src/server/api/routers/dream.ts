@@ -6,6 +6,6 @@ export const dreamRouter = createTRPCRouter({
   list: protectedProcedure
     .input(dreamFiltersSchema)
     .query(async ({ ctx, input }) => {
-      return dreamService.listDreams(ctx.db, ctx.session.user.id!, input);
+      return dreamService.listDreams(ctx.db, ctx.session.user.id, input);
     }),
 });

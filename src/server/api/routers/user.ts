@@ -1,13 +1,23 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { protectedProcedure, createTRPCRouter } from "../trpc";
+import { type AppPreferences } from "@/stores/use-preferences-store";
 
 /**
  * Zod schema for updating user profile fields.
  */
 const updateUserSchema = z.object({
   name: z.string().min(1).max(100).optional(),
+  email: z.string().email().optional(),
   avatarUrl: z.string().url().optional(),
+});
+
+const updatePreferencesSchema = z.object({
+  theme: z.string().optional(),
+  fontSize: z.string().optional(),
+  notificationEnabled: z.boolean().optional(),
+  dailyReminderTime: z.string().optional(),
+  preferences: z.record(z.any()).optional(),
 });
 
 /**
@@ -24,11 +34,65 @@ export type UserProfile = {
 
 export const userRouter = createTRPCRouter({
   /**
+   * Get the current user's preferences.
+   */
+  getPreferences: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+    let preferences = await ctx.db.userPreferences.findUnique({
+      where: { userId },
+    });
+
+    preferences ??= await ctx.db.userPreferences.create({
+      data: { userId },
+    });
+
+    return preferences;
+  }),
+
+  /**
+   * Update the current user's preferences.
+   */
+  updatePreferences: protectedProcedure
+    .input(updatePreferencesSchema)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const existing = await ctx.db.userPreferences.findUnique({
+        where: { userId },
+      });
+
+      if (!existing) {
+        return await ctx.db.userPreferences.create({
+          data: {
+            userId,
+            ...input,
+            preferences: input.preferences ?? {},
+          },
+        });
+      }
+
+      return await ctx.db.userPreferences.update({
+        where: { userId },
+        data: {
+          theme: input.theme,
+          fontSize: input.fontSize,
+          notificationEnabled: input.notificationEnabled,
+          dailyReminderTime: input.dailyReminderTime,
+          preferences: input.preferences
+            ? {
+                ...(existing.preferences as AppPreferences),
+                ...input.preferences,
+              }
+            : (existing.preferences as AppPreferences),
+        },
+      });
+    }),
+
+  /**
    * Get the current user's profile.
    * @returns User profile fields (id, name, email, avatarUrl, createdAt, updatedAt)
    */
   getProfile: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.session.user.id!;
+    const userId = ctx.session.user.id;
     const user = await ctx.db.user.findUnique({
       where: { id: userId },
       select: {
@@ -61,12 +125,13 @@ export const userRouter = createTRPCRouter({
   updateUser: protectedProcedure
     .input(updateUserSchema)
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id!;
+      const userId = ctx.session.user.id;
       try {
         const updated = await ctx.db.user.update({
           where: { id: userId },
           data: {
             ...(input.name !== undefined ? { name: input.name } : {}),
+            ...(input.email !== undefined ? { email: input.email } : {}),
             ...(input.avatarUrl !== undefined
               ? { image: input.avatarUrl }
               : {}),
@@ -93,7 +158,7 @@ export const userRouter = createTRPCRouter({
    * @returns Confirmation message
    */
   deactivateUser: protectedProcedure.mutation(async ({ ctx }) => {
-    const userId = ctx.session.user.id!;
+    const userId = ctx.session.user.id;
     try {
       console.log(`Deactivating user ${userId}`);
       return { message: "User deactivated successfully." };
@@ -110,7 +175,7 @@ export const userRouter = createTRPCRouter({
    * @returns Confirmation message
    */
   deleteUser: protectedProcedure.mutation(async ({ ctx }) => {
-    const userId = ctx.session.user.id!;
+    const userId = ctx.session.user.id;
     try {
       await ctx.db.user.delete({
         where: { id: userId },

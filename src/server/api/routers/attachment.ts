@@ -15,7 +15,7 @@ export const attachmentRouter = createTRPCRouter({
     .input(uploadImageSchema)
     .mutation(async ({ ctx, input }) => {
       const result = await uploadService.uploadImage(
-        ctx.session.user.id!,
+        ctx.session.user.id,
         input.fileData,
         input.fileName,
         input.fileType,
@@ -26,7 +26,7 @@ export const attachmentRouter = createTRPCRouter({
       if (input.entryId) {
         await attachmentService.createImageAttachment(
           ctx.db,
-          ctx.session.user.id!,
+          ctx.session.user.id,
           {
             entryId: input.entryId,
             fileUrl: result.url,
@@ -48,7 +48,7 @@ export const attachmentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return attachmentService.createImageAttachment(
         ctx.db,
-        ctx.session.user.id!,
+        ctx.session.user.id,
         input,
       );
     }),
@@ -61,7 +61,7 @@ export const attachmentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return attachmentService.deleteAttachment(
         ctx.db,
-        ctx.session.user.id!,
+        ctx.session.user.id,
         input.id,
       );
     }),

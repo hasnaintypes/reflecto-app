@@ -6,6 +6,6 @@ export const ideaRouter = createTRPCRouter({
   list: protectedProcedure
     .input(ideaFiltersSchema)
     .query(async ({ ctx, input }) => {
-      return ideaService.listIdeas(ctx.db, ctx.session.user.id!, input);
+      return ideaService.listIdeas(ctx.db, ctx.session.user.id, input);
     }),
 });

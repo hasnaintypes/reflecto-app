@@ -22,7 +22,7 @@ export const insightsRouter = createTRPCRouter({
 
       return activityService.getHeatmapData(
         ctx.db,
-        ctx.session.user.id!,
+        ctx.session.user.id,
         from,
         to,
       );
@@ -32,7 +32,7 @@ export const insightsRouter = createTRPCRouter({
    * Get current and longest streak
    */
   getStreak: protectedProcedure.query(async ({ ctx }) => {
-    return streakService.getStreakInfo(ctx.db, ctx.session.user.id!);
+    return streakService.getStreakInfo(ctx.db, ctx.session.user.id);
   }),
 
   /**
@@ -41,7 +41,7 @@ export const insightsRouter = createTRPCRouter({
   getStats: protectedProcedure.query(async ({ ctx }) => {
     const stats = await ctx.db.entry.groupBy({
       by: ["type"],
-      where: { userId: ctx.session.user.id!, deletedAt: null },
+      where: { userId: ctx.session.user.id, deletedAt: null },
       _count: true,
     });
     return stats;
