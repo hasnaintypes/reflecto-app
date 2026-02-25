@@ -24,17 +24,20 @@ export type JournalMetadata = {
 export type DreamMetadata = {
   atmosphere?: string;
   clarity?: string;
+  bullets?: number;
 };
 
 // Highlight metadata
 export type HighlightMetadata = {
   linked_entry_id?: string;
   importance?: "high" | "medium" | "low";
+  bullets?: number;
 };
 
 // Idea metadata
 export type IdeaMetadata = {
   status?: "Contemplating" | "Seed" | "Reflecting" | "Draft" | (string & {});
+  bullets?: number;
 };
 
 // Wisdom metadata
@@ -42,12 +45,14 @@ export type WisdomMetadata = {
   wisdom_type?: "quote" | "thought" | "fact" | "excerpt" | "lesson";
   author?: string;
   source?: string;
+  bullets?: number;
 };
 
 // Note metadata
 export type NoteMetadata = {
   is_pinned?: boolean;
   color?: string;
+  bullets?: number;
 };
 
 /**

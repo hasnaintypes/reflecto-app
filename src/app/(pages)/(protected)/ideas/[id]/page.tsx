@@ -83,7 +83,7 @@ export default function IdeaDetailPage() {
   };
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pb-24 duration-1000">
+    <div className="flex h-full flex-col overflow-hidden">
       <header className="flex items-center justify-between pt-12 pb-16">
         <Link
           href="/ideas"
@@ -120,7 +120,7 @@ export default function IdeaDetailPage() {
         </div>
       </header>
 
-      <div className="space-y-16">
+      <div className="animate-in fade-in slide-in-from-bottom-4 custom-scrollbar flex-1 space-y-16 overflow-y-auto duration-1000">
         <h1
           className="text-foreground font-serif text-7xl leading-tight font-medium tracking-tight italic focus:outline-none"
           contentEditable

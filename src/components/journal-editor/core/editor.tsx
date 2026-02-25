@@ -13,7 +13,6 @@ import React, { useEffect, useRef } from "react";
 import { useSharedEditor } from "./use-editor";
 import { api } from "@/trpc/react";
 import { useEntryStore } from "@/stores/use-entry-store";
-import { toast } from "sonner";
 import { useDebounce } from "@/hooks/use-debounce";
 import { usePreferencesStore } from "@/stores/use-preferences-store";
 import type { JournalEditorProps } from "./types";
@@ -60,7 +59,7 @@ export default function JournalEditor({
       lastSavedContent.current = data.content ?? "";
     },
     onError: (err) => {
-      toast.error("Failed to create entry: " + err.message);
+      console.error("Failed to create entry:", err.message);
     },
   });
 
@@ -70,7 +69,7 @@ export default function JournalEditor({
       lastSavedContent.current = data.content ?? "";
     },
     onError: (err) => {
-      toast.error("Failed to update entry: " + err.message);
+      console.error("Failed to update entry:", err.message);
     },
   });
 
@@ -104,21 +103,31 @@ export default function JournalEditor({
         spellcheck: spellChecking ? "true" : "false",
       },
       handleKeyDown: (view, event) => {
-        if (event.key === "Enter" && !event.shiftKey && !newlineOnEnter) {
-          handleAutoSave.flush();
-          toast.success("Entry saved", { duration: 1000 });
-          return true;
+        if (event.key === "Enter" && !event.shiftKey) {
+          if (editor?.isActive("bulletList")) {
+            editor.commands.splitListItem("listItem");
+            return true;
+          }
+          if (!newlineOnEnter) {
+            handleAutoSave.flush();
+            return false; // Allow default behavior (new line)
+          }
         }
         return false;
       },
     },
     onCreate: ({ editor }) => {
-      if (bulletedJournal && editor.isEmpty) {
+      if (bulletedJournal && editor.isEmpty && !editor.isActive("bulletList")) {
         editor.commands.toggleBulletList();
       }
     },
     onTransaction: ({ editor, transaction }) => {
-      if (bulletedJournal && transaction.docChanged && editor.isEmpty) {
+      if (
+        bulletedJournal &&
+        transaction.docChanged &&
+        editor.isEmpty &&
+        !editor.isActive("bulletList")
+      ) {
         editor.commands.toggleBulletList();
       }
     },
@@ -178,7 +187,7 @@ export default function JournalEditor({
             editor.commands.setContent(currentEntry.content);
             lastSavedContent.current = currentEntry.content!;
 
-            if (bulletedJournal && editor.isEmpty) {
+            if (bulletedJournal && editor.isEmpty && !editor.isActive("bulletList")) {
               editor.commands.toggleBulletList();
             }
           }
@@ -188,8 +197,8 @@ export default function JournalEditor({
   }, [editor, currentEntry, bulletedJournal]);
 
   return (
-    <div className="animate-in fade-in flex h-full flex-col pt-6 pb-4 duration-1000">
-      <div className="custom-scrollbar relative flex-1 overflow-y-auto px-2">
+    <div className="animate-in fade-in flex h-full flex-col duration-1000">
+      <div className="relative flex-1 px-2">
         <EditorContent editor={editor} />
       </div>
 
@@ -226,6 +235,41 @@ export default function JournalEditor({
           padding-left: 1.5rem;
           color: var(--muted-foreground);
           font-style: italic;
+        }
+        /* Bullet List Styling */
+        .ProseMirror ul {
+          list-style-type: none;
+          padding-left: 2rem;
+          margin-top: 2rem;
+          margin-bottom: 2rem;
+        }
+        .ProseMirror li {
+          position: relative;
+          margin-bottom: 1rem;
+          line-height: 1.7;
+          transition: all 0.3s ease;
+        }
+        .ProseMirror li::before {
+          content: "";
+          position: absolute;
+          left: -1.5rem;
+          top: 0.75em;
+          width: 0.5rem;
+          height: 0.5rem;
+          background: linear-gradient(135deg, var(--primary) 0%, #34d399 100%);
+          border-radius: 50%;
+          opacity: 0.6;
+          box-shadow: 0 0 10px var(--primary-foreground);
+          transition: all 0.3s ease;
+        }
+        .ProseMirror li:hover::before {
+          opacity: 1;
+          transform: scale(1.2);
+          box-shadow: 0 0 15px var(--primary);
+        }
+        .ProseMirror {
+          overflow-x: hidden !important;
+          width: 100%;
         }
         /* Tags - Blue text ONLY */
         span.editor-tag,

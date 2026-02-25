@@ -11,13 +11,9 @@ export default function About() {
   return (
     <main className="bg-background min-h-screen">
       <Header />
-
       <OriginHero />
-
       <ManifestoGrid />
-
       <EngineArchitecture />
-
       <JourneyTimeline />
       <Footer />
     </main>

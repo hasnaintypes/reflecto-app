@@ -47,7 +47,6 @@ const NavItem = ({
         isCollapsed ? "h-9 w-full justify-center" : "h-9 w-full gap-3 px-3",
       )}
     >
-      {/* Refined Active State: Glassmorphism + Accent Dot */}
       {isActive && (
         <motion.div
           layoutId="active-pill"
@@ -102,6 +101,21 @@ const NavItem = ({
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsCollapsed(true);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname();
   const preferences = usePreferencesStore((state) => state.preferences);
@@ -192,16 +206,18 @@ export function Sidebar() {
       </div>
 
       <div className="mt-auto p-4">
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl text-zinc-600 transition-all duration-500 hover:bg-white/[0.03] hover:text-white"
-        >
-          {isCollapsed ? (
-            <ChevronsRight size={16} />
-          ) : (
-            <ChevronsLeft size={16} />
-          )}
-        </button>
+        {!isMobile && (
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-zinc-600 transition-all duration-500 hover:bg-white/[0.03] hover:text-white"
+          >
+            {isCollapsed ? (
+              <ChevronsRight size={16} />
+            ) : (
+              <ChevronsLeft size={16} />
+            )}
+          </button>
+        )}
       </div>
     </motion.div>
   );

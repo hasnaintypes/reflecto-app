@@ -7,10 +7,8 @@ import { motion } from "framer-motion";
 
 export function CalendarStrip() {
   const today = new Date();
-  // Start from Monday
   const startOfState = startOfWeek(today, { weekStartsOn: 1 });
 
-  // 14 days to fill the width nicely
   const days = Array.from({ length: 14 }).map((_, i) =>
     addDays(startOfState, i),
   );
@@ -30,7 +28,6 @@ export function CalendarStrip() {
             transition={{ delay: i * 0.03 }}
             className="group flex min-w-[50px] cursor-pointer flex-col items-center"
           >
-            {/* Day Name - Lowercase & Wide tracking */}
             <span
               className={cn(
                 "mb-3 text-[10px] font-bold tracking-[0.2em] uppercase transition-colors",
@@ -41,8 +38,6 @@ export function CalendarStrip() {
             >
               {dayName}
             </span>
-
-            {/* Day Number */}
             <div className="relative flex flex-col items-center">
               <span
                 className={cn(
@@ -54,8 +49,6 @@ export function CalendarStrip() {
               >
                 {dayNumber}
               </span>
-
-              {/* Minimalist Active Indicator */}
               {isToday && (
                 <motion.div
                   layoutId="activeDay"

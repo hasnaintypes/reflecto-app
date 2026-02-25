@@ -8,6 +8,7 @@ import { api } from "@/trpc/react";
 import { useEntryStore } from "@/stores/use-entry-store";
 import { cn } from "@/lib/utils";
 import type { EntryWithRelations } from "@/server/types/entry.types";
+import type { EntryMetadata } from "@/types/metadata.types";
 import type { EntryType } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -78,8 +79,8 @@ function WritePageContent() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-6 pb-24">
-      <div className="animate-in fade-in slide-in-from-top-4 bg-background/80 sticky top-0 z-30 -mx-6 px-6 backdrop-blur-md transition-all duration-300 duration-1000">
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="animate-in fade-in slide-in-from-top-4 transition-all duration-300 duration-1000">
         <header className="mb-8 space-y-4 pt-6">
           <div className="space-y-1">
             <p className="text-primary font-mono text-[10px] font-bold tracking-[0.3em] uppercase">
@@ -88,6 +89,12 @@ function WritePageContent() {
             <h1 className="text-foreground font-serif text-7xl font-medium tracking-tight italic">
               {dayStr}
             </h1>
+            {currentEntry?.metadata &&
+              (currentEntry.metadata as EntryMetadata).bullets !== undefined && (
+                <p className="text-muted-foreground/40 font-mono text-xl font-medium">
+                  #{(currentEntry.metadata as EntryMetadata).bullets}
+                </p>
+              )}
           </div>
 
           <div className="flex items-center justify-between">
@@ -125,12 +132,9 @@ function WritePageContent() {
             </div>
           </div>
         </header>
-
-        {/* Gradient fade at bottom of sticky header */}
-        <div className="from-background/80 pointer-events-none absolute -bottom-8 left-0 h-8 w-full bg-gradient-to-b to-transparent" />
       </div>
 
-      <div className="animate-in fade-in slide-in-from-bottom-4 relative min-h-[500px] duration-1000">
+      <div className="animate-in fade-in slide-in-from-bottom-4 custom-scrollbar flex-1 overflow-x-hidden overflow-y-auto duration-1000">
         <JournalEditor id={entryId ?? undefined} initialType={typeFromUrl} />
       </div>
     </div>

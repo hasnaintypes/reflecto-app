@@ -116,8 +116,8 @@ export default function WisdomDetailPage() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-6 pb-24">
-      <div className="animate-in fade-in slide-in-from-top-4 bg-background/80 sticky top-0 z-30 -mx-6 px-6 backdrop-blur-md transition-all duration-300 duration-1000">
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="animate-in fade-in slide-in-from-top-4 transition-all duration-300 duration-1000">
         <header className="mb-4 space-y-4 pt-6">
           <div className="flex items-center justify-between">
             <Link
@@ -166,12 +166,9 @@ export default function WisdomDetailPage() {
             </div>
           </div>
         </header>
-
-        {/* Gradient fade at bottom of sticky header */}
-        <div className="from-background/80 pointer-events-none absolute -bottom-6 left-0 h-6 w-full bg-gradient-to-b to-transparent" />
       </div>
 
-      <div className="animate-in fade-in slide-in-from-bottom-4 space-y-8 pt-4 duration-1000">
+      <div className="animate-in fade-in slide-in-from-bottom-4 custom-scrollbar flex-1 space-y-8 overflow-y-auto pt-4 duration-1000">
         <div className="space-y-1">
           <h1
             className="text-foreground font-serif text-5xl leading-tight font-medium tracking-tight italic focus:outline-none"
@@ -242,8 +239,6 @@ export default function WisdomDetailPage() {
                 className="text-foreground border-border/20 border-b pb-1 text-base font-medium focus:outline-none"
                 contentEditable
                 suppressContentEditableWarning
-                // Note: wisdomMetadataSchema currently only has author/source/wisdom_type.
-                // We should probably add a source or use title for context if not present.
               >
                 Describe the situation...
               </div>

@@ -55,10 +55,10 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             onClick={() => router.push(`/write?id=${entry.id}`)}
-            className="group hover:bg-muted/30 relative -mx-4 cursor-pointer rounded-xl px-4 py-4 transition-all duration-300"
+            className="group hover:bg-muted/5 relative -mx-4 cursor-pointer rounded-xl px-4 py-6 transition-all duration-300"
           >
-            {/* Timeline Vertical Thread - Visible on Hover for effect */}
-            <div className="from-border/20 via-border/10 group-hover:from-primary/40 absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b to-transparent opacity-50 transition-all duration-500 group-hover:opacity-100" />
+            {/* Timeline Vertical Thread */}
+            <div className="from-border/5 group-hover:from-primary/10 absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b to-transparent opacity-50 transition-all duration-500 group-hover:opacity-100" />
 
             {/* Content Wrapper */}
             <div className="flex flex-col gap-4">
@@ -105,14 +105,33 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                 )}
               </div>
 
-              {/* Content Text */}
+              {/* Content Text - Strip ALL HTML for clean one-line preview */}
               <div
                 className={cn(
-                  "text-muted-foreground group-hover:text-foreground max-w-3xl font-serif text-[1.35rem] leading-relaxed tracking-tight transition-colors duration-300",
-                  collapseLongBullets && "line-clamp-3",
+                  "text-muted-foreground group-hover:text-foreground line-clamp-1 max-w-3xl font-serif text-[1.1rem] leading-none tracking-tight transition-colors duration-300",
                 )}
-                dangerouslySetInnerHTML={{ __html: entry.content ?? "" }}
+                dangerouslySetInnerHTML={{
+                  __html: (entry.content ?? "").replace(/<[^>]*>/g, ""),
+                }}
               />
+
+              {/* Image Gallery - Horizontal Scroll */}
+              {entry.attachments.length > 0 && (
+                <div className="custom-scrollbar mt-3 flex gap-3 overflow-x-auto pb-2">
+                  {entry.attachments.map((attachment) => (
+                    <div
+                      key={attachment.id}
+                      className="border-border/20 relative h-32 w-56 shrink-0 overflow-hidden rounded-lg border shadow-sm"
+                    >
+                      <img
+                        src={attachment.fileUrl}
+                        alt="Journal attachment"
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Interaction Footer (Optional/Subtle) */}
               <div className="mt-2 flex items-center gap-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">

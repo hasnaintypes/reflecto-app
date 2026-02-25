@@ -85,7 +85,7 @@ export default function JournalPage() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pb-24 duration-1000">
-      <div className="bg-background/80 sticky top-0 z-20 -mx-6 mb-8 px-6 backdrop-blur-md transition-all duration-300">
+      <div className="mb-8 transition-all duration-300">
         <header className="flex flex-col justify-between gap-6 pt-6 md:flex-row md:items-end">
           <div className="space-y-1">
             <p className="text-muted-foreground/60 text-[10px] font-bold tracking-[0.3em] uppercase">
@@ -141,11 +141,11 @@ export default function JournalPage() {
           </div>
         </header>
 
-        <div className="border-border/40 border-b py-4">
+        <div className="border-border/20 border-b py-4">
           <CalendarStrip />
         </div>
 
-        <div className="from-background/80 pointer-events-none absolute -bottom-8 left-0 h-8 w-full bg-gradient-to-b to-transparent" />
+
       </div>
 
       <div className="mb-8 max-w-2xl space-y-4">

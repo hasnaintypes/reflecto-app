@@ -5,7 +5,6 @@ import { MoveLeft, Home, Search } from "lucide-react";
 export default function NotFound() {
   return (
     <div className="bg-background relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6">
-      {/* Background Decorative Elements */}
       <div className="bg-primary/5 absolute top-1/2 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]" />
       <div className="bg-primary/10 absolute top-1/4 right-0 -z-10 h-[300px] w-[300px] rounded-full blur-[100px]" />
 
