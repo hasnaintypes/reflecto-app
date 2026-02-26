@@ -165,7 +165,7 @@ export function Sidebar() {
       }}
       transition={{ type: "spring", stiffness: 300, damping: 35 }}
       className={cn(
-        "border-border/10 bg-background fixed top-16 bottom-0 left-0 z-[100] flex flex-col border-r transition-opacity duration-500",
+        "border-border/10 bg-background fixed top-16 bottom-0 left-0 z-40 flex flex-col border-r transition-opacity duration-500",
         autoHideNav && resolvedIsCollapsed && "border-r-0",
       )}
     >

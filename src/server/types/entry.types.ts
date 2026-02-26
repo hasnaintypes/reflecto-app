@@ -11,6 +11,7 @@ export type EntryWithRelations = {
   title: string | null;
   content: string | null;
   isStarred: boolean;
+  editorMode: string | null;
   metadata: EntryMetadata | null;
   createdAt: Date;
   updatedAt: Date;

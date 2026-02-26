@@ -68,7 +68,9 @@ export const createEntrySchema = z.object({
   title: z.string().max(200).optional(),
   content: z.string().max(50000).optional(),
   isStarred: z.boolean().optional(),
+  editorMode: z.string().optional(),
   metadata: z.record(z.unknown()).optional(),
+  createdAt: z.date().optional(),
 });
 
 /**
@@ -78,6 +80,7 @@ export const updateEntrySchema = z.object({
   title: z.string().max(200).optional(),
   content: z.string().max(50000).optional(),
   isStarred: z.boolean().optional(),
+  editorMode: z.string().optional(),
   metadata: z.record(z.unknown()).optional(),
 });
 

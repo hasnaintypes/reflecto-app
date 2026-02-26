@@ -14,14 +14,18 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function WritePageContent() {
-  const now = new Date();
-  const dateStr = format(now, "MMMM do, yyyy").toLowerCase();
-  const dayStr = format(now, "EEEE");
   const searchParams = useSearchParams();
   const typeFromUrl = (searchParams.get("type") as EntryType) ?? "journal";
   const entryId = searchParams.get("id");
 
   const { setCurrentEntry, currentEntry } = useEntryStore();
+
+  const displayDate = currentEntry?.createdAt
+    ? new Date(currentEntry.createdAt)
+    : new Date();
+  const dateStr = format(displayDate, "MMMM do, yyyy").toLowerCase();
+  const dayStr = format(displayDate, "EEEE");
+  const now = new Date();
 
   const defaultTitle = `${dayStr}, ${format(now, "MMM d")}`;
 
@@ -90,7 +94,8 @@ function WritePageContent() {
               {dayStr}
             </h1>
             {currentEntry?.metadata &&
-              (currentEntry.metadata as EntryMetadata).bullets !== undefined && (
+              (currentEntry.metadata as EntryMetadata).bullets !==
+                undefined && (
                 <p className="text-muted-foreground/40 font-mono text-xl font-medium">
                   #{(currentEntry.metadata as EntryMetadata).bullets}
                 </p>

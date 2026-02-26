@@ -6,24 +6,23 @@ import {
   Calendar as CalendarIcon,
   PenLine,
   FileText,
-  Plus,
   Loader2,
   Star,
 } from "lucide-react";
-import { CalendarStrip } from "./_components/calendar-strip";
+import { JournalCalendar } from "./_components/journal-calendar";
 import { JournalTimeline } from "./_components/journal-timeline";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 
 import { api } from "@/trpc/react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { type JournalMetadata } from "@/types/metadata.types";
 import { usePreferencesStore } from "@/stores/use-preferences-store";
+import { CalendarStrip } from "./_components/calendar-strip";
 
 export default function JournalPage() {
   const router = useRouter();
@@ -105,18 +104,16 @@ export default function JournalPage() {
                 </button>
               </PopoverTrigger>
               <PopoverContent
-                className="border-border bg-popover w-auto p-0"
+                className="w-auto border-none bg-transparent p-0 shadow-none"
                 align="end"
               >
-                <Calendar
-                  mode="single"
-                  selected={date}
+                <JournalCalendar
+                  selectedDate={date}
                   onSelect={(d) => setDate(d)}
-                  initialFocus
-                  className="bg-popover text-foreground border-none"
                 />
               </PopoverContent>
             </Popover>
+            {/* Star Icon */}
             <Star
               size={20}
               className={cn(
@@ -127,25 +124,12 @@ export default function JournalPage() {
               )}
               onClick={() => setIsStarredOnly(!isStarredOnly)}
             />
-            <button
-              onClick={handleNewEntry}
-              disabled={createMutation.isPending}
-              className="hover:text-foreground cursor-pointer transition-colors disabled:opacity-50"
-            >
-              {createMutation.isPending ? (
-                <Loader2 size={22} className="animate-spin" />
-              ) : (
-                <Plus size={22} />
-              )}
-            </button>
           </div>
         </header>
 
         <div className="border-border/20 border-b py-4">
-          <CalendarStrip />
+          <CalendarStrip entries={entries} />
         </div>
-
-
       </div>
 
       <div className="mb-8 max-w-2xl space-y-4">

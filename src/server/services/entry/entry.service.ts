@@ -27,21 +27,23 @@ export class EntryService {
     input: CreateEntryInput,
   ): Promise<EntryWithRelations> {
     try {
-      // 0. For journal entries, check if one already exists for today
+      // 0. For journal entries, check if one already exists for the targeted date
       if (input.type === "journal") {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
+        const targetDate = input.createdAt
+          ? new Date(input.createdAt)
+          : new Date();
+        targetDate.setHours(0, 0, 0, 0);
+        const nextDay = new Date(targetDate);
+        nextDay.setDate(nextDay.getDate() + 1);
 
-        const existingJournalToday = await db.entry.findFirst({
+        const existingJournal = await db.entry.findFirst({
           where: {
             userId,
             type: "journal",
             deletedAt: null,
             createdAt: {
-              gte: today,
-              lt: tomorrow,
+              gte: targetDate,
+              lt: nextDay,
             },
           },
           include: {
@@ -62,8 +64,8 @@ export class EntryService {
           },
         });
 
-        if (existingJournalToday) {
-          return existingJournalToday as EntryWithRelations;
+        if (existingJournal) {
+          return existingJournal as EntryWithRelations;
         }
       }
 
@@ -103,7 +105,9 @@ export class EntryService {
             title: input.title,
             content: input.content,
             isStarred: input.isStarred,
+            editorMode: input.editorMode,
             metadata: finalMetadata,
+            createdAt: input.createdAt ?? undefined,
             tags: {
               connect: tags.map((t) => ({ id: t.id })),
             },
@@ -316,6 +320,7 @@ export class EntryService {
           title: input.title ?? existing.title,
           content: input.content ?? existing.content,
           isStarred: input.isStarred ?? existing.isStarred,
+          editorMode: input.editorMode ?? existing.editorMode,
         };
 
         // 2. Re-sync tags/people and update metadata if content changed

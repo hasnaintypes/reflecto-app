@@ -34,6 +34,8 @@ export default function JournalEditor({
   const autocomplete = preferences?.preferences?.autocomplete ?? true;
 
   const lastSavedContent = useRef<string>("");
+  const isHandlingContentSet = useRef<boolean>(true); // Start locked
+  const isInitialized = useRef<boolean>(false);
 
   const effectiveId = propId ?? currentEntry?.id;
   const effectiveType = currentEntry?.type ?? initialType;
@@ -45,13 +47,27 @@ export default function JournalEditor({
       staleTime: Infinity,
     },
   );
-
+  // Sync entry content to editor
   useEffect(() => {
     if (fetchedEntry) {
+      isHandlingContentSet.current = true;
       setCurrentEntry(fetchedEntry);
       lastSavedContent.current = fetchedEntry.content ?? "";
+
+      // We wait for the editor to be available and mounted via the editor object itself
+      // or simply rely on the fresh remount from WritePage key
+      setTimeout(() => {
+        isHandlingContentSet.current = false;
+        isInitialized.current = true;
+      }, 200);
+    } else if (!propId && !isInitialized.current) {
+      // For NEW entries, we still start locked until the default empty content is "stable"
+      setTimeout(() => {
+        isHandlingContentSet.current = false;
+        isInitialized.current = true;
+      }, 200);
     }
-  }, [fetchedEntry, setCurrentEntry]);
+  }, [fetchedEntry, setCurrentEntry, propId]);
 
   const createEntry = api.entry.create.useMutation({
     onSuccess: (data) => {
@@ -132,6 +148,7 @@ export default function JournalEditor({
       }
     },
     onUpdate: ({ editor }) => {
+      if (isHandlingContentSet.current) return;
       const html = editor.getHTML();
       if (html === lastSavedContent.current) return;
 
@@ -187,7 +204,11 @@ export default function JournalEditor({
             editor.commands.setContent(currentEntry.content);
             lastSavedContent.current = currentEntry.content!;
 
-            if (bulletedJournal && editor.isEmpty && !editor.isActive("bulletList")) {
+            if (
+              bulletedJournal &&
+              editor.isEmpty &&
+              !editor.isActive("bulletList")
+            ) {
               editor.commands.toggleBulletList();
             }
           }

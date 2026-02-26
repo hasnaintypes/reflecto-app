@@ -4,7 +4,8 @@ import React from "react";
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Clock, Star, Paperclip } from "lucide-react";
+import { Star, Paperclip } from "lucide-react";
+import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
@@ -30,124 +31,124 @@ interface JournalTimelineProps {
 export function JournalTimeline({ entries }: JournalTimelineProps) {
   const router = useRouter();
   const preferences = usePreferencesStore((state) => state.preferences);
-  const collapseLongBullets =
-    preferences?.preferences?.collapseLongBullets === true;
   const itemIndicators = preferences?.preferences?.itemIndicators !== false;
 
   if (entries.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-6 py-4">
+    <div className="flex flex-col gap-2 py-4">
       {entries.map((entry, i) => {
         const metadata = (entry.metadata ?? {}) as Record<string, unknown>;
-        const category = (metadata.category as string | undefined) ?? "OTHER";
-        const categoryColor = categoryColors[category] ?? "text-zinc-400";
+        const category = (metadata.category as string | undefined) ?? "JOURNAL";
+        const categoryColor = categoryColors[category] ?? "text-zinc-500";
         const tags = (metadata.tags as string[] | undefined) ?? [];
-        const timeStr = format(
-          new Date(entry.createdAt),
-          "hh:mm a, EEE",
-        ).toUpperCase();
+        const dateObj = new Date(entry.createdAt);
+        const timeStr = format(dateObj, "p");
+        const dayStr = format(dateObj, "EEE, MMM do");
 
         return (
           <motion.div
             key={entry.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.05 }}
             onClick={() => router.push(`/write?id=${entry.id}`)}
-            className="group hover:bg-muted/5 relative -mx-4 cursor-pointer rounded-xl px-4 py-6 transition-all duration-300"
+            className="group relative -mx-4 flex cursor-pointer gap-6 rounded-2xl px-4 py-8 transition-all duration-500 hover:bg-white/[0.02]"
           >
-            {/* Timeline Vertical Thread */}
-            <div className="from-border/5 group-hover:from-primary/10 absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b to-transparent opacity-50 transition-all duration-500 group-hover:opacity-100" />
+            {/* Timeline Connector */}
+            <div className="relative mt-1 flex flex-col items-center">
+              <div className="bg-primary/40 ring-primary/10 group-hover:bg-primary group-hover:ring-primary/20 h-2 w-2 rounded-full ring-4 transition-all duration-500 group-hover:scale-125" />
+              <div className="bg-border/20 group-hover:bg-primary/20 absolute top-2 bottom-[-2rem] w-[1px] transition-colors duration-500" />
+            </div>
 
-            {/* Content Wrapper */}
-            <div className="flex flex-col gap-4">
-              {/* Meta Row */}
-              <div className="flex items-center gap-4">
-                <span
-                  className={cn(
-                    "text-[9px] font-bold tracking-[0.3em] uppercase",
-                    categoryColor,
-                  )}
-                >
-                  {category}
-                </span>
-
-                <div className="bg-border/20 h-px w-8" />
-
-                <div className="flex items-center gap-2 text-zinc-600">
-                  <Clock size={10} strokeWidth={2} />
-                  <span className="text-[10px] font-medium tracking-widest uppercase">
+            {/* Content 영역 */}
+            <div className="min-w-0 flex-1 space-y-3">
+              {/* Header: Time & Meta */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-foreground/80 font-mono text-[10px] font-bold tracking-widest uppercase">
                     {timeStr}
                   </span>
+                  <span className="bg-border/30 h-1 w-1 rounded-full" />
+                  <span className="text-muted-foreground/40 font-mono text-[9px] font-medium tracking-wider uppercase">
+                    {dayStr}
+                  </span>
+                  <span
+                    className={cn(
+                      "ml-2 text-[9px] font-bold tracking-[0.2em] uppercase opacity-60 transition-opacity duration-500 group-hover:opacity-100",
+                      categoryColor,
+                    )}
+                  >
+                    {category}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 opacity-40 transition-opacity duration-500 group-hover:opacity-100">
                   {entry.isStarred && (
                     <Star
-                      size={10}
+                      size={12}
                       className="fill-yellow-400 text-yellow-400"
                     />
                   )}
                   {itemIndicators && entry.attachments.length > 0 && (
-                    <Paperclip size={10} className="text-zinc-600" />
+                    <Paperclip size={12} className="text-muted-foreground" />
                   )}
                 </div>
+              </div>
+
+              {/* Entry Preview */}
+              <div className="max-w-3xl">
+                {(() => {
+                  // Robust plain text extraction: replace tags with space, then trim
+                  const plainText = (entry.content ?? "")
+                    .replace(/<[^>]*>/g, " ")
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                  if (plainText.length === 0) return null;
+
+                  return (
+                    <p className="text-muted-foreground/80 group-hover:text-foreground/90 line-clamp-1 font-serif text-[1.1rem] leading-relaxed tracking-tight transition-all duration-500">
+                      {plainText}
+                    </p>
+                  );
+                })()}
 
                 {tags.length > 0 && (
-                  <div className="ml-auto flex items-center gap-2">
+                  <div className="mt-2 flex flex-wrap gap-2 opacity-40 transition-opacity duration-500 group-hover:opacity-100">
                     {tags.map((tag: string) => (
                       <span
                         key={tag}
-                        className="bg-muted border-border/40 text-muted-foreground rounded-full border px-1.5 py-0.5 text-[8px] font-bold tracking-widest uppercase"
+                        className="text-muted-foreground/60 border-border/40 hover:border-primary/30 hover:text-primary rounded px-0 text-[8px] font-bold tracking-widest uppercase transition-colors"
                       >
-                        {tag}
+                        #{tag}
                       </span>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Content Text - Strip ALL HTML for clean one-line preview */}
-              <div
-                className={cn(
-                  "text-muted-foreground group-hover:text-foreground line-clamp-1 max-w-3xl font-serif text-[1.1rem] leading-none tracking-tight transition-colors duration-300",
-                )}
-                dangerouslySetInnerHTML={{
-                  __html: (entry.content ?? "").replace(/<[^>]*>/g, ""),
-                }}
-              />
-
-              {/* Image Gallery - Horizontal Scroll */}
+              {/* Attachments */}
               {entry.attachments.length > 0 && (
-                <div className="custom-scrollbar mt-3 flex gap-3 overflow-x-auto pb-2">
-                  {entry.attachments.map((attachment) => (
-                    <div
-                      key={attachment.id}
-                      className="border-border/20 relative h-32 w-56 shrink-0 overflow-hidden rounded-lg border shadow-sm"
-                    >
-                      <img
-                        src={attachment.fileUrl}
-                        alt="Journal attachment"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
-                  ))}
+                <div className="relative w-full overflow-hidden pt-1">
+                  <div className="no-scrollbar -mx-1 flex gap-4 overflow-x-auto py-2">
+                    {entry.attachments.map((attachment) => (
+                      <div
+                        key={attachment.id}
+                        className="border-border/10 ring-border/5 group-hover:border-border/20 group-hover:ring-primary/10 relative h-32 w-64 shrink-0 overflow-hidden rounded-xl border object-cover shadow-sm ring-1 transition-all duration-700"
+                      >
+                        <Image
+                          src={attachment.fileUrl}
+                          alt="Journal attachment"
+                          fill
+                          className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                        />
+                        <div className="to-background/20 absolute inset-0 bg-gradient-to-t from-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-
-              {/* Interaction Footer (Optional/Subtle) */}
-              <div className="mt-2 flex items-center gap-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <button className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-[#FB923C]">
-                  Edit
-                </button>
-                <button
-                  className="cursor-pointer text-[10px] font-bold tracking-widest text-zinc-600 uppercase hover:text-red-400"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // Add delete logic if needed
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
             </div>
           </motion.div>
         );

@@ -19,13 +19,13 @@ export default function ProtectedLayout({
 
           <Sidebar />
 
-            <div className="relative flex min-w-0 h-screen flex-col overflow-x-hidden pl-[72px]">
-              <Header />
+          <div className="relative flex h-screen min-w-0 flex-col overflow-x-hidden pl-[72px]">
+            <Header />
 
-              <main className="flex-1 overflow-x-hidden overflow-y-auto px-8 pb-8">
-                <div className="mx-auto h-full max-w-5xl">{children}</div>
-              </main>
-            </div>
+            <main className="flex-1 overflow-x-hidden overflow-y-auto px-8 pb-8">
+              <div className="mx-auto h-full max-w-5xl">{children}</div>
+            </main>
+          </div>
 
           <HelpButton />
         </div>
