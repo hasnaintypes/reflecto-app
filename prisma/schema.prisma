@@ -1,4 +1,4 @@
-// Reflecto Database Schema - Minimal Implementation
+// Reflecto Database Schema
 // Version: 2.1 - Based on Actual UI Analysis
 // Learn more: https://pris.ly/d/prisma-schema
 
@@ -10,10 +10,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-// ============================================================================
-// AUTHENTICATION (NextAuth)
-// ============================================================================
 
 model Account {
   id                       String  @id @default(cuid())
@@ -55,10 +51,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ============================================================================
-// USERS & PREFERENCES
-// ============================================================================
-
 model User {
   id             String    @id @default(cuid())
   email          String    @unique
@@ -96,9 +88,6 @@ model UserPreferences {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// ============================================================================
-// CORE CONTENT (Unified Entry Model)
-// ============================================================================
 
 enum EntryType {
   journal
@@ -110,13 +99,14 @@ enum EntryType {
 }
 
 model Entry {
-  id        String    @id @default(cuid())
-  userId    String
-  type      EntryType
-  title     String?
-  content   String?   @db.Text
-  isStarred Boolean   @default(false)
-  metadata  Json? // Type-specific fields (JSONB)
+  id          String    @id @default(cuid())
+  userId      String
+  type        EntryType
+  title       String?
+  content     String?   @db.Text
+  isStarred   Boolean   @default(false)
+  editorMode  String? // "bullet" or "simple"
+  metadata    Json?     // Type-specific fields (JSONB)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime? // Soft delete
@@ -180,10 +170,6 @@ model Attachment {
   @@index([entryId])
   @@index([userId])
 }
-
-// ============================================================================
-// ANALYTICS & INSIGHTS
-// ============================================================================
 
 model ActivityLog {
   id         String   @id @default(cuid())
