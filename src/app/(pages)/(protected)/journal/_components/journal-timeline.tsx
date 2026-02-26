@@ -53,12 +53,12 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
             onClick={() => router.push(`/write?id=${entry.id}`)}
-            className="group relative -mx-4 flex cursor-pointer gap-6 rounded-2xl px-4 py-8 transition-all duration-500 hover:bg-white/[0.02]"
+            className="group relative -mx-4 flex cursor-pointer gap-6 rounded-2xl px-4 py-8 transition-all duration-500 hover:bg-white/2"
           >
             {/* Timeline Connector */}
             <div className="relative mt-1 flex flex-col items-center">
               <div className="bg-primary/40 ring-primary/10 group-hover:bg-primary group-hover:ring-primary/20 h-2 w-2 rounded-full ring-4 transition-all duration-500 group-hover:scale-125" />
-              <div className="bg-border/20 group-hover:bg-primary/20 absolute top-2 bottom-[-2rem] w-[1px] transition-colors duration-500" />
+              <div className="bg-border/20 group-hover:bg-primary/20 absolute top-2 -bottom-8 w-px transition-colors duration-500" />
             </div>
 
             {/* Content 영역 */}
@@ -143,7 +143,7 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                           fill
                           className="object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
-                        <div className="to-background/20 absolute inset-0 bg-gradient-to-t from-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+                        <div className="to-background/20 absolute inset-0 bg-linear-to-t from-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
                       </div>
                     ))}
                   </div>
