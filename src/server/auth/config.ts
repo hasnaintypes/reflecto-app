@@ -1,22 +1,23 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { type DefaultSession, type NextAuthConfig } from "next-auth";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { type JWT } from "next-auth/jwt";
+import { type NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 
 import { db } from "@/server/db";
+import { authConfigEdge } from "./auth.config.edge";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { type JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
-  interface Session extends DefaultSession {
+  interface Session {
     user: {
       id: string;
       email: string;
       name: string;
       image?: string | null;
-    } & DefaultSession["user"];
+    } & import("next-auth").DefaultSession["user"];
   }
 }
 
@@ -28,13 +29,7 @@ declare module "next-auth/jwt" {
 }
 
 export const authConfig = {
-  session: {
-    strategy: "jwt",
-  },
-  pages: {
-    signIn: "/auth/sign-in",
-    error: "/auth/error",
-  },
+  ...authConfigEdge,
   providers: [
     DiscordProvider,
     GoogleProvider({
@@ -80,67 +75,4 @@ export const authConfig = {
     }),
   ],
   adapter: PrismaAdapter(db),
-  callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const protectedRoutes = [
-        "/write",
-        "/journal",
-        "/reflect",
-        "/insights",
-        "/dreams",
-        "/highlights",
-        "/ideas",
-        "/notes",
-        "/people",
-        "/tags",
-        "/wisdom",
-      ];
-      const isProtectedRoute = protectedRoutes.some((route) =>
-        nextUrl.pathname.startsWith(route),
-      );
-      const isAuthPage = nextUrl.pathname.startsWith("/auth");
-
-      if (isProtectedRoute) {
-        if (isLoggedIn) return true;
-        return false; // Redirect to login
-      }
-
-      if (isAuthPage && isLoggedIn) {
-        return Response.redirect(new URL("/write", nextUrl));
-      }
-
-      return true;
-    },
-    async jwt({ token, user, trigger, session }) {
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-        token.picture = user.image;
-        token.image = user.image;
-      }
-
-      if (trigger === "update" && session && typeof session === "object") {
-        const s = session as Record<string, unknown>;
-        if (s.name) token.name = s.name as string;
-        if (s.email) token.email = s.email as string;
-        if (s.image) {
-          token.picture = s.image as string;
-          token.image = s.image as string;
-        }
-      }
-
-      return token;
-    },
-    async session({ session, token }) {
-      if (token.id && session.user) {
-        session.user.id = token.id;
-        if (token.name) session.user.name = token.name;
-        if (token.email) session.user.email = token.email;
-        session.user.image = (token.image ?? token.picture) as string | null;
-      }
-      return session;
-    },
-  },
 } satisfies NextAuthConfig;
