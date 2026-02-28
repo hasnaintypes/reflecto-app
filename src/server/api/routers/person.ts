@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { personService } from "@/server/services/extraction/person.service";
-import { deletePersonSchema } from "@/server/schemas/organization.schema";
+import {
+  deletePersonSchema,
+  updatePersonSchema,
+} from "@/server/schemas/organization.schema";
 
 export const personRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -16,6 +19,13 @@ export const personRouter = createTRPCRouter({
         ctx.session.user.id,
         input.query,
       );
+    }),
+
+  update: protectedProcedure
+    .input(updatePersonSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { id, ...data } = input;
+      return personService.updatePerson(ctx.db, ctx.session.user.id, id, data);
     }),
 
   delete: protectedProcedure

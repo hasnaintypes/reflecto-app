@@ -19,6 +19,7 @@ import type { JournalEditorProps } from "./types";
 import type { EntryMetadata } from "@/types/metadata.types";
 
 import "tippy.js/dist/tippy.css";
+import { Loader2 } from "lucide-react";
 
 export default function JournalEditor({
   id: propId,
@@ -40,39 +41,14 @@ export default function JournalEditor({
   const effectiveId = propId ?? currentEntry?.id;
   const effectiveType = currentEntry?.type ?? initialType;
 
-  const { data: fetchedEntry } = api.entry.getById.useQuery(
-    { id: propId! },
-    {
-      enabled: !!propId && currentEntry?.id !== propId,
-      staleTime: Infinity,
-    },
-  );
-  // Sync entry content to editor
-  useEffect(() => {
-    if (fetchedEntry) {
-      isHandlingContentSet.current = true;
-      setCurrentEntry(fetchedEntry);
-      lastSavedContent.current = fetchedEntry.content ?? "";
-
-      // We wait for the editor to be available and mounted via the editor object itself
-      // or simply rely on the fresh remount from WritePage key
-      setTimeout(() => {
-        isHandlingContentSet.current = false;
-        isInitialized.current = true;
-      }, 200);
-    } else if (!propId && !isInitialized.current) {
-      // For NEW entries, we still start locked until the default empty content is "stable"
-      setTimeout(() => {
-        isHandlingContentSet.current = false;
-        isInitialized.current = true;
-      }, 200);
-    }
-  }, [fetchedEntry, setCurrentEntry, propId]);
-
   const createEntry = api.entry.create.useMutation({
     onSuccess: (data) => {
       setCurrentEntry(data);
       lastSavedContent.current = data.content ?? "";
+      // Sync URL without full reload
+      const url = new URL(window.location.href);
+      url.searchParams.set("id", data.id);
+      window.history.replaceState(null, "", url.toString());
     },
     onError: (err) => {
       console.error("Failed to create entry:", err.message);
@@ -88,6 +64,36 @@ export default function JournalEditor({
       console.error("Failed to update entry:", err.message);
     },
   });
+
+  const handleAutoSave = useDebounce(
+    (content: string) => {
+      if (!effectiveId && (!content || content === "<p></p>")) return;
+
+      // Get latest metadata from store to avoid closure staleness
+      const latestEntry = useEntryStore.getState().currentEntry;
+      const latestMetadata = (latestEntry?.metadata as EntryMetadata) ?? {};
+
+      if (effectiveId) {
+        updateEntryMutation.mutate({
+          id: effectiveId,
+          content,
+          isStarred: currentEntry?.isStarred,
+          editorMode: bulletedJournal ? "bullet" : "simple",
+          metadata: latestMetadata,
+        });
+      } else {
+        createEntry.mutate({
+          type: effectiveType as EntryType,
+          content,
+          isStarred: currentEntry?.isStarred,
+          editorMode: bulletedJournal ? "bullet" : "simple",
+          title: currentEntry?.title ?? "New Entry",
+          metadata: latestMetadata,
+        });
+      }
+    },
+    3000,
+  );
 
   const editor = useEditor({
     extensions: [
@@ -154,39 +160,45 @@ export default function JournalEditor({
 
       const bulletCount = (html.match(/<li[^>]*>/g) ?? []).length;
 
-      const updatedMetadata = {
-        ...(currentEntry?.metadata as EntryMetadata),
-        bullets: bulletCount,
-      } as EntryMetadata;
+      // Update store with bullet count immediately
+      const currentMetadata = (currentEntry?.metadata as Record<string, any>) || {};
+      if (currentMetadata.bullets !== bulletCount) {
+        updateEntry(effectiveId || "", {
+          metadata: { ...currentMetadata, bullets: bulletCount },
+        });
+      }
 
-      handleAutoSave(html, updatedMetadata);
+      handleAutoSave(html);
     },
     immediatelyRender: false,
   });
 
-  const handleAutoSave = useDebounce(
-    (content: string, metadata?: EntryMetadata) => {
-      if (!effectiveId && (!content || content === "<p></p>")) return;
+  // Current entry is now fetched and synced by the parent WritePageContent
+  // which ensures fetching starts even while the loader is showing.
+  const isEntryLoading = false; 
 
-      if (effectiveId) {
-        updateEntryMutation.mutate({
-          id: effectiveId,
-          content,
-          isStarred: currentEntry?.isStarred,
-          metadata: metadata ?? (currentEntry?.metadata as EntryMetadata),
-        });
-      } else {
-        createEntry.mutate({
-          type: effectiveType as EntryType,
-          content,
-          isStarred: currentEntry?.isStarred,
-          title: currentEntry?.title ?? "New Entry",
-          metadata: metadata ?? (currentEntry?.metadata as EntryMetadata),
-        });
+  // Sync entry content to editor whenever the store entry changes
+  useEffect(() => {
+    if (editor && !editor.isDestroyed && currentEntry) {
+      const currentHTML = editor.getHTML();
+      // Only set content if it's different to avoid cursor jumps
+      if (currentEntry.content !== currentHTML) {
+        isHandlingContentSet.current = true;
+        editor.commands.setContent(currentEntry.content || "");
+        lastSavedContent.current = currentEntry.content || "";
+        
+        setTimeout(() => {
+          isHandlingContentSet.current = false;
+          isInitialized.current = true;
+        }, 100);
       }
-    },
-    3000,
-  );
+    } else if (editor && !editor.isDestroyed && !propId && !isInitialized.current) {
+      // For truly new entries
+      editor.commands.setContent("");
+      isInitialized.current = true;
+      isHandlingContentSet.current = false;
+    }
+  }, [currentEntry, editor, propId]);
 
   useEffect(() => {
     if (editor) {
@@ -216,6 +228,14 @@ export default function JournalEditor({
       }
     }
   }, [editor, currentEntry, bulletedJournal]);
+
+  if (isEntryLoading) {
+    return (
+      <div className="flex h-full items-center justify-center py-20">
+        <Loader2 className="animate-spin text-muted-foreground/40" size={32} />
+      </div>
+    );
+  }
 
   return (
     <div className="animate-in fade-in flex h-full flex-col duration-1000">
