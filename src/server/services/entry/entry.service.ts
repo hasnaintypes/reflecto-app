@@ -48,7 +48,7 @@ export class EntryService {
           },
           include: {
             tags: {
-              select: { id: true, name: true, color: true },
+              select: { id: true, name: true },
             },
             people: {
               select: { id: true, name: true },
@@ -75,16 +75,23 @@ export class EntryService {
       // Create entry in transaction
       const entry = await db.$transaction(async (tx) => {
         // 1. Extract tags and people names/ids first
-        const tags = await tagExtractor.syncTags(
-          tx,
-          userId,
-          input.content ?? null,
-        );
-        const people = await personExtractor.syncPeople(
-          tx,
-          userId,
-          input.content ?? null,
-        );
+        let tags: { id: string; name: string }[] = [];
+        let people: { id: string; name: string }[] = [];
+        
+        try {
+          tags = await tagExtractor.syncTags(
+            tx,
+            userId,
+            input.content ?? null,
+          );
+          people = await personExtractor.syncPeople(
+            tx,
+            userId,
+            input.content ?? null,
+          );
+        } catch (err) {
+          throw new Error(`Sync Extraction Error: ${err instanceof Error ? err.message : String(err)}`);
+        }
 
         // 2. Prepare metadata with tags if journal
         const baseMetadata =
@@ -92,59 +99,86 @@ export class EntryService {
             ? { category: "General", mood: 0, ...validatedMetadata }
             : (validatedMetadata as Prisma.InputJsonObject);
 
+        // 2.5 Prepare final metadata
         const finalMetadata: Prisma.InputJsonValue =
           input.type === "journal"
-            ? { ...baseMetadata, tags: tags.map((t) => t.name) }
-            : baseMetadata;
+            ? ({
+                ...baseMetadata,
+                tags: tags.map((t) => t.name),
+              } as Prisma.InputJsonValue)
+            : ({
+                ...(baseMetadata as Record<string, unknown>),
+              } as Prisma.InputJsonValue);
 
         // 3. Create the entry with all relations in ONE go
-        const newEntry = await tx.entry.create({
-          data: {
-            userId,
-            type: input.type,
-            title: input.title,
-            content: input.content,
-            isStarred: input.isStarred,
-            editorMode: input.editorMode,
-            metadata: finalMetadata,
-            createdAt: input.createdAt ?? undefined,
-            tags: {
-              connect: tags.map((t) => ({ id: t.id })),
-            },
-            people: {
-              connect: people.map((p) => ({ id: p.id })),
-            },
-          },
-        });
-
-        // 4. Update activity log and streak
-        await activityService.logActivity(tx, userId, input.type);
-        await streakService.updateStreak(tx, userId);
-
-        // 5. Return entry with relations
-        return tx.entry.findUniqueOrThrow({
-          where: { id: newEntry.id },
-          include: {
-            tags: {
-              select: { id: true, name: true, color: true },
-            },
-            people: {
-              select: { id: true, name: true },
-            },
-            attachments: {
-              select: {
-                id: true,
-                fileUrl: true,
-                fileType: true,
-                thumbnailUrl: true,
+        let newEntry;
+        try {
+          newEntry = await tx.entry.create({
+            data: {
+              userId,
+              type: input.type,
+              title: input.title,
+              content: input.content,
+              isStarred: input.isStarred,
+              editorMode: input.editorMode,
+              metadata: finalMetadata,
+              createdAt: input.createdAt ?? undefined,
+              tags: {
+                connect: tags.map((t) => ({ id: t.id })),
+              },
+              people: {
+                connect: people.map((p) => ({ id: p.id })),
               },
             },
-          },
-        });
+          });
+        } catch (err) {
+          throw new Error(`Entry DB Creation Error: ${err instanceof Error ? err.message : String(err)}`);
+        }
+
+        // 4. Update activity log and streak
+        try {
+          await activityService.logActivity(tx, userId, input.type);
+        } catch (err) {
+          throw new Error(`Activity Logging Error: ${err instanceof Error ? err.message : String(err)}`);
+        }
+
+        try {
+          await streakService.updateStreak(tx, userId);
+        } catch (err) {
+          throw new Error(`Streak Update Error: ${err instanceof Error ? err.message : String(err)}`);
+        }
+
+        // 5. Return entry with relations
+        try {
+          return await tx.entry.findUniqueOrThrow({
+            where: { id: newEntry.id },
+            include: {
+              tags: {
+                select: { id: true, name: true },
+              },
+              people: {
+                select: { id: true, name: true },
+              },
+              attachments: {
+                select: {
+                  id: true,
+                  fileUrl: true,
+                  fileType: true,
+                  thumbnailUrl: true,
+                },
+              },
+            },
+          });
+        } catch (err) {
+          throw new Error(`Final Fetch Error: ${err instanceof Error ? err.message : String(err)}`);
+        }
       });
 
       return entry as EntryWithRelations;
     } catch (error) {
+      if (error instanceof Error && error.message.includes(":")) {
+        throw handleServiceError(error, error.message);
+      }
       throw handleServiceError(error as Error, "Failed to create entry");
     }
   }
@@ -165,7 +199,7 @@ export class EntryService {
       },
       include: {
         tags: {
-          select: { id: true, name: true, color: true },
+          select: { id: true, name: true },
         },
         people: {
           select: { id: true, name: true },
@@ -263,7 +297,7 @@ export class EntryService {
       orderBy: { createdAt: "desc" },
       include: {
         tags: {
-          select: { id: true, name: true, color: true },
+          select: { id: true, name: true },
         },
         people: {
           select: { id: true, name: true },
@@ -339,22 +373,25 @@ export class EntryService {
             set: people.map((p) => ({ id: p.id })),
           };
 
-          // Sync metadata tags if journal
-          if (existing.type === "journal") {
-            const rawMetadata = input.metadata ?? existing.metadata ?? {};
-            const currentMetadata =
-              typeof rawMetadata === "object" && rawMetadata !== null
-                ? (rawMetadata as Record<string, unknown>)
-                : {};
-            data.metadata = {
-              ...currentMetadata,
-              tags: tags.map((t) => t.name),
-            };
-          } else if (input.metadata !== undefined) {
-            data.metadata = input.metadata as Prisma.InputJsonValue;
-          }
+          // 3. Metadata Merge
+          const existingMetadata =
+            (existing.metadata as Record<string, unknown>) || {};
+          const inputMetadata =
+            (input.metadata as Record<string, unknown>) || {};
+
+          data.metadata = {
+            ...existingMetadata,
+            ...inputMetadata,
+            tags: tags.map((t) => t.name),
+          } as Prisma.InputJsonValue;
         } else if (input.metadata !== undefined) {
-          data.metadata = input.metadata as Prisma.InputJsonValue;
+          // If content didn't change but metadata did
+          const existingMetadata =
+            (existing.metadata as Record<string, unknown>) || {};
+          data.metadata = {
+            ...existingMetadata,
+            ...(input.metadata as Record<string, unknown>),
+          } as Prisma.InputJsonValue;
         }
 
         // 3. Perform update with include to get relations
@@ -363,7 +400,7 @@ export class EntryService {
           data,
           include: {
             tags: {
-              select: { id: true, name: true, color: true },
+              select: { id: true, name: true },
             },
             people: {
               select: { id: true, name: true },

@@ -24,7 +24,7 @@ export class TagService {
     db: PrismaClient,
     userId: string,
     tagId: string,
-    data: { name?: string; color?: string | null },
+    data: { name?: string; color?: string | null; group?: string | null },
   ) {
     const tag = await db.tag.findFirst({
       where: { id: tagId, userId },

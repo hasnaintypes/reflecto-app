@@ -7,7 +7,6 @@ import { compare } from "bcryptjs";
 
 import { db } from "@/server/db";
 import { authConfigEdge } from "./auth.config.edge";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { type JWT } from "next-auth/jwt";
 
 declare module "next-auth" {

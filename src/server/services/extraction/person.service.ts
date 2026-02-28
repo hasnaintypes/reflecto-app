@@ -18,6 +18,32 @@ export class PersonService {
   }
 
   /**
+   * Update person (e.g., group, name)
+   */
+  async updatePerson(
+    db: PrismaClient,
+    userId: string,
+    personId: string,
+    data: { name?: string; group?: string | null },
+  ) {
+    const person = await db.person.findFirst({
+      where: { id: personId, userId },
+    });
+
+    if (!person) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Person not found",
+      });
+    }
+
+    return db.person.update({
+      where: { id: personId },
+      data,
+    });
+  }
+
+  /**
    * Delete person if unused (or force)
    */
   async deletePerson(db: PrismaClient, userId: string, personId: string) {
