@@ -31,8 +31,7 @@ export default function JournalPage() {
   const preferences = usePreferencesStore((state) => state.preferences);
   const dayEndsAt = parseInt(preferences?.preferences?.dayEndsAt ?? "0");
 
-  const { data: entryData } = api.entry.list.useQuery({
-    type: "journal",
+  const { data: entryData, isLoading } = api.entry.list.useQuery({
     limit: 50,
     isStarred: isStarredOnly || undefined,
   });
@@ -59,7 +58,9 @@ export default function JournalPage() {
     const existingToday = entries.find((e) => {
       const entryDate = new Date(e.createdAt);
       entryDate.setHours(0, 0, 0, 0);
-      return entryDate.getTime() === adjustedToday.getTime();
+      return (
+        entryDate.getTime() === adjustedToday.getTime() && e.type === "journal"
+      );
     });
 
     if (existingToday) {
@@ -144,8 +145,15 @@ export default function JournalPage() {
       </div>
 
       {/* Content Area */}
-      <div className="relative mt-8">
-        {hasEntries ? (
+      <div className="relative mt-8 min-h-[50vh]">
+        {isLoading ? (
+          <div className="flex h-40 flex-col items-center justify-center space-y-4">
+            <Loader2 className="text-muted-foreground h-8 w-8 animate-spin opacity-50" />
+            <p className="text-muted-foreground/60 text-[10px] font-bold tracking-widest uppercase">
+              Reading memories...
+            </p>
+          </div>
+        ) : hasEntries ? (
           <div className="space-y-10">
             {/* Added a small descriptive label for the timeline */}
             <div className="flex items-center gap-4 opacity-50">

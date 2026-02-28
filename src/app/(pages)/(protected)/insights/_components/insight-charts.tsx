@@ -161,24 +161,24 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                   <linearGradient id="colorWords" x1="0" y1="0" x2="0" y2="1">
                     <stop
                       offset="0%"
-                      stopColor="hsl(var(--primary))"
+                      stopColor="var(--primary)"
                       stopOpacity={0.3}
                     />
                     <stop
                       offset="50%"
-                      stopColor="hsl(var(--primary))"
+                      stopColor="var(--primary)"
                       stopOpacity={0.1}
                     />
                     <stop
                       offset="100%"
-                      stopColor="hsl(var(--primary))"
+                      stopColor="var(--primary)"
                       stopOpacity={0}
                     />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
                   vertical={false}
-                  stroke="hsl(var(--border))"
+                  stroke="var(--border)"
                   strokeOpacity={0.15}
                   strokeDasharray="3 3"
                 />
@@ -189,7 +189,7 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                   tickFormatter={(value: string) => value.toUpperCase()}
                   tick={{
                     fontSize: 9,
-                    fill: "hsl(var(--muted-foreground))",
+                    fill: "var(--muted-foreground)",
                     fontWeight: 700,
                     letterSpacing: "0.05em",
                   }}
@@ -200,28 +200,28 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                   tickLine={false}
                   tick={{
                     fontSize: 9,
-                    fill: "hsl(var(--muted-foreground))",
+                    fill: "var(--muted-foreground)",
                     opacity: 0.5,
                   }}
                 />
                 <Tooltip
                   cursor={{
-                    stroke: "hsl(var(--primary))",
+                    stroke: "var(--primary)",
                     strokeWidth: 2,
                     strokeOpacity: 0.2,
                   }}
                   contentStyle={{
-                    backgroundColor: "hsl(var(--popover))",
-                    border: "1px solid hsl(var(--border))",
+                    backgroundColor: "var(--popover)",
+                    border: "1px solid var(--border)",
                     borderRadius: "12px",
                     fontSize: "11px",
                     fontFamily: "var(--font-mono)",
                     padding: "8px 12px",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
-                  itemStyle={{ color: "hsl(var(--primary))", fontWeight: 600 }}
+                  itemStyle={{ color: "var(--primary)", fontWeight: 600 }}
                   labelStyle={{
-                    color: "hsl(var(--foreground))",
+                    color: "var(--foreground)",
                     fontSize: "10px",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
@@ -230,7 +230,7 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                 <Area
                   type="natural"
                   dataKey="count"
-                  stroke="hsl(var(--primary))"
+                  stroke="var(--primary)"
                   fillOpacity={1}
                   fill="url(#colorWords)"
                   strokeWidth={2.5}
@@ -263,12 +263,12 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                   <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop
                       offset="0%"
-                      stopColor="hsl(var(--primary))"
+                      stopColor="var(--primary)"
                       stopOpacity={0.8}
                     />
                     <stop
                       offset="100%"
-                      stopColor="hsl(var(--primary))"
+                      stopColor="var(--primary)"
                       stopOpacity={0.3}
                     />
                   </linearGradient>
@@ -280,7 +280,7 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                   tickFormatter={(value: string) => value.toUpperCase()}
                   tick={{
                     fontSize: 9,
-                    fill: "hsl(var(--muted-foreground))",
+                    fill: "var(--muted-foreground)",
                     fontWeight: 700,
                     letterSpacing: "0.05em",
                   }}
@@ -288,13 +288,13 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                 />
                 <Tooltip
                   cursor={{
-                    fill: "hsl(var(--primary))",
+                    fill: "var(--primary)",
                     opacity: 0.08,
                     radius: 8,
                   }}
                   contentStyle={{
-                    backgroundColor: "hsl(var(--popover))",
-                    border: "1px solid hsl(var(--border))",
+                    backgroundColor: "var(--popover)",
+                    border: "1px solid var(--border)",
                     borderRadius: "12px",
                     fontSize: "11px",
                     fontFamily: "var(--font-mono)",
@@ -310,7 +310,7 @@ export function InsightCharts({ entries }: InsightChartsProps) {
                     return [`${count} entries`, "Activity"];
                   }}
                   labelStyle={{
-                    color: "hsl(var(--foreground))",
+                    color: "var(--foreground)",
                     fontSize: "10px",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",

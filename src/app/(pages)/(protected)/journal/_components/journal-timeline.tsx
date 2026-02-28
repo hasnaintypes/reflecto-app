@@ -22,6 +22,12 @@ const categoryColors: Record<string, string> = {
   "TINY WINS": "text-pink-400",
   "DAILY LOG": "text-zinc-400",
   VENTING: "text-rose-400",
+  DREAM: "text-yellow-400",
+  NOTE: "text-purple-400",
+  WISDOM: "text-pink-400",
+  IDEA: "text-orange-400",
+  HIGHLIGHT: "text-red-400",
+  JOURNAL: "text-zinc-500",
 };
 
 interface JournalTimelineProps {
@@ -39,7 +45,14 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
     <div className="flex flex-col gap-2 py-4">
       {entries.map((entry, i) => {
         const metadata = (entry.metadata ?? {}) as Record<string, unknown>;
-        const category = (metadata.category as string | undefined) ?? "JOURNAL";
+
+        let category = "JOURNAL";
+        if (entry.type !== "journal") {
+          category = entry.type.toUpperCase();
+        } else {
+          category = (metadata.category as string | undefined) ?? "JOURNAL";
+        }
+
         const categoryColor = categoryColors[category] ?? "text-zinc-500";
         const tags = (metadata.tags as string[] | undefined) ?? [];
         const dateObj = new Date(entry.createdAt);
@@ -52,7 +65,13 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            onClick={() => router.push(`/write?id=${entry.id}`)}
+            onClick={() => {
+              if (entry.type === "journal") {
+                router.push(`/write?id=${entry.id}`);
+              } else {
+                router.push(`/${entry.type}s`); // e.g. /dreams
+              }
+            }}
             className="group relative -mx-4 flex cursor-pointer gap-6 rounded-2xl px-4 py-8 transition-all duration-500 hover:bg-white/2"
           >
             {/* Timeline Connector */}
@@ -99,18 +118,30 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
               {/* Entry Preview */}
               <div className="max-w-3xl">
                 {(() => {
-                  // Robust plain text extraction: replace tags with space, then trim
-                  const plainText = (entry.content ?? "")
-                    .replace(/<[^>]*>/g, " ")
-                    .replace(/\s+/g, " ")
+                  // Robust plain text extraction: strip tags, remove multiple spaces
+                  const rawHtml = entry.content ?? "";
+                  const plainText = rawHtml
+                    .replace(/<[^>]*>/g, " ") // Replace tags with space
+                    .replace(/&nbsp;/g, " ") // Replace non-breaking spaces
+                    .replace(/\s+/g, " ") // Collapse multiple spaces into one
                     .trim();
 
-                  if (plainText.length === 0) return null;
+                  // We want to show the preview if there is ANY actual text OR if title exists
+                  if (plainText.length === 0 && !entry.title) return null;
 
                   return (
-                    <p className="text-muted-foreground/80 group-hover:text-foreground/90 line-clamp-1 font-serif text-[1.1rem] leading-relaxed tracking-tight transition-all duration-500">
-                      {plainText}
-                    </p>
+                    <div className="space-y-1">
+                      {entry.type !== "journal" && entry.title && (
+                        <h3 className="text-foreground/90 group-hover:text-foreground font-serif text-lg font-medium tracking-tight">
+                          {entry.title}
+                        </h3>
+                      )}
+                      {plainText.length > 0 && (
+                        <p className="text-muted-foreground/80 group-hover:text-foreground/90 line-clamp-1 font-serif text-[1.1rem] leading-relaxed tracking-tight transition-all duration-500">
+                          {plainText}
+                        </p>
+                      )}
+                    </div>
                   );
                 })()}
 
@@ -141,6 +172,7 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                           src={attachment.fileUrl}
                           alt="Journal attachment"
                           fill
+                          sizes="256px"
                           className="object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
                         <div className="to-background/20 absolute inset-0 bg-linear-to-t from-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
