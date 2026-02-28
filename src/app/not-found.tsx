@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MoveLeft, Home, Search } from "lucide-react";
+import { MoveLeft, Home } from "lucide-react";
 
 export default function NotFound() {
   return (
@@ -12,9 +12,6 @@ export default function NotFound() {
         <div className="relative mb-8">
           <div className="text-primary/20 absolute -top-12 left-1/2 -translate-x-1/2 text-[180px] font-bold select-none">
             404
-          </div>
-          <div className="bg-muted flex h-24 w-24 items-center justify-center rounded-3xl border border-white/5 shadow-2xl backdrop-blur-sm">
-            <Search size={40} className="text-primary animate-pulse" />
           </div>
         </div>
 

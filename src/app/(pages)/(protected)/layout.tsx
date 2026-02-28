@@ -23,7 +23,7 @@ export default function ProtectedLayout({
             <Header />
 
             <main className="flex-1 overflow-x-hidden overflow-y-auto px-8 pb-8">
-              <div className="mx-auto h-full max-w-5xl">{children}</div>
+              <div className="mx-auto max-w-5xl">{children}</div>
             </main>
           </div>
 
