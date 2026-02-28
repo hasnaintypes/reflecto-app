@@ -128,7 +128,7 @@ model Tag {
   id        String   @id @default(cuid())
   userId    String
   name      String
-  color     String?
+  group     String?
   createdAt DateTime @default(now())
 
   // Relations
@@ -143,6 +143,7 @@ model Person {
   id        String   @id @default(cuid())
   userId    String
   name      String // Extracted from @name mentions
+  group     String?
   createdAt DateTime @default(now())
 
   // Relations
