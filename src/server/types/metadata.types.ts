@@ -12,8 +12,6 @@ export type JournalMetadata = {
 
 // Dream metadata
 export type DreamMetadata = {
-  atmosphere?: string;
-  clarity?: string;
   bullets?: number;
 };
 

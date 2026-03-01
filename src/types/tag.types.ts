@@ -1,5 +1,8 @@
 export interface SharedTag {
   id: string;
   name: string;
-  color: string | null;
+  group: string | null;
+  _count: {
+    entries: number;
+  };
 }

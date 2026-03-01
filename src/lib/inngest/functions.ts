@@ -57,7 +57,7 @@ export const checkInactivityAndRemind = inngest.createFunction(
             subject: "We miss you! Take a moment to reflect.",
             html: `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                <h1>Hello ${user.name || "there"},</h1>
+                <h1>Hello ${user.name ?? "there"},</h1>
                 <p>It's been a few days since your last reflection.</p>
                 <p>Journaling regularly helps you track your growth and maintain mental clarity. Why not take 5 minutes today to write down what's on your mind?</p>
                 <div style="margin-top: 30px;">

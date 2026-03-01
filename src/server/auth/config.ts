@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { type NextAuthConfig } from "next-auth";
+import { type NextAuthConfig, type DefaultSession } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -7,7 +7,6 @@ import { compare } from "bcryptjs";
 
 import { db } from "@/server/db";
 import { authConfigEdge } from "./auth.config.edge";
-import { type JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
   interface Session {
@@ -16,11 +15,9 @@ declare module "next-auth" {
       email: string;
       name: string;
       image?: string | null;
-    } & import("next-auth").DefaultSession["user"];
+    } & DefaultSession["user"];
   }
-}
 
-declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
     image?: string | null;
