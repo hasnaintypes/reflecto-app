@@ -11,7 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { EntryMetadata } from "@/types/metadata.types";
 
 const CATEGORIES = [
   "JOURNAL",
@@ -42,7 +41,7 @@ export function MetadataEditor() {
 
   if (!currentEntry) return null;
 
-  const metadata = (currentEntry.metadata as Record<string, any>) || {};
+  const metadata = (currentEntry.metadata as Record<string, unknown>) ?? {};
   const currentMood = localMood ?? (metadata.mood as number) ?? 0;
   const currentCategory =
     localCategory ?? (metadata.category as string) ?? "JOURNAL";

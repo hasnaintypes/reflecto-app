@@ -11,8 +11,6 @@ export class DreamService {
     db: PrismaClient,
     userId: string,
     filters: {
-      atmosphere?: string;
-      clarity?: string;
       limit?: number;
       cursor?: string;
     },
@@ -23,10 +21,7 @@ export class DreamService {
     return entryService.list(db, userId, {
       limit: filters.limit ?? 20,
       cursor: filters.cursor,
-      metadata: {
-        atmosphere: filters.atmosphere,
-        clarity: filters.clarity,
-      },
+      metadata: {},
     });
   }
 }

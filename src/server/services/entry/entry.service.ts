@@ -375,9 +375,8 @@ export class EntryService {
 
           // 3. Metadata Merge
           const existingMetadata =
-            (existing.metadata as Record<string, unknown>) || {};
-          const inputMetadata =
-            (input.metadata as Record<string, unknown>) || {};
+            (existing.metadata as Record<string, unknown>) ?? {};
+          const inputMetadata = input.metadata ?? {};
 
           data.metadata = {
             ...existingMetadata,
@@ -387,10 +386,10 @@ export class EntryService {
         } else if (input.metadata !== undefined) {
           // If content didn't change but metadata did
           const existingMetadata =
-            (existing.metadata as Record<string, unknown>) || {};
+            (existing.metadata as Record<string, unknown>) ?? {};
           data.metadata = {
             ...existingMetadata,
-            ...(input.metadata as Record<string, unknown>),
+            ...input.metadata,
           } as Prisma.InputJsonValue;
         }
 

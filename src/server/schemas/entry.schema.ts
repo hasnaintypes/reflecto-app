@@ -25,8 +25,6 @@ export const journalMetadataSchema = z
 
 export const dreamMetadataSchema = z
   .object({
-    atmosphere: z.string().optional(),
-    clarity: z.string().optional(),
   })
   .optional();
 
