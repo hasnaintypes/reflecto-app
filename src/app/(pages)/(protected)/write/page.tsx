@@ -185,7 +185,7 @@ function WritePageContent() {
 
       <div className="animate-in fade-in slide-in-from-bottom-4 custom-scrollbar flex-1 overflow-x-hidden overflow-y-auto duration-1000">
         <JournalEditor
-          key={entryId || "new"}
+          key={entryId ?? "new"}
           id={entryId ?? undefined}
           initialType={typeFromUrl}
         />

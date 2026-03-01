@@ -161,9 +161,9 @@ export default function JournalEditor({
       const bulletCount = (html.match(/<li[^>]*>/g) ?? []).length;
 
       // Update store with bullet count immediately
-      const currentMetadata = (currentEntry?.metadata as Record<string, any>) || {};
+      const currentMetadata = (currentEntry?.metadata as Record<string, unknown>) ?? {};
       if (currentMetadata.bullets !== bulletCount) {
-        updateEntry(effectiveId || "", {
+        updateEntry(effectiveId ?? "", {
           metadata: { ...currentMetadata, bullets: bulletCount },
         });
       }
@@ -184,8 +184,8 @@ export default function JournalEditor({
       // Only set content if it's different to avoid cursor jumps
       if (currentEntry.content !== currentHTML) {
         isHandlingContentSet.current = true;
-        editor.commands.setContent(currentEntry.content || "");
-        lastSavedContent.current = currentEntry.content || "";
+        editor.commands.setContent(currentEntry.content ?? "");
+        lastSavedContent.current = currentEntry.content ?? "";
         
         setTimeout(() => {
           isHandlingContentSet.current = false;
