@@ -1,13 +1,20 @@
 import { TagItem } from "./tag-item";
 import { Loader2 } from "lucide-react";
+import { type SharedTag } from "@/types/tag.types";
 
 interface TagListProps {
-  tags: any[] | undefined;
+  tags: SharedTag[] | undefined;
   isLoading: boolean;
-  onEditGroup: (tag: any) => void;
+  onEditName: (tag: SharedTag) => void;
+  onDelete: (tag: SharedTag) => void;
 }
 
-export function TagList({ tags, isLoading, onEditGroup }: TagListProps) {
+export function TagList({
+  tags,
+  isLoading,
+  onEditName,
+  onDelete,
+}: TagListProps) {
   if (isLoading) {
     return (
       <div className="flex h-32 items-center justify-center">
@@ -28,7 +35,12 @@ export function TagList({ tags, isLoading, onEditGroup }: TagListProps) {
   return (
     <div className="grid grid-cols-1 gap-2">
       {tags.map((tag) => (
-        <TagItem key={tag.id} tag={tag} onEditGroup={onEditGroup} />
+        <TagItem
+          key={tag.id}
+          tag={tag}
+          onEditName={onEditName}
+          onDelete={onDelete}
+        />
       ))}
     </div>
   );

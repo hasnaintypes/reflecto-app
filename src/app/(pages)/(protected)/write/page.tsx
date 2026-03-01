@@ -24,15 +24,19 @@ function WritePageContent() {
   const showBulletCount = preferences?.preferences?.bulletedMode ?? true;
 
   // Load specific entry if ID is provided
-  const { data: fetchedEntry, isLoading: isEntryLoading } = api.entry.getById.useQuery(
-    { id: entryId! },
-    {
-      enabled: !!entryId && currentEntry?.id !== entryId,
-      staleTime: Infinity,
-    },
-  );
+  const { data: fetchedEntry, isLoading: isEntryLoading } =
+    api.entry.getById.useQuery(
+      { id: entryId! },
+      {
+        enabled: !!entryId && currentEntry?.id !== entryId,
+        staleTime: Infinity,
+      },
+    );
 
-  const isLoadingEntry = !!entryId && (!currentEntry || currentEntry.id !== entryId) && isEntryLoading;
+  const isLoadingEntry =
+    !!entryId &&
+    (!currentEntry || currentEntry.id !== entryId) &&
+    isEntryLoading;
 
   // Sync fetched entry to store
   useEffect(() => {
@@ -47,7 +51,9 @@ function WritePageContent() {
       ? null
       : new Date();
 
-  const dateStr = displayDate ? format(displayDate, "MMMM do, yyyy").toLowerCase() : "";
+  const dateStr = displayDate
+    ? format(displayDate, "MMMM do, yyyy").toLowerCase()
+    : "";
   const dayStr = displayDate ? format(displayDate, "EEEE") : "";
   const now = new Date();
 
@@ -108,16 +114,21 @@ function WritePageContent() {
 
   // Handle entry clearing and transitions
   useEffect(() => {
-    if (entryId && currentEntry && currentEntry.id !== entryId && !isEntryLoading) {
+    if (
+      entryId &&
+      currentEntry &&
+      currentEntry.id !== entryId &&
+      !isEntryLoading
+    ) {
       setCurrentEntry(null);
     }
   }, [entryId, currentEntry, setCurrentEntry, isEntryLoading]);
 
   if (isLoadingEntry) {
     return (
-      <div className="flex h-screen items-center justify-center flex-col gap-4 animate-in fade-in duration-500">
-        <Loader2 className="animate-spin text-primary/20" size={48} />
-        <p className="text-muted-foreground/40 font-serif italic text-sm tracking-wide">
+      <div className="animate-in fade-in flex h-screen flex-col items-center justify-center gap-4 duration-500">
+        <Loader2 className="text-primary/20 animate-spin" size={48} />
+        <p className="text-muted-foreground/40 font-serif text-sm tracking-wide italic">
           Syncing with your reflection...
         </p>
       </div>
