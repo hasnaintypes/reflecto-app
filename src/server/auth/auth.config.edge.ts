@@ -68,7 +68,7 @@ export const authConfigEdge = {
     },
     async session({ session, token }) {
       if (token.id && session.user) {
-        session.user.id = token.id;
+        session.user.id = token.id as string;
         if (token.name) session.user.name = token.name;
         if (token.email) session.user.email = token.email;
         session.user.image = (token.image ?? token.picture) as string | null;

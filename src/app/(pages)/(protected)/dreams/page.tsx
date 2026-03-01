@@ -16,7 +16,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { type DreamMetadata } from "@/types/metadata.types";
 import { toast } from "sonner";
@@ -24,7 +23,10 @@ import { toast } from "sonner";
 export default function DreamsPage() {
   const router = useRouter();
   const [isStarredOnly, setIsStarredOnly] = useState(false);
-  const [deletingDream, setDeletingDream] = useState<any>(null);
+  const [deletingDream, setDeletingDream] = useState<{
+    id: string;
+    title: string | null;
+  } | null>(null);
   const { data, isLoading } = api.entry.list.useQuery({
     type: "dream",
     limit: 50,
@@ -40,7 +42,7 @@ export default function DreamsPage() {
 
   const deleteMutation = api.entry.delete.useMutation({
     onSuccess: () => {
-      utils.entry.list.invalidate();
+      void utils.entry.list.invalidate();
       setDeletingDream(null);
       toast.success("Dream deleted successfully");
     },
@@ -120,7 +122,7 @@ export default function DreamsPage() {
       <div className="mt-16">
         {hasDreams ? (
           <div className="flex flex-col">
-            {dreams.map((dream, i) => {
+            {dreams.map((dream) => {
               // Strip HTML tags and create a clean preview string
               const previewText = dream.content
                 ? dream.content.replace(/<[^>]*>/g, "").slice(0, 160)
@@ -249,7 +251,9 @@ export default function DreamsPage() {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => handleDelete(deletingDream?.id)}
+              onClick={() =>
+                deletingDream?.id && handleDelete(deletingDream.id)
+              }
               className="min-w-[100px] flex-1 rounded-xl bg-red-500 text-white hover:bg-red-600 sm:flex-none"
             >
               {deleteMutation.isPending ? (

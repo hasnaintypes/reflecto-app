@@ -144,7 +144,7 @@ export default function ProfilePage() {
         <section className="border-border/10 border-b pb-12">
           <div className="flex flex-col items-center sm:flex-row sm:gap-10">
             <div className="group relative">
-              <Avatar className="h-40 w-40 border-4 border-white/5 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+              <Avatar className="bg-background relative z-10 h-40 w-40 transition-transform duration-500 group-hover:scale-105">
                 <AvatarImage
                   src={session?.user?.image ?? ""}
                   key={session?.user?.image}
@@ -261,8 +261,8 @@ export default function ProfilePage() {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
-                variant="destructive"
-                className="rounded-xl border border-red-500/20 bg-red-500/10 !bg-none px-8 text-red-500 transition-all hover:scale-105 hover:bg-red-500 hover:text-white"
+                variant="outline"
+                className="border-border/40 rounded-xl bg-transparent text-red-500/80 transition-all hover:scale-105 hover:bg-red-500/10 hover:text-red-500"
               >
                 <Trash2 size={16} className="mr-2" />
                 Delete Account

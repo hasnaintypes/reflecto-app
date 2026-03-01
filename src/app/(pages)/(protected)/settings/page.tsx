@@ -56,13 +56,13 @@ const SettingItem = ({
           {isCloud && <Cloud size={12} />}
           {isMonitor && <Monitor size={12} />}
           {isPro && (
-            <span className="rounded-sm bg-zinc-800 px-1 py-0.5 text-[8px] font-bold tracking-widest text-zinc-400 uppercase">
+            <span className="bg-muted rounded-sm px-1 py-0.5 text-[8px] font-bold tracking-widest text-[#34D399] uppercase">
               PRO <span className="font-serif lowercase italic">i</span>
             </span>
           )}
         </div>
       </div>
-      <p className="max-w-md text-[13px] leading-relaxed text-zinc-500">
+      <p className="text-muted-foreground/60 max-w-md text-[13px] leading-relaxed">
         {description}
       </p>
     </div>
@@ -77,9 +77,9 @@ const SectionHeader = ({
   icon: React.ElementType;
   title: string;
 }) => (
-  <div className="mb-4 flex items-center gap-2 border-b border-white/5 pb-2">
-    <IconComp size={16} className="text-zinc-600" />
-    <h3 className="text-[10px] font-bold tracking-[0.3em] text-zinc-500 uppercase">
+  <div className="border-border/10 mb-6 flex items-center gap-3 border-b pb-4">
+    <IconComp size={16} className="text-muted-foreground/40" />
+    <h3 className="text-muted-foreground/60 text-[10px] font-bold tracking-[0.3em] uppercase">
       {title}
     </h3>
   </div>
@@ -154,20 +154,23 @@ export default function SettingsPage() {
     );
 
   return (
-    <div className="max-w-3xl space-y-16 px-4 py-10">
-      <div className="space-y-4">
-        <h1 className="font-playfair text-5xl font-bold tracking-tight">
-          Settings
-        </h1>
-        <p className="text-muted-foreground font-serif text-lg italic">
-          Tailor the reflection engine to your frequency.
-        </p>
-      </div>
+    <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-3xl space-y-16 px-6 pt-20 pb-24 duration-1000">
+      {/* Header Section */}
+      <header className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="space-y-1">
+          <p className="text-[10px] font-bold tracking-[0.3em] text-[#34D399] uppercase">
+            Workspace
+          </p>
+          <h1 className="text-foreground font-serif text-5xl font-medium tracking-tight italic">
+            Settings
+          </h1>
+        </div>
+      </header>
 
       {/* --- General --- */}
       <section>
         <SectionHeader icon={Settings} title="General" />
-        <div className="divide-y divide-white/5">
+        <div className="divide-border/5 divide-y">
           <SettingItem
             icon={Layout}
             title="Day ends at"
@@ -179,10 +182,10 @@ export default function SettingsPage() {
                 value={(getPref("dayEndsAt", "0") as string) || "0"}
                 onValueChange={(v) => setPrefValue("dayEndsAt", v)}
               >
-                <SelectTrigger className="h-9 w-20 rounded-lg border-white/5 bg-zinc-900">
+                <SelectTrigger className="border-border/20 bg-muted/5 h-9 w-20 rounded-lg">
                   <SelectValue placeholder="0" />
                 </SelectTrigger>
-                <SelectContent className="border-white/5 bg-zinc-900">
+                <SelectContent className="border-border/20 bg-card">
                   <SelectItem value="0" className="cursor-pointer">
                     0
                   </SelectItem>
@@ -197,7 +200,9 @@ export default function SettingsPage() {
                   ))}
                 </SelectContent>
               </Select>
-              <span className="text-sm font-bold text-zinc-400">AM</span>
+              <span className="text-muted-foreground/60 text-sm font-bold">
+                AM
+              </span>
             </div>
           </SettingItem>
 
@@ -228,7 +233,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   setPrefValue("dailyReminderTime", e.target.value)
                 }
-                className="h-9 rounded-lg border border-white/5 bg-zinc-900 px-2 text-sm text-zinc-200 outline-none focus:border-white/20"
+                className="border-border/20 bg-muted/5 text-foreground focus:border-border/40 h-9 rounded-lg border px-2 text-sm outline-none"
               />
               <Switch
                 checked={getPref("notificationEnabled", true) as boolean}
@@ -247,10 +252,10 @@ export default function SettingsPage() {
               value={(getPref("fontSize", "medium") as string) || "medium"}
               onValueChange={(v) => setPrefValue("fontSize", v)}
             >
-              <SelectTrigger className="h-9 w-32 rounded-lg border-white/5 bg-zinc-900">
+              <SelectTrigger className="border-border/20 bg-muted/5 h-9 w-32 rounded-lg">
                 <SelectValue placeholder="Default" />
               </SelectTrigger>
-              <SelectContent className="border-white/5 bg-zinc-900">
+              <SelectContent className="border-border/20 bg-card">
                 <SelectItem value="small" className="cursor-pointer">
                   Small
                 </SelectItem>
@@ -281,7 +286,7 @@ export default function SettingsPage() {
       {/* --- Journaling --- */}
       <section>
         <SectionHeader icon={BookOpen} title="Journaling" />
-        <div className="divide-y divide-white/5">
+        <div className="divide-border/5 divide-y">
           <SettingItem
             icon={Layout}
             title="Bulleted Mode"
@@ -408,7 +413,7 @@ export default function SettingsPage() {
       {/* --- Dreams --- */}
       <section>
         <SectionHeader icon={Moon} title="Dreams" />
-        <div className="divide-y divide-white/5">
+        <div className="divide-border/5 divide-y">
           <SettingItem
             icon={Moon}
             title="Enable Dreams"
@@ -450,7 +455,7 @@ export default function SettingsPage() {
       {/* --- Notes --- */}
       <section>
         <SectionHeader icon={Pin} title="Notes" />
-        <div className="divide-y divide-white/5">
+        <div className="divide-border/5 divide-y">
           <SettingItem
             icon={Pin}
             title="Enable Notes"

@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, LogOut, History as HistoryIcon, Settings } from "lucide-react";
+import { User, LogOut, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 
 export function UserDropdown() {
@@ -59,7 +59,6 @@ export function UserDropdown() {
           {[
             { icon: User, label: "Profile", href: "/profile" },
             { icon: Settings, label: "Settings", href: "/settings" },
-            { icon: HistoryIcon, label: "Changelog", href: "/changelog" },
           ].map((item) => (
             <Link key={item.label} href={item.href}>
               <DropdownMenuItem className="group text-muted-foreground focus:bg-muted focus:text-foreground flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-all">

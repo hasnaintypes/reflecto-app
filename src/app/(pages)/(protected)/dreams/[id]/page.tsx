@@ -69,16 +69,10 @@ export default function DreamDetailPage() {
     new Date(currentEntry.createdAt),
     "MMMM do, yyyy",
   ).toLowerCase();
-  const metadata = (currentEntry.metadata as DreamMetadata) ?? {};
 
   const handleTitleChange = (e: React.FormEvent<HTMLHeadingElement>) => {
     const newTitle = e.currentTarget.innerText;
     debouncedUpdate({ title: newTitle });
-  };
-
-  const handleMetadataChange = (field: keyof DreamMetadata, value: string) => {
-    const newMetadata = { ...metadata, [field]: value };
-    debouncedUpdate({ metadata: newMetadata });
   };
 
   return (
