@@ -1,18 +1,21 @@
 import { PersonItem } from "./person-item";
 import { Loader2, Layers } from "lucide-react";
+import { type SharedPerson } from "@/types/person.types";
 
 interface GroupListProps {
-  peopleByGroup: Record<string, any[]>;
+  peopleByGroup: Record<string, SharedPerson[]>;
   sortedGroups: string[];
   isLoading: boolean;
-  onEditGroup: (person: any) => void;
+  onEditName: (person: SharedPerson) => void;
+  onDelete: (person: SharedPerson) => void;
 }
 
 export function GroupList({
   peopleByGroup,
   sortedGroups,
   isLoading,
-  onEditGroup,
+  onEditName,
+  onDelete,
 }: GroupListProps) {
   if (isLoading) {
     return (
@@ -24,8 +27,8 @@ export function GroupList({
 
   if (sortedGroups.length === 0) {
     return (
-      <div className="text-muted-foreground py-20 text-center space-y-4">
-        <div className="bg-muted/30 mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6">
+      <div className="text-muted-foreground space-y-4 py-20 text-center">
+        <div className="bg-muted/30 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full">
           <Layers size={32} className="opacity-20" />
         </div>
         <p className="text-lg">You didn&apos;t create any groups yet.</p>
@@ -45,14 +48,20 @@ export function GroupList({
               {group}
             </h2>
             <div className="bg-border/40 h-[1px] flex-1" />
-            <span className="text-muted-foreground/40 font-mono text-[10px] uppercase tracking-wider">
-              {peopleByGroup[group]!.length} {peopleByGroup[group]!.length === 1 ? "person" : "people"}
+            <span className="text-muted-foreground/40 font-mono text-[10px] tracking-wider uppercase">
+              {peopleByGroup[group]!.length}{" "}
+              {peopleByGroup[group]!.length === 1 ? "person" : "people"}
             </span>
           </div>
 
           <div className="grid grid-cols-1 gap-2">
             {peopleByGroup[group]!.map((person) => (
-              <PersonItem key={person.id} person={person} onEditGroup={onEditGroup} />
+              <PersonItem
+                key={person.id}
+                person={person}
+                onEditName={onEditName}
+                onDelete={onDelete}
+              />
             ))}
           </div>
         </div>

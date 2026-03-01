@@ -17,37 +17,78 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PersonList } from "./_components/person-list";
 import { GroupList } from "./_components/group-list";
 import { CreateGroupDialog } from "./_components/create-group-dialog";
+import { toast } from "sonner";
+import { type SharedPerson } from "@/types/person.types";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Trash2 } from "lucide-react";
 
 export default function PeoplePage() {
   const utils = api.useUtils();
   const { data: people, isLoading } = api.person.list.useQuery();
 
-  const [editingPerson, setEditingPerson] = useState<any | null>(null);
-  const [newGroupValue, setNewGroupValue] = useState("");
+  const [renamingPerson, setRenamingPerson] = useState<SharedPerson | null>(
+    null,
+  );
+  const [deletingPerson, setDeletingPerson] = useState<SharedPerson | null>(
+    null,
+  );
+  const [newNameValue, setNewNameValue] = useState("");
   const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false);
 
   const updateMutation = api.person.update.useMutation({
     onSuccess: () => {
-      utils.person.list.invalidate();
-      setEditingPerson(null);
+      void utils.person.list.invalidate();
       setIsCreateGroupOpen(false);
     },
   });
 
-  const handleEditGroup = (person: any) => {
-    setEditingPerson(person);
-    setNewGroupValue(person.group || "");
+  const handleEditName = (person: SharedPerson) => {
+    setRenamingPerson(person);
+    setNewNameValue(person.name ?? "");
   };
 
-  const handleSaveGroup = () => {
-    if (!editingPerson) return;
+  const handleDelete = (person: SharedPerson) => {
+    setDeletingPerson(person);
+  };
+
+  const handleSaveName = () => {
+    if (!renamingPerson) return;
     updateMutation.mutate({
-      id: editingPerson.id,
-      group: newGroupValue.trim() || null,
+      id: renamingPerson.id,
+      name: newNameValue.trim(),
     });
+    setRenamingPerson(null);
   };
 
-  const handleBulkCreateGroup = async (groupName: string, personIds: string[]) => {
+  const deleteMutation = api.person.delete.useMutation({
+    onSuccess: () => {
+      void utils.person.list.invalidate();
+      setDeletingPerson(null);
+      toast.success("Person deleted successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Failed to delete person");
+    },
+  });
+
+  const confirmDelete = () => {
+    if (!deletingPerson) return;
+    deleteMutation.mutate({ id: deletingPerson.id });
+  };
+
+  const handleBulkCreateGroup = async (
+    groupName: string,
+    personIds: string[],
+  ) => {
     for (const personId of personIds) {
       await updateMutation.mutateAsync({
         id: personId,
@@ -60,12 +101,12 @@ export default function PeoplePage() {
     if (!people) return { peopleByGroup: {}, sortedGroups: [] };
     const groups = people.reduce(
       (acc, person) => {
-        const group = person.group || "Ungrouped";
-        if (!acc[group]) acc[group] = [];
+        const group = person.group ?? "Ungrouped";
+        acc[group] ??= [];
         acc[group].push(person);
         return acc;
       },
-      {} as Record<string, any[]>,
+      {} as Record<string, SharedPerson[]>,
     );
 
     const sorted = Object.keys(groups).sort((a, b) => {
@@ -99,17 +140,20 @@ export default function PeoplePage() {
       </header>
 
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className="mb-10 border-b border-border/40 w-full justify-start rounded-none h-auto p-0 bg-transparent gap-8" variant="line">
+        <TabsList
+          className="border-border/40 mb-10 h-auto w-full justify-start gap-8 rounded-none border-b bg-transparent p-0"
+          variant="line"
+        >
           <TabsTrigger
             value="all"
-            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-[#34D399] border-b-2 border-transparent px-0 py-4 flex items-center gap-2 rounded-none transition-all"
+            className="data-[state=active]:text-foreground flex items-center gap-2 rounded-none border-b-2 border-transparent px-0 py-4 transition-all data-[state=active]:border-[#34D399] data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <LayoutGrid size={14} />
             <span className="text-sm font-medium">All People</span>
           </TabsTrigger>
           <TabsTrigger
             value="groups"
-            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-[#34D399] border-b-2 border-transparent px-0 py-4 flex items-center gap-2 rounded-none transition-all"
+            className="data-[state=active]:text-foreground flex items-center gap-2 rounded-none border-b-2 border-transparent px-0 py-4 transition-all data-[state=active]:border-[#34D399] data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <Layers size={14} />
             <span className="text-sm font-medium">Groups</span>
@@ -120,16 +164,20 @@ export default function PeoplePage() {
           <PersonList
             people={people}
             isLoading={isLoading}
-            onEditGroup={handleEditGroup}
+            onEditName={handleEditName}
+            onDelete={handleDelete}
           />
         </TabsContent>
 
-        <TabsContent value="groups" className="mt-0 focus-visible:outline-none space-y-8">
+        <TabsContent
+          value="groups"
+          className="mt-0 space-y-8 focus-visible:outline-none"
+        >
           <div className="flex justify-end">
             <Button
               onClick={() => setIsCreateGroupOpen(true)}
               variant="outline"
-              className="border-border/40 hover:bg-muted/50 rounded-xl px-4 flex items-center gap-2 h-9 text-xs font-medium"
+              className="border-border/40 hover:bg-muted/50 flex h-9 items-center gap-2 rounded-xl px-4 text-xs font-medium"
             >
               <Plus size={14} />
               <span>New Group</span>
@@ -140,7 +188,8 @@ export default function PeoplePage() {
             peopleByGroup={peopleByGroup}
             sortedGroups={sortedGroups}
             isLoading={isLoading}
-            onEditGroup={handleEditGroup}
+            onEditName={handleEditName}
+            onDelete={handleDelete}
           />
         </TabsContent>
       </Tabs>
@@ -154,49 +203,50 @@ export default function PeoplePage() {
         isPending={updateMutation.isPending}
       />
 
-      {/* Edit Single Group Dialog */}
+      {/* Edit Single Name Dialog */}
       <Dialog
-        open={!!editingPerson}
-        onOpenChange={(open) => !open && setEditingPerson(null)}
+        open={!!renamingPerson}
+        onOpenChange={(open) => !open && setRenamingPerson(null)}
       >
-        <DialogContent className="border-border/40 bg-card rounded-2xl shadow-2xl sm:max-w-[400px] p-0 overflow-hidden">
+        <DialogContent className="border-border/40 bg-card overflow-hidden rounded-2xl p-0 shadow-2xl sm:max-w-[400px]">
           <DialogHeader className="p-6 pt-8 pb-4">
             <DialogTitle className="font-serif text-2xl font-medium tracking-tight italic">
-              Group <span className="text-[#34D399]">@{editingPerson?.name}</span>
+              Rename{" "}
+              <span className="text-[#34D399]">@{renamingPerson?.name}</span>
             </DialogTitle>
           </DialogHeader>
-          
-          <div className="px-6 pb-8 space-y-6">
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Organize your social circle into custom groups. Leave blank to keep ungrouped.
-            </p>
+
+          <div className="space-y-4 px-6 pb-8">
             <div className="space-y-2">
-              <Label htmlFor="group" className="text-muted-foreground/80 text-xs font-medium uppercase tracking-wider">
-                Group Name
+              <Label
+                htmlFor="personName"
+                className="text-muted-foreground/80 text-xs font-medium tracking-wider uppercase"
+              >
+                New Name
               </Label>
               <Input
-                id="group"
-                placeholder="e.g. Work"
-                value={newGroupValue}
-                onChange={(e) => setNewGroupValue(e.target.value)}
+                id="personName"
+                placeholder="e.g. John Doe"
+                value={newNameValue}
+                onChange={(e) => setNewNameValue(e.target.value)}
                 autoComplete="off"
-                className="bg-muted/30 border-border/40 h-12 rounded-xl focus-visible:ring-primary/20"
+                className="bg-muted/30 border-border/40 focus-visible:ring-primary/20 h-12 rounded-xl"
               />
             </div>
           </div>
 
-          <DialogFooter className="bg-muted/30 border-t border-border/40 p-6 flex flex-row gap-3 sm:justify-end">
+          <DialogFooter className="bg-muted/30 border-border/40 flex flex-row gap-3 border-t p-6 sm:justify-end">
             <Button
               variant="ghost"
-              onClick={() => setEditingPerson(null)}
+              onClick={() => setRenamingPerson(null)}
               className="hover:bg-muted/50 flex-1 rounded-xl sm:flex-none"
             >
               Cancel
             </Button>
             <Button
-              onClick={handleSaveGroup}
+              onClick={handleSaveName}
               disabled={updateMutation.isPending}
-              className="bg-[#34D399] text-white hover:opacity-90 flex-1 rounded-xl sm:flex-none min-w-[100px]"
+              className="min-w-[100px] flex-1 rounded-xl bg-[#86A694] !bg-none text-white hover:opacity-90 sm:flex-none"
             >
               {updateMutation.isPending ? (
                 <Loader2 size={16} className="animate-spin" />
@@ -207,6 +257,40 @@ export default function PeoplePage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog
+        open={!!deletingPerson}
+        onOpenChange={(open) => !open && setDeletingPerson(null)}
+      >
+        <AlertDialogContent className="border-border/40 bg-card rounded-2xl p-6 shadow-2xl sm:max-w-[400px]">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-serif text-2xl font-medium tracking-tight italic">
+              Delete Person{" "}
+              <span className="text-[#86A694]">@{deletingPerson?.name}</span>?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground pt-2 text-sm leading-relaxed">
+              This will remove the person from all your entries. This action
+              cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-6 flex flex-row gap-3 sm:justify-end">
+            <AlertDialogCancel className="hover:bg-muted/50 mt-0 flex-1 rounded-xl border-none bg-transparent sm:flex-none">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="min-w-[100px] flex-1 rounded-xl bg-[#86A694] !bg-none text-white hover:opacity-90 sm:flex-none"
+            >
+              {deleteMutation.isPending ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                "Delete"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

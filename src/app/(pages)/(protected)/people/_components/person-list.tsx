@@ -1,13 +1,20 @@
 import { PersonItem } from "./person-item";
 import { Loader2 } from "lucide-react";
+import { type SharedPerson } from "@/types/person.types";
 
 interface PersonListProps {
-  people: any[] | undefined;
+  people: SharedPerson[] | undefined;
   isLoading: boolean;
-  onEditGroup: (person: any) => void;
+  onEditName: (person: SharedPerson) => void;
+  onDelete: (person: SharedPerson) => void;
 }
 
-export function PersonList({ people, isLoading, onEditGroup }: PersonListProps) {
+export function PersonList({
+  people,
+  isLoading,
+  onEditName,
+  onDelete,
+}: PersonListProps) {
   if (isLoading) {
     return (
       <div className="flex h-32 items-center justify-center">
@@ -28,7 +35,12 @@ export function PersonList({ people, isLoading, onEditGroup }: PersonListProps) 
   return (
     <div className="grid grid-cols-1 gap-2">
       {people.map((person) => (
-        <PersonItem key={person.id} person={person} onEditGroup={onEditGroup} />
+        <PersonItem
+          key={person.id}
+          person={person}
+          onEditName={onEditName}
+          onDelete={onDelete}
+        />
       ))}
     </div>
   );

@@ -16,14 +16,16 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { signOut } from "next-auth/react";
 
 export default function ProfilePage() {
@@ -124,19 +126,22 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <div className="mb-12">
-        <h1 className="font-playfair text-5xl font-bold tracking-tight">
-          Account Settings
-        </h1>
-        <p className="text-muted-foreground mt-4 text-lg">
-          Manage your presence and security settings.
-        </p>
-      </div>
+    <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-3xl px-6 pt-20 pb-24 duration-1000">
+      {/* Header Section */}
+      <header className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="space-y-1">
+          <p className="text-[10px] font-bold tracking-[0.3em] text-[#34D399] uppercase">
+            Workspace
+          </p>
+          <h1 className="text-foreground font-serif text-5xl font-medium tracking-tight italic">
+            Profile
+          </h1>
+        </div>
+      </header>
 
-      <div className="space-y-12">
+      <div className="space-y-16">
         {/* Profile Image Section */}
-        <section className="border-border/40 bg-muted/20 rounded-3xl border p-10 backdrop-blur-sm">
+        <section className="border-border/10 border-b pb-12">
           <div className="flex flex-col items-center sm:flex-row sm:gap-10">
             <div className="group relative">
               <Avatar className="h-40 w-40 border-4 border-white/5 shadow-2xl transition-transform duration-500 group-hover:scale-105">
@@ -151,7 +156,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="bg-primary text-primary-foreground absolute right-2 bottom-2 rounded-full p-3 shadow-lg transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
+                className="absolute right-2 bottom-2 rounded-full bg-[#86A694] !bg-none p-3 text-white shadow-lg transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
               >
                 {isUploading ? (
                   <Loader2 size={18} className="animate-spin" />
@@ -179,7 +184,7 @@ export default function ProfilePage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-full border-white/5 bg-white/5 hover:bg-white/10"
+                className="border-border/40 hover:bg-muted/50 mt-2 rounded-full bg-transparent text-xs font-medium tracking-wider uppercase"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
               >
@@ -190,34 +195,35 @@ export default function ProfilePage() {
         </section>
 
         {/* Personal Info Section */}
-        <section className="border-border/40 bg-muted/20 rounded-3xl border p-8 backdrop-blur-sm">
+        <section className="border-border/10 border-b pb-12">
           <h3 className="mb-8 flex items-center gap-2 text-sm font-bold tracking-[0.2em] text-zinc-500 uppercase">
             <User size={14} /> Personal Details
           </h3>
-          <form onSubmit={handleUpdateProfile} className="space-y-8">
+          <form onSubmit={handleUpdateProfile} className="max-w-md space-y-8">
             {/* Form Fields */}
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-bold tracking-[0.3em] text-zinc-500 uppercase">
+                <label className="text-muted-foreground/80 text-xs font-medium tracking-wider uppercase">
                   Display Name
                 </label>
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
-                  className="ring-offset-background focus-visible:ring-primary/50 h-12 border-white/5 bg-white/[0.03] px-4 transition-all focus-visible:ring-1"
+                  autoComplete="off"
+                  className="bg-muted/30 border-border/40 h-12 rounded-xl focus-visible:ring-[#86A694]/20"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold tracking-[0.3em] text-zinc-500 uppercase">
+                <label className="text-muted-foreground/80 text-xs font-medium tracking-wider uppercase">
                   Email Address
                 </label>
                 <Input
                   value={session?.user?.email ?? ""}
                   readOnly
                   placeholder="your@email.com"
-                  className="ring-offset-background h-12 cursor-not-allowed border-white/5 bg-white/[0.03] px-4 opacity-50 transition-all focus-visible:ring-0"
+                  className="bg-muted/10 border-border/20 h-12 cursor-not-allowed rounded-xl opacity-50 focus-visible:ring-0"
                 />
                 <p className="text-[10px] tracking-tight text-zinc-500">
                   Email cannot be changed.
@@ -229,7 +235,7 @@ export default function ProfilePage() {
               <Button
                 type="submit"
                 disabled={isUpdating || name === session?.user?.name}
-                className="shadow-primary/10 w-full rounded-full px-8 shadow-xl transition-all hover:scale-105 sm:w-auto"
+                className="min-w-[140px] rounded-xl bg-[#86A694] !bg-none px-8 text-white transition-all hover:scale-105 hover:opacity-90 sm:w-auto"
               >
                 {isUpdating ? (
                   <Loader2 size={16} className="mr-2 animate-spin" />
@@ -243,53 +249,54 @@ export default function ProfilePage() {
         </section>
 
         {/* Account Controls Section */}
-        <section className="rounded-3xl border border-red-500/10 bg-red-500/5 p-8 backdrop-blur-sm">
+        <section className="pt-4">
           <h3 className="mb-4 flex items-center gap-2 text-sm font-bold tracking-[0.2em] text-red-500/60 uppercase">
             <AlertTriangle size={14} /> Danger Zone
           </h3>
-          <p className="text-muted-foreground mb-6 text-sm">
+          <p className="text-muted-foreground mb-6 max-w-md text-sm">
             Once you delete your account, there is no going back. Please be
             certain.
           </p>
 
-          <Dialog>
-            <DialogTrigger asChild>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
               <Button
                 variant="destructive"
-                className="rounded-full px-8 shadow-xl shadow-red-500/10 transition-all hover:scale-105"
+                className="rounded-xl border border-red-500/20 bg-red-500/10 !bg-none px-8 text-red-500 transition-all hover:scale-105 hover:bg-red-500 hover:text-white"
               >
                 <Trash2 size={16} className="mr-2" />
                 Delete Account
               </Button>
-            </DialogTrigger>
-            <DialogContent className="rounded-3xl border-white/10 bg-zinc-950">
-              <DialogHeader>
-                <DialogTitle className="font-playfair text-xl font-bold">
-                  Are you absolutely sure?
-                </DialogTitle>
-                <DialogDescription className="text-zinc-400">
+            </AlertDialogTrigger>
+            <AlertDialogContent className="border-border/40 bg-card rounded-2xl p-6 shadow-2xl sm:max-w-[400px]">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="font-serif text-2xl font-medium tracking-tight italic">
+                  Delete Account?
+                </AlertDialogTitle>
+                <AlertDialogDescription className="text-muted-foreground pt-2 text-sm leading-relaxed">
                   This action cannot be undone. This will permanently delete
                   your account and remove your data from our servers, including
                   all your journals and entries.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="mt-6 flex gap-3">
-                <Button
-                  variant="outline"
-                  className="rounded-full border-white/5"
-                >
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter className="mt-6 flex flex-row gap-3 sm:justify-end">
+                <AlertDialogCancel className="hover:bg-muted/50 mt-0 flex-1 rounded-xl border-none bg-transparent sm:flex-none">
                   Cancel
-                </Button>
-                <Button
-                  variant="destructive"
-                  className="rounded-full shadow-lg shadow-red-500/20"
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  className="min-w-[100px] flex-1 rounded-xl bg-red-500 !bg-none text-white hover:bg-red-600 sm:flex-none"
                   onClick={() => deleteAccountMutation.mutate()}
+                  disabled={deleteAccountMutation.isPending}
                 >
-                  Confirm Delete
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+                  {deleteAccountMutation.isPending ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    "Delete"
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </section>
       </div>
     </div>
