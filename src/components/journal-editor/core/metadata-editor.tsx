@@ -74,7 +74,7 @@ export function MetadataEditor() {
   };
 
   return (
-    <div className="mb-6 flex items-center gap-6 border-y border-border/10 py-3">
+    <div className="border-border/10 mb-6 flex items-center gap-6 border-y py-3">
       {/* Mood Selector */}
       <div className="flex items-center gap-3">
         <span className="text-muted-foreground/60 text-[10px] font-bold tracking-widest uppercase">
@@ -93,11 +93,11 @@ export function MetadataEditor() {
                   "transition-all duration-300",
                   star <= currentMood
                     ? "fill-primary text-primary"
-                    : "text-muted-foreground/20 group-hover:text-primary/40"
+                    : "text-muted-foreground/20 group-hover:text-primary/40",
                 )}
               />
               {star <= currentMood && (
-                <div className="absolute inset-0 animate-ping rounded-full bg-primary/20 p-1 opacity-20 blur-sm duration-1000" />
+                <div className="bg-primary/20 absolute inset-0 animate-ping rounded-full p-1 opacity-20 blur-sm duration-1000" />
               )}
             </button>
           ))}
@@ -106,7 +106,7 @@ export function MetadataEditor() {
 
       {isJournal && (
         <>
-          <div className="h-4 w-[1px] bg-border/20" />
+          <div className="bg-border/20 h-4 w-[1px]" />
 
           {/* Category Selector */}
           <div className="flex items-center gap-3">
@@ -115,14 +115,14 @@ export function MetadataEditor() {
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-lg border border-border/20 bg-muted/30 px-3 py-1 text-xs font-medium transition-all hover:bg-muted/50 active:scale-95">
+                <button className="border-border/20 bg-muted/30 hover:bg-muted/50 flex items-center gap-2 rounded-lg border px-3 py-1 text-xs font-medium transition-all active:scale-95">
                   <span className="text-foreground/80">{currentCategory}</span>
                   <ChevronDown size={12} className="text-muted-foreground" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
-                className="w-40 border-border/40 bg-card/95 backdrop-blur-xl"
+                className="border-border/40 bg-card/95 w-40 backdrop-blur-xl"
               >
                 {CATEGORIES.map((cat) => (
                   <DropdownMenuItem
@@ -130,7 +130,9 @@ export function MetadataEditor() {
                     onClick={() => handleCategoryChange(cat)}
                     className={cn(
                       "cursor-pointer text-xs transition-colors",
-                      currentCategory === cat ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                      currentCategory === cat
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted",
                     )}
                   >
                     {cat}

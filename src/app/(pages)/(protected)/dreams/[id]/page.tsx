@@ -1,15 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
-import {
-  Star,
-  Share2,
-  MoreHorizontal,
-  ChevronLeft,
-  Moon,
-  Cloud,
-  Loader2,
-} from "lucide-react";
+import { Star, Share2, ChevronLeft, Loader2 } from "lucide-react";
 import { JournalEditor } from "@/components/journal-editor";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -119,10 +111,6 @@ export default function DreamDetailPage() {
               size={18}
               className="hover:text-foreground cursor-pointer transition-colors"
             />
-            <MoreHorizontal
-              size={18}
-              className="hover:text-foreground cursor-pointer transition-colors"
-            />
           </div>
         </div>
       </header>
@@ -136,47 +124,10 @@ export default function DreamDetailPage() {
         >
           {currentEntry.title ?? "Untitled Dream"}
         </h1>
-
-        <div className="grid grid-cols-1 gap-x-12 gap-y-6 md:grid-cols-2">
-          <div className="space-y-2">
-            <label className="text-muted-foreground/40 flex items-center gap-2 text-[9px] font-bold tracking-[0.2em] uppercase">
-              <Cloud size={12} className="text-primary" />
-              Atmosphere
-            </label>
-            <div
-              className="text-foreground border-border/20 border-b pb-1 text-base font-medium italic focus:outline-none"
-              contentEditable
-              suppressContentEditableWarning
-              onBlur={(e) =>
-                handleMetadataChange("atmosphere", e.currentTarget.innerText)
-              }
-            >
-              {metadata.atmosphere ?? "Hazy, nostalgic..."}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-muted-foreground/40 flex items-center gap-2 text-[9px] font-bold tracking-[0.2em] uppercase">
-              <Moon size={12} className="text-[#A78BFA]" />
-              Clarity
-            </label>
-            <div
-              className="text-foreground border-border/20 border-b pb-1 text-base font-medium focus:outline-none"
-              contentEditable
-              suppressContentEditableWarning
-              onBlur={(e) =>
-                handleMetadataChange("clarity", e.currentTarget.innerText)
-              }
-            >
-              {metadata.clarity ?? "Vivid"}
-            </div>
-          </div>
-        </div>
-
         <div className="space-y-8">
-          <div className="border-border/10 flex items-center gap-4 border-t pt-8">
+          <div className="flex items-center gap-4">
             <label className="text-muted-foreground/40 text-[9px] font-bold tracking-[0.2em] uppercase">
-              Dream Journal Entry
+              DREAM
             </label>
             <div className="bg-border/10 h-px flex-1" />
           </div>

@@ -65,35 +65,32 @@ export default function JournalEditor({
     },
   });
 
-  const handleAutoSave = useDebounce(
-    (content: string) => {
-      if (!effectiveId && (!content || content === "<p></p>")) return;
+  const handleAutoSave = useDebounce((content: string) => {
+    if (!effectiveId && (!content || content === "<p></p>")) return;
 
-      // Get latest metadata from store to avoid closure staleness
-      const latestEntry = useEntryStore.getState().currentEntry;
-      const latestMetadata = (latestEntry?.metadata as EntryMetadata) ?? {};
+    // Get latest metadata from store to avoid closure staleness
+    const latestEntry = useEntryStore.getState().currentEntry;
+    const latestMetadata = (latestEntry?.metadata as EntryMetadata) ?? {};
 
-      if (effectiveId) {
-        updateEntryMutation.mutate({
-          id: effectiveId,
-          content,
-          isStarred: currentEntry?.isStarred,
-          editorMode: bulletedJournal ? "bullet" : "simple",
-          metadata: latestMetadata,
-        });
-      } else {
-        createEntry.mutate({
-          type: effectiveType as EntryType,
-          content,
-          isStarred: currentEntry?.isStarred,
-          editorMode: bulletedJournal ? "bullet" : "simple",
-          title: currentEntry?.title ?? "New Entry",
-          metadata: latestMetadata,
-        });
-      }
-    },
-    3000,
-  );
+    if (effectiveId) {
+      updateEntryMutation.mutate({
+        id: effectiveId,
+        content,
+        isStarred: currentEntry?.isStarred,
+        editorMode: bulletedJournal ? "bullet" : "simple",
+        metadata: latestMetadata,
+      });
+    } else {
+      createEntry.mutate({
+        type: effectiveType as EntryType,
+        content,
+        isStarred: currentEntry?.isStarred,
+        editorMode: bulletedJournal ? "bullet" : "simple",
+        title: currentEntry?.title ?? "New Entry",
+        metadata: latestMetadata,
+      });
+    }
+  }, 3000);
 
   const editor = useEditor({
     extensions: [
@@ -161,7 +158,8 @@ export default function JournalEditor({
       const bulletCount = (html.match(/<li[^>]*>/g) ?? []).length;
 
       // Update store with bullet count immediately
-      const currentMetadata = (currentEntry?.metadata as Record<string, unknown>) ?? {};
+      const currentMetadata =
+        (currentEntry?.metadata as Record<string, unknown>) ?? {};
       if (currentMetadata.bullets !== bulletCount) {
         updateEntry(effectiveId ?? "", {
           metadata: { ...currentMetadata, bullets: bulletCount },
@@ -175,7 +173,7 @@ export default function JournalEditor({
 
   // Current entry is now fetched and synced by the parent WritePageContent
   // which ensures fetching starts even while the loader is showing.
-  const isEntryLoading = false; 
+  const isEntryLoading = false;
 
   // Sync entry content to editor whenever the store entry changes
   useEffect(() => {
@@ -186,13 +184,18 @@ export default function JournalEditor({
         isHandlingContentSet.current = true;
         editor.commands.setContent(currentEntry.content ?? "");
         lastSavedContent.current = currentEntry.content ?? "";
-        
+
         setTimeout(() => {
           isHandlingContentSet.current = false;
           isInitialized.current = true;
         }, 100);
       }
-    } else if (editor && !editor.isDestroyed && !propId && !isInitialized.current) {
+    } else if (
+      editor &&
+      !editor.isDestroyed &&
+      !propId &&
+      !isInitialized.current
+    ) {
       // For truly new entries
       editor.commands.setContent("");
       isInitialized.current = true;
@@ -232,7 +235,7 @@ export default function JournalEditor({
   if (isEntryLoading) {
     return (
       <div className="flex h-full items-center justify-center py-20">
-        <Loader2 className="animate-spin text-muted-foreground/40" size={32} />
+        <Loader2 className="text-muted-foreground/40 animate-spin" size={32} />
       </div>
     );
   }

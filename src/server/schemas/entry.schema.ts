@@ -23,10 +23,7 @@ export const journalMetadataSchema = z
   })
   .optional();
 
-export const dreamMetadataSchema = z
-  .object({
-  })
-  .optional();
+export const dreamMetadataSchema = z.object({}).optional();
 
 export const highlightMetadataSchema = z
   .object({

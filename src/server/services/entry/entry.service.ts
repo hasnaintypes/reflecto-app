@@ -77,20 +77,18 @@ export class EntryService {
         // 1. Extract tags and people names/ids first
         let tags: { id: string; name: string }[] = [];
         let people: { id: string; name: string }[] = [];
-        
+
         try {
-          tags = await tagExtractor.syncTags(
-            tx,
-            userId,
-            input.content ?? null,
-          );
+          tags = await tagExtractor.syncTags(tx, userId, input.content ?? null);
           people = await personExtractor.syncPeople(
             tx,
             userId,
             input.content ?? null,
           );
         } catch (err) {
-          throw new Error(`Sync Extraction Error: ${err instanceof Error ? err.message : String(err)}`);
+          throw new Error(
+            `Sync Extraction Error: ${err instanceof Error ? err.message : String(err)}`,
+          );
         }
 
         // 2. Prepare metadata with tags if journal
@@ -132,20 +130,26 @@ export class EntryService {
             },
           });
         } catch (err) {
-          throw new Error(`Entry DB Creation Error: ${err instanceof Error ? err.message : String(err)}`);
+          throw new Error(
+            `Entry DB Creation Error: ${err instanceof Error ? err.message : String(err)}`,
+          );
         }
 
         // 4. Update activity log and streak
         try {
           await activityService.logActivity(tx, userId, input.type);
         } catch (err) {
-          throw new Error(`Activity Logging Error: ${err instanceof Error ? err.message : String(err)}`);
+          throw new Error(
+            `Activity Logging Error: ${err instanceof Error ? err.message : String(err)}`,
+          );
         }
 
         try {
           await streakService.updateStreak(tx, userId);
         } catch (err) {
-          throw new Error(`Streak Update Error: ${err instanceof Error ? err.message : String(err)}`);
+          throw new Error(
+            `Streak Update Error: ${err instanceof Error ? err.message : String(err)}`,
+          );
         }
 
         // 5. Return entry with relations
@@ -170,7 +174,9 @@ export class EntryService {
             },
           });
         } catch (err) {
-          throw new Error(`Final Fetch Error: ${err instanceof Error ? err.message : String(err)}`);
+          throw new Error(
+            `Final Fetch Error: ${err instanceof Error ? err.message : String(err)}`,
+          );
         }
       });
 
