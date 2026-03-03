@@ -137,7 +137,10 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                         </h3>
                       )}
                       {plainText.length > 0 && (
-                        <p className="text-muted-foreground/80 group-hover:text-foreground/90 line-clamp-1 font-serif text-[1.1rem] leading-relaxed tracking-tight transition-all duration-500">
+                        <p className={cn(
+                          "text-muted-foreground/80 group-hover:text-foreground/90 font-serif text-[1.1rem] leading-relaxed tracking-tight transition-all duration-500",
+                          preferences?.preferences?.collapseLongBullets !== false ? "line-clamp-5" : "line-clamp-none"
+                        )}>
                           {plainText}
                         </p>
                       )}

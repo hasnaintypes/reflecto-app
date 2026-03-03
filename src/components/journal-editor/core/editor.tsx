@@ -1,4 +1,6 @@
 "use client";
+import React, { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useEditor, EditorContent } from "@tiptap/react";
 import type { EntryType } from "@prisma/client";
 import StarterKit from "@tiptap/starter-kit";
@@ -8,8 +10,10 @@ import CharacterCount from "@tiptap/extension-character-count";
 import Link from "@tiptap/extension-link";
 import { cn } from "@/lib/utils";
 import { ResizableImage, TagMention, PeopleMention } from "../extensions";
+import { ListItemWithTimestamp } from "../extensions/list-item-timestamp";
+import { format } from "date-fns";
 
-import React, { useEffect, useRef } from "react";
+
 import { useSharedEditor } from "./use-editor";
 import { api } from "@/trpc/react";
 import { useEntryStore } from "@/stores/use-entry-store";
@@ -33,6 +37,9 @@ export default function JournalEditor({
   const spellChecking = preferences?.preferences?.spellChecking ?? true;
   const newlineOnEnter = preferences?.preferences?.newlineOnEnter ?? false;
   const autocomplete = preferences?.preferences?.autocomplete ?? true;
+  const showBulletTimestamps = preferences?.preferences?.bulletTimestamps ?? false;
+  const highlightMentions = preferences?.preferences?.highlightTagsAndMentions ?? true;
+  const router = useRouter();
 
   const lastSavedContent = useRef<string>("");
   const isHandlingContentSet = useRef<boolean>(true); // Start locked
@@ -96,9 +103,11 @@ export default function JournalEditor({
     extensions: [
       StarterKit.configure({
         bulletList: {},
+        listItem: false,
         orderedList: false,
         horizontalRule: false,
       }),
+      ListItemWithTimestamp,
       Underline,
       ResizableImage,
       CharacterCount,
@@ -133,6 +142,23 @@ export default function JournalEditor({
           }
         }
         return false;
+      },
+      handleDOMEvents: {
+        click: (view, event) => {
+          const target = event.target as HTMLElement;
+          const mentionType = target.getAttribute("data-type");
+          const label = target.getAttribute("data-label");
+
+          if (mentionType === "mention-tag" && label) {
+            router.push(`/tags?name=${label}`);
+            return true;
+          }
+          if (mentionType === "mention-person" && label) {
+            router.push(`/people?name=${label}`);
+            return true;
+          }
+          return false;
+        },
       },
     },
     onCreate: ({ editor }) => {
@@ -311,6 +337,24 @@ export default function JournalEditor({
           transform: scale(1.2);
           box-shadow: 0 0 15px var(--primary);
         }
+        /* Bullet Timestamps */
+        .ProseMirror li::after {
+          content: attr(data-timestamp-display);
+          position: absolute;
+          right: 0;
+          top: 0.5em;
+          font-family: var(--font-mono);
+          font-size: 0.65rem;
+          color: var(--muted-foreground);
+          opacity: 0.2;
+          pointer-events: none;
+          display: ${showBulletTimestamps ? "block" : "none"};
+          font-weight: bold;
+          letter-spacing: 0.05em;
+        }
+        .ProseMirror li:hover::after {
+          opacity: 0.5;
+        }
         .ProseMirror {
           overflow-x: hidden !important;
           width: 100%;
@@ -334,7 +378,9 @@ export default function JournalEditor({
           border-radius: 0 !important;
           font-weight: normal !important;
           font-family: inherit !important;
-          text-decoration: none !important;
+          text-decoration: ${highlightMentions ? "underline" : "none"} !important;
+          text-underline-offset: 4px !important;
+          cursor: ${highlightMentions ? "pointer" : "text"} !important;
           box-shadow: none !important;
         }
 
@@ -358,7 +404,9 @@ export default function JournalEditor({
           font-weight: normal !important;
           font-family: inherit !important;
           font-style: normal !important;
-          text-decoration: none !important;
+          text-decoration: ${highlightMentions ? "underline" : "none"} !important;
+          text-underline-offset: 4px !important;
+          cursor: ${highlightMentions ? "pointer" : "text"} !important;
           box-shadow: none !important;
         }
       `}</style>

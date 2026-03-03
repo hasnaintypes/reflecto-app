@@ -7,9 +7,9 @@ export function ThemeApplier() {
   const preferences = usePreferencesStore((state) => state.preferences);
 
   useEffect(() => {
-    if (!preferences?.preferences) return;
+    if (!preferences) return;
 
-    const fontSize = (preferences.preferences.fontSize as string) ?? "medium";
+    const fontSize = (preferences.fontSize as string) ?? "medium";
     const root = document.documentElement;
 
     // Define scaling factors

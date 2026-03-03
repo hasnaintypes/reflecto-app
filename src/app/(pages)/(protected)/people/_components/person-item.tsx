@@ -1,4 +1,4 @@
-import { User, MoreVertical, Pencil } from "lucide-react";
+import { User, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -59,7 +59,7 @@ export function PersonItem({ person, onEditName, onDelete }: PersonItemProps) {
               className="flex cursor-pointer items-center gap-2 py-2.5"
               onClick={() => onDelete(person)}
             >
-              <Pencil size={14} className="rotate-12 opacity-60" />
+              <Trash2 size={14} className="opacity-60 text-red-400" />
               <span>Delete Person</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
