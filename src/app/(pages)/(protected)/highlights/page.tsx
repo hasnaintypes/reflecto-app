@@ -1,17 +1,24 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Plus, Sparkles, FileText, Star, Loader2 } from "lucide-react";
+import { Plus, Sparkles, FileText, Star, Loader2, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import Link from "next/link";
 import { api } from "@/trpc/react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { type HighlightMetadata } from "@/types/metadata.types";
+import { toast } from "sonner";
+import { DeleteAlertDialog } from "@/components/shared/delete-alert-dialog";
 
 export default function HighlightsPage() {
   const router = useRouter();
   const [isStarredOnly, setIsStarredOnly] = useState(false);
+  const [deletingHighlight, setDeletingHighlight] = useState<{
+    id: string;
+    title: string | null;
+  } | null>(null);
+  const utils = api.useUtils();
   const { data, isLoading } = api.entry.list.useQuery({
     type: "highlight",
     limit: 50,
@@ -23,6 +30,21 @@ export default function HighlightsPage() {
       router.push(`/highlights/${data.id}`);
     },
   });
+
+  const deleteMutation = api.entry.delete.useMutation({
+    onSuccess: () => {
+      void utils.entry.list.invalidate();
+      setDeletingHighlight(null);
+      toast.success("Highlight deleted successfully");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to delete highlight");
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate({ id });
+  };
 
   const handleCapture = () => {
     createMutation.mutate({
@@ -88,47 +110,88 @@ export default function HighlightsPage() {
 
       <div className="mt-16">
         {hasHighlights ? (
-          <div className="space-y-24">
-            {highlights.map((highlight) => (
-              <Link
-                key={highlight.id}
-                href={`/highlights/${highlight.id}`}
-                className="group block space-y-6 text-center"
-              >
-                <div className="flex items-center justify-center gap-4">
-                  <div className="bg-border/20 h-px w-12 transition-all duration-500 group-hover:w-24 group-hover:bg-[#F87171]/40" />
-                  <Sparkles
-                    size={16}
-                    className="text-[#F87171]/40 transition-colors group-hover:text-[#F87171]"
-                  />
-                  <div className="bg-border/20 h-px w-12 transition-all duration-500 group-hover:w-24 group-hover:bg-[#F87171]/40" />
-                </div>
+          <div className="flex flex-col">
+            {highlights.map((highlight) => {
+              // Strip HTML tags and create a clean preview string
+              const previewText = highlight.content
+                ? highlight.content.replace(/<[^>]*>/g, "").slice(0, 160)
+                : "A moment worth remembering...";
 
-                <h2 className="text-foreground mx-auto max-w-3xl font-serif text-4xl leading-snug tracking-tight transition-colors duration-500 group-hover:text-[#F87171]">
-                  {highlight.title ??
-                    (highlight.content
-                      ? highlight.content.replace(/<[^>]*>/g, "").slice(0, 100)
-                      : "Untitled Highlight")}
-                </h2>
-
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-muted-foreground/30 block text-[10px] font-bold tracking-[0.3em] uppercase">
-                    {format(
-                      new Date(highlight.createdAt),
-                      "MMM d, yyyy",
-                    ).toLowerCase()}
-                  </span>
-                  {highlight.isStarred && (
-                    <Star
-                      size={12}
-                      className="fill-yellow-400 text-yellow-400"
-                    />
+              return (
+                <Link
+                  key={highlight.id}
+                  href={`/highlights/${highlight.id}`}
+                  className={cn(
+                    "group border-border/5 hover:bg-muted/5 relative flex flex-col gap-6 border-b py-12 transition-all duration-500 first:pt-0 last:border-0 md:flex-row md:items-start md:gap-16",
                   )}
-                </div>
+                >
+                  {/* Left Side: Minimalist Date Column */}
+                  <div className="flex shrink-0 flex-row items-center gap-4 md:w-32 md:flex-col md:items-start md:gap-1">
+                    <span className="text-muted-foreground/40 font-mono text-[10px] font-bold tracking-[0.3em] uppercase">
+                      {format(new Date(highlight.createdAt), "yyyy")}
+                    </span>
+                    <span className="text-foreground/60 font-mono text-sm font-bold tracking-tighter uppercase md:text-lg">
+                      {format(new Date(highlight.createdAt), "MMM dd")}
+                    </span>
+                    {/* Mobile-only divider line */}
+                    <div className="bg-border/10 h-px flex-1 md:hidden" />
+                  </div>
 
-                <div className="mx-auto h-1 w-1 rounded-full bg-[#F87171]/20 transition-all duration-500 group-hover:scale-[4] group-hover:bg-[#F87171]/40" />
-              </Link>
-            ))}
+                  {/* Center: Content & Preview */}
+                  <div className="relative z-10 flex-1 space-y-4 transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="flex items-center gap-3">
+                      <h2 className="text-foreground group-hover:text-[#F87171] font-serif text-3xl font-light tracking-tight transition-colors duration-500 md:text-4xl">
+                        {highlight.title ?? "Untitled Highlight"}
+                      </h2>
+                      {highlight.isStarred && (
+                        <Star
+                          size={18}
+                          className="fill-yellow-400/20 text-yellow-400 transition-all duration-500 group-hover:fill-yellow-400"
+                        />
+                      )}
+                    </div>
+
+                    {/* Text Preview - Limits to 2 lines */}
+                    <p className="text-muted-foreground/60 line-clamp-2 max-w-2xl font-sans text-sm leading-relaxed md:text-base">
+                      {previewText}
+                      {previewText.length >= 160 && "..."}
+                    </p>
+
+                    <div className="flex items-center gap-6 pt-2">
+                      <span className="text-muted-foreground/30 text-[10px] font-medium tracking-widest uppercase italic">
+                        Highlight Profile — Significant Moment
+                      </span>
+
+                      <button
+                        className="text-muted-foreground/20 flex items-center gap-2 p-1 transition-colors hover:text-red-400/80"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setDeletingHighlight({
+                            id: highlight.id,
+                            title: highlight.title,
+                          });
+                        }}
+                      >
+                        <Trash2 size={14} />
+                        <span className="text-[9px] tracking-widest uppercase opacity-0 transition-opacity group-hover:opacity-100">
+                          Delete
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right Side: Large Decorative Ghost Icon */}
+                  <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 overflow-hidden opacity-[0.03] transition-all duration-1000 group-hover:scale-115 group-hover:opacity-[0.12] md:-right-8">
+                    <Sparkles
+                      size={180}
+                      strokeWidth={0.3}
+                      className="fill-[#F87171] rotate-12 transition-all duration-1000 group-hover:rotate-0"
+                    />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         ) : (
           <div className="space-y-3">
@@ -156,6 +219,13 @@ export default function HighlightsPage() {
           </div>
         )}
       </div>
+      <DeleteAlertDialog
+        open={!!deletingHighlight}
+        onOpenChange={(open) => !open && setDeletingHighlight(null)}
+        onConfirm={() => deletingHighlight?.id && handleDelete(deletingHighlight.id)}
+        title="Delete highlight?"
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }

@@ -24,12 +24,15 @@ import { type JournalMetadata } from "@/types/metadata.types";
 import { usePreferencesStore } from "@/stores/use-preferences-store";
 import { CalendarStrip } from "./_components/calendar-strip";
 
+import { StreakBar } from "./_components/streak-bar";
+
 export default function JournalPage() {
   const router = useRouter();
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [isStarredOnly, setIsStarredOnly] = React.useState(false);
   const preferences = usePreferencesStore((state) => state.preferences);
   const dayEndsAt = parseInt(preferences?.preferences?.dayEndsAt ?? "0");
+  const showStreak = preferences?.preferences?.streak ?? false;
 
   const { data: entryData, isLoading } = api.entry.list.useQuery({
     limit: 50,
@@ -128,7 +131,13 @@ export default function JournalPage() {
           </div>
         </header>
 
-        <div className="border-border/20 border-b py-4">
+        {(showStreak) && (
+          <div className="mt-8 border-border/10 border-t pt-4">
+            <StreakBar />
+          </div>
+        )}
+
+        <div className={cn("border-border/20 border-b py-4", !showStreak && "mt-4")}>
           <CalendarStrip entries={entries} />
         </div>
       </div>

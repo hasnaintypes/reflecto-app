@@ -1,4 +1,4 @@
-import { Hash, MoreVertical, Pencil } from "lucide-react";
+import { Hash, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -59,7 +59,7 @@ export function TagItem({ tag, onEditName, onDelete }: TagItemProps) {
               className="flex cursor-pointer items-center gap-2 py-2.5"
               onClick={() => onDelete(tag)}
             >
-              <Pencil size={14} className="rotate-12 opacity-60" />
+              <Trash2 size={14} className="opacity-60 text-red-400" />
               <span>Delete Tag</span>
             </DropdownMenuItem>
           </DropdownMenuContent>

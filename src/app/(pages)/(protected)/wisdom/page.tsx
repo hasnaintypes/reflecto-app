@@ -12,6 +12,7 @@ import {
   Star,
   FileText,
   Loader2,
+  Trash2,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -24,14 +25,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { DeleteAlertDialog } from "@/components/shared/delete-alert-dialog";
 
 import { type WisdomMetadata } from "@/types/metadata.types";
+import { format, formatDistanceToNow } from "date-fns";
 
 type WisdomType = NonNullable<WisdomMetadata["wisdom_type"]>;
 
 export default function WisdomPage() {
   const router = useRouter();
   const [isStarredOnly, setIsStarredOnly] = useState(false);
+  const [deletingWisdom, setDeletingWisdom] = useState<{
+    id: string;
+    title: string | null;
+  } | null>(null);
+  const utils = api.useUtils();
   const { data, isLoading } = api.entry.list.useQuery({
     type: "wisdom",
     limit: 50,
@@ -43,6 +52,21 @@ export default function WisdomPage() {
       router.push(`/wisdom/${data.id}`);
     },
   });
+
+  const deleteMutation = api.entry.delete.useMutation({
+    onSuccess: () => {
+      void utils.entry.list.invalidate();
+      setDeletingWisdom(null);
+      toast.success("Wisdom deleted successfully");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to delete wisdom");
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate({ id });
+  };
 
   const handleNewWisdom = (type: WisdomType) => {
     createMutation.mutate({
@@ -69,15 +93,15 @@ export default function WisdomPage() {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "quote":
-        return <Quote size={14} />;
+        return Quote;
       case "fact":
-        return <Asterisk size={14} />;
+        return Asterisk;
       case "excerpt":
-        return <AlignLeft size={14} />;
+        return AlignLeft;
       case "lesson":
-        return <GraduationCap size={14} />;
+        return GraduationCap;
       default:
-        return <Lightbulb size={14} />;
+        return Lightbulb;
     }
   };
 
@@ -145,31 +169,34 @@ export default function WisdomPage() {
             >
               {[
                 {
-                  icon: <Lightbulb size={14} className="text-amber-400" />,
+                  icon: Lightbulb,
                   label: "Thought",
                   type: "thought",
+                  color: "text-amber-400",
                 },
                 {
-                  icon: <Quote size={14} className="text-purple-400" />,
+                  icon: Quote,
                   label: "Quote",
                   type: "quote",
+                  color: "text-purple-400",
                 },
                 {
-                  icon: <Asterisk size={14} className="text-sky-400" />,
+                  icon: Asterisk,
                   label: "Fact",
                   type: "fact",
+                  color: "text-sky-400",
                 },
                 {
-                  icon: <AlignLeft size={14} className="text-orange-400" />,
+                  icon: AlignLeft,
                   label: "Excerpt",
                   type: "excerpt",
+                  color: "text-orange-400",
                 },
                 {
-                  icon: (
-                    <GraduationCap size={14} className="text-emerald-400" />
-                  ),
+                  icon: GraduationCap,
                   label: "Lesson",
                   type: "lesson",
+                  color: "text-emerald-400",
                 },
               ].map((item) => (
                 <DropdownMenuItem
@@ -177,7 +204,10 @@ export default function WisdomPage() {
                   className="group focus:bg-muted focus:text-foreground flex w-full cursor-pointer items-center gap-3 px-3 py-2 transition-all"
                   onClick={() => handleNewWisdom(item.type as WisdomType)}
                 >
-                  {item.icon}
+                  {React.createElement(item.icon as any, {
+                    size: 14,
+                    className: item.color,
+                  })}
                   <span className="text-muted-foreground group-focus:text-foreground text-[11px] font-bold tracking-[0.15em] uppercase transition-colors">
                     {item.label}
                   </span>
@@ -191,51 +221,133 @@ export default function WisdomPage() {
       {/* Content Area */}
       <div className="mt-16">
         {hasWisdom ? (
-          <div className="space-y-6">
+          <div className="flex flex-col">
             {wisdomEntries.map((entry) => {
               const type =
                 (entry.metadata as WisdomMetadata | null)?.wisdom_type ??
                 "thought";
+              // Strip HTML tags and create a clean preview string
+              const previewText = entry.content
+                ? entry.content.replace(/<[^>]*>/g, "").slice(0, 160)
+                : "";
+
               return (
                 <Link
                   key={entry.id}
                   href={`/wisdom/${entry.id}`}
-                  className="group border-border/10 bg-muted/5 hover:bg-muted/10 flex flex-col gap-3 rounded-xl border p-6 transition-all duration-300"
+                  className={cn(
+                    "group border-border/5 hover:bg-muted/5 relative flex flex-col gap-6 border-b py-12 transition-all duration-500 first:pt-0 last:border-0 md:flex-row md:items-start md:gap-16",
+                  )}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={`flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase ${getTypeColor(type)}`}
+                  {/* Left Side: Minimalist Type/Date Column */}
+                  <div className="flex shrink-0 flex-row items-center gap-4 md:w-32 md:flex-col md:items-start md:gap-1">
+                    <div
+                      className={cn(
+                        "font-mono text-[10px] font-bold tracking-[0.2em] uppercase",
+                        getTypeColor(type),
+                      )}
+                    >
+                      {type}
+                    </div>
+                    <span className="text-foreground/60 font-mono text-sm font-bold tracking-tighter uppercase md:text-lg">
+                      {format(new Date(entry.createdAt), "MMM dd")}
+                    </span>
+                    {/* Mobile-only divider line */}
+                    <div className="bg-border/10 h-px flex-1 md:hidden" />
+                  </div>
+
+                  {/* Center: Content & Preview */}
+                  <div className="relative z-10 flex-1 space-y-4 transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="flex items-center gap-3">
+                      <h3
+                        className={cn(
+                          "text-foreground font-serif text-3xl font-light tracking-tight transition-colors duration-500 md:text-4xl",
+                          type === "quote" && "italic",
+                        )}
                       >
-                        {getTypeIcon(type)}
-                        {type}
-                      </div>
+                        {type === "quote" ? (
+                          <>
+                            <span className="text-muted-foreground/20 absolute -left-8 top-0 font-serif text-7xl select-none">
+                              &ldquo;
+                            </span>
+                            {entry.title ?? previewText}
+                            <span className="text-muted-foreground/20 ml-1 font-serif text-3xl select-none">
+                              &rdquo;
+                            </span>
+                          </>
+                        ) : (
+                          entry.title ?? (previewText || "A spark of wisdom...")
+                        )}
+                      </h3>
                       {entry.isStarred && (
                         <Star
-                          size={10}
-                          className="fill-yellow-400 text-yellow-400"
+                          size={18}
+                          className="fill-yellow-400/20 text-yellow-400 transition-all duration-500 group-hover:fill-yellow-400"
                         />
                       )}
                     </div>
+
+                    {/* Meta info (Author/Source) */}
+                    {((entry.metadata as WisdomMetadata | null)?.author ??
+                      (entry.metadata as WisdomMetadata | null)?.source) && (
+                      <div className="text-muted-foreground/40 flex items-center gap-3 text-[10px] font-medium tracking-[0.2em] uppercase italic">
+                        <div
+                          className={cn(
+                            "h-px w-6",
+                            getTypeColor(type)
+                              .replace("text-", "bg-")
+                              .replace("-400", "-400/30"),
+                          )}
+                        />
+                        {(entry.metadata as WisdomMetadata | null)?.author ??
+                          (entry.metadata as WisdomMetadata | null)?.source}
+                      </div>
+                    )}
+
+                    {/* Text Preview - Only if not using title as content */}
+                    {entry.title && previewText && (
+                      <p className="text-muted-foreground/60 line-clamp-2 max-w-2xl font-sans text-sm leading-relaxed md:text-base">
+                        {previewText.length > 200
+                          ? previewText.slice(0, 200) + "..."
+                          : previewText}
+                      </p>
+                    )}
+
+                    <div className="flex items-center gap-6 pt-2">
+                      <span className="text-muted-foreground/30 text-[10px] font-medium tracking-widest uppercase italic">
+                        Wisdom Profile — {type} Details
+                      </span>
+
+                      <button
+                        className="text-muted-foreground/20 flex items-center gap-2 p-1 transition-colors hover:text-red-400/80"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setDeletingWisdom({
+                            id: entry.id,
+                            title: entry.title,
+                          });
+                        }}
+                      >
+                        <Trash2 size={14} />
+                        <span className="text-[9px] tracking-widest uppercase opacity-0 transition-opacity group-hover:opacity-100">
+                          Delete
+                        </span>
+                      </button>
+                    </div>
                   </div>
 
-                  <p className="text-foreground group-hover:text-primary/90 font-serif text-2xl leading-relaxed transition-colors">
-                    {type === "quote"
-                      ? `"${entry.title ?? (entry.content ? entry.content.replace(/<[^>]*>/g, "").slice(0, 150) : "")}"`
-                      : (entry.title ??
-                        (entry.content
-                          ? entry.content.replace(/<[^>]*>/g, "").slice(0, 150)
-                          : ""))}
-                  </p>
-
-                  {((entry.metadata as WisdomMetadata | null)?.author ??
-                    (entry.metadata as WisdomMetadata | null)?.source) && (
-                    <div className="text-muted-foreground/40 flex items-center gap-2 text-[10px] font-medium tracking-widest uppercase">
-                      <div className="bg-muted-foreground/20 h-px w-4" />
-                      {(entry.metadata as WisdomMetadata | null)?.author ??
-                        (entry.metadata as WisdomMetadata | null)?.source}
-                    </div>
-                  )}
+                  {/* Right Side: Large Decorative Ghost Icon */}
+                  <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 overflow-hidden opacity-[0.03] transition-all duration-1000 group-hover:scale-115 group-hover:opacity-[0.12] md:-right-8">
+                    {React.createElement(getTypeIcon(type) as any, {
+                      size: 180,
+                      strokeWidth: 0.3,
+                      className: cn(
+                        "rotate-12 transition-all duration-1000 group-hover:rotate-0",
+                        getTypeColor(type).replace("text-", "fill-"),
+                      ),
+                    })}
+                  </div>
                 </Link>
               );
             })}
@@ -267,6 +379,7 @@ export default function WisdomPage() {
                 label="Add Thought"
                 type="thought"
                 onClick={handleNewWisdom}
+                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "thought"}
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -274,6 +387,7 @@ export default function WisdomPage() {
                 label="Add Quote"
                 type="quote"
                 onClick={handleNewWisdom}
+                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "quote"}
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -281,6 +395,7 @@ export default function WisdomPage() {
                 label="Add Fact"
                 type="fact"
                 onClick={handleNewWisdom}
+                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "fact"}
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -288,6 +403,7 @@ export default function WisdomPage() {
                 label="Add Excerpt"
                 type="excerpt"
                 onClick={handleNewWisdom}
+                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "excerpt"}
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -295,12 +411,20 @@ export default function WisdomPage() {
                 label="Add Lesson"
                 type="lesson"
                 onClick={handleNewWisdom}
+                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "lesson"}
                 disabled={createMutation.isPending}
               />
             </div>
           </div>
         )}
       </div>
+      <DeleteAlertDialog
+        open={!!deletingWisdom}
+        onOpenChange={(open) => !open && setDeletingWisdom(null)}
+        onConfirm={() => deletingWisdom?.id && handleDelete(deletingWisdom.id)}
+        title="Delete wisdom?"
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }
@@ -311,12 +435,14 @@ function ActionButton({
   label,
   type,
   onClick,
+  isPending,
   disabled,
 }: {
   icon: React.ReactNode;
   label: string;
   type: WisdomType;
   onClick: (type: WisdomType) => void;
+  isPending: boolean;
   disabled: boolean;
 }) {
   return (
@@ -325,8 +451,8 @@ function ActionButton({
       disabled={disabled}
       className="bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground flex min-w-[160px] cursor-pointer items-center gap-3 rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 disabled:opacity-50"
     >
-      {disabled ? <Loader2 size={16} className="animate-spin" /> : icon}
-      <span>{disabled ? "Adding..." : label}</span>
+      {isPending ? <Loader2 size={16} className="animate-spin" /> : icon}
+      <span>{isPending ? "Adding..." : label}</span>
     </button>
   );
 }

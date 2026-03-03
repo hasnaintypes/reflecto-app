@@ -1,17 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import { FileText, Plus, Star, ArrowUpDown, Loader2 } from "lucide-react";
+import { FileText, Plus, Star, ArrowUpDown, Loader2, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/trpc/react";
-import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { type NoteMetadata } from "@/types/metadata.types";
+import { toast } from "sonner";
+import { DeleteAlertDialog } from "@/components/shared/delete-alert-dialog";
 
 export default function NotesPage() {
   const router = useRouter();
   const [isStarredOnly, setIsStarredOnly] = useState(false);
+  const [deletingNote, setDeletingNote] = useState<{
+    id: string;
+    title: string | null;
+  } | null>(null);
+  const utils = api.useUtils();
   const { data, isLoading } = api.entry.list.useQuery({
     type: "note",
     limit: 50,
@@ -23,6 +30,21 @@ export default function NotesPage() {
       router.push(`/notes/${data.id}`);
     },
   });
+  
+  const deleteMutation = api.entry.delete.useMutation({
+    onSuccess: () => {
+      void utils.entry.list.invalidate();
+      setDeletingNote(null);
+      toast.success("Note deleted successfully");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to delete note");
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate({ id });
+  };
 
   const handleNewNote = () => {
     createMutation.mutate({
@@ -90,39 +112,85 @@ export default function NotesPage() {
       {/* Content Area */}
       <div className="mt-16">
         {hasNotes ? (
-          <div className="columns-1 gap-8 space-y-8 md:columns-2">
-            {notes.map((note) => (
-              <Link
-                key={note.id}
-                href={`/notes/${note.id}`}
-                className="group border-border/40 bg-muted/20 hover:bg-muted/30 block break-inside-avoid space-y-4 rounded-xl border p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-black/20"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-foreground group-hover:text-primary font-serif text-2xl font-medium transition-colors">
-                      {note.title ?? "Untitled Note"}
-                    </h3>
-                    {note.isStarred && (
-                      <Star
-                        size={12}
-                        className="fill-yellow-400 text-yellow-400"
-                      />
-                    )}
+          <div className="flex flex-col">
+            {notes.map((note) => {
+              // Strip HTML tags and create a clean preview string
+              const previewText = note.content
+                ? note.content.replace(/<[^>]*>/g, "").slice(0, 160)
+                : "No content recorded...";
+
+              return (
+                <Link
+                  key={note.id}
+                  href={`/notes/${note.id}`}
+                  className={cn(
+                    "group border-border/5 hover:bg-muted/5 relative flex flex-col gap-6 border-b py-12 transition-all duration-500 first:pt-0 last:border-0 md:flex-row md:items-start md:gap-16",
+                  )}
+                >
+                  {/* Left Side: Minimalist Date Column */}
+                  <div className="flex shrink-0 flex-row items-center gap-4 md:w-32 md:flex-col md:items-start md:gap-1">
+                    <span className="text-muted-foreground/40 font-mono text-[10px] font-bold tracking-[0.3em] uppercase">
+                      {format(new Date(note.createdAt), "yyyy")}
+                    </span>
+                    <span className="text-foreground/60 font-mono text-sm font-bold tracking-tighter uppercase md:text-lg">
+                      {format(new Date(note.createdAt), "MMM dd")}
+                    </span>
+                    {/* Mobile-only divider line */}
+                    <div className="bg-border/10 h-px flex-1 md:hidden" />
                   </div>
-                  <FileText size={16} className="text-muted-foreground/30" />
-                </div>
-                <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
-                  {note.content?.replace(/<[^>]*>/g, "").slice(0, 150) ??
-                    "Empty note"}
-                </p>
-                <div className="border-border/5 flex items-center justify-between border-t pt-4">
-                  <span className="text-muted-foreground/40 text-[10px] font-bold tracking-widest uppercase">
-                    {formatDistanceToNow(new Date(note.createdAt))} ago
-                  </span>
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#A78BFA]/40" />
-                </div>
-              </Link>
-            ))}
+
+                  {/* Center: Content & Preview */}
+                  <div className="relative z-10 flex-1 space-y-4 transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-foreground group-hover:text-[#A78BFA] font-serif text-3xl font-light tracking-tight transition-colors duration-500 md:text-4xl">
+                        {note.title ?? "Untitled Note"}
+                      </h3>
+                      {note.isStarred && (
+                        <Star
+                          size={18}
+                          className="fill-yellow-400/20 text-yellow-400 transition-all duration-500 group-hover:fill-yellow-400"
+                        />
+                      )}
+                    </div>
+
+                    {/* Text Preview - Limits to 2 lines */}
+                    <p className="text-muted-foreground/60 line-clamp-2 max-w-2xl font-sans text-sm leading-relaxed md:text-base">
+                      {previewText}
+                      {previewText.length >= 160 && "..."}
+                    </p>
+
+                    <div className="flex items-center gap-6 pt-2">
+                      <span className="text-muted-foreground/30 text-[10px] font-medium tracking-widest uppercase italic">
+                        Note Profile — {Math.ceil(previewText.length / 5)} words
+                      </span>
+
+                      <button
+                        className="text-muted-foreground/20 flex items-center gap-2 p-1 transition-colors hover:text-red-400/80"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setDeletingNote({ id: note.id, title: note.title });
+                        }}
+                      >
+                        <Trash2 size={14} />
+                        <span className="text-[9px] tracking-widest uppercase opacity-0 transition-opacity group-hover:opacity-100">
+                          Delete
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right Side: Large Decorative Ghost Icon */}
+                  <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 overflow-hidden opacity-[0.03] transition-all duration-1000 group-hover:scale-115 group-hover:opacity-[0.12] md:-right-8">
+                    <FileText
+                      size={180}
+                      strokeWidth={0.3}
+                      className="fill-[#A78BFA] rotate-12 transition-all duration-1000 group-hover:rotate-0"
+                    />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         ) : (
           /* Empty State - Matching the 'Notes' reference strictly */
@@ -173,6 +241,13 @@ export default function NotesPage() {
           </div>
         )}
       </div>
+      <DeleteAlertDialog
+        open={!!deletingNote}
+        onOpenChange={(open) => !open && setDeletingNote(null)}
+        onConfirm={() => deletingNote?.id && handleDelete(deletingNote.id)}
+        title="Delete note?"
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }

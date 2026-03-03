@@ -7,18 +7,9 @@ import Link from "next/link";
 import { api } from "@/trpc/react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { type DreamMetadata } from "@/types/metadata.types";
 import { toast } from "sonner";
+import { DeleteAlertDialog } from "@/components/shared/delete-alert-dialog";
 
 export default function DreamsPage() {
   const router = useRouter();
@@ -162,8 +153,11 @@ export default function DreamsPage() {
                       )}
                     </div>
 
-                    {/* Text Preview - Limits to 2 lines */}
-                    <p className="text-muted-foreground/60 line-clamp-2 max-w-2xl font-sans text-sm leading-relaxed md:text-base">
+                    {/* Text Preview - Limits to 2 lines or 5 if collapsing enabled */}
+                    <p className={cn(
+                      "text-muted-foreground/60 max-w-2xl font-sans text-sm leading-relaxed md:text-base",
+                      usePreferencesStore.getState().preferences?.preferences?.collapseLongDreams !== false ? "line-clamp-5" : "line-clamp-none"
+                    )}>
                       {previewText}
                       {previewText.length >= 160 && "..."}
                     </p>
@@ -233,38 +227,13 @@ export default function DreamsPage() {
           </div>
         )}
       </div>
-      <AlertDialog
+      <DeleteAlertDialog
         open={!!deletingDream}
         onOpenChange={(open) => !open && setDeletingDream(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-serif text-2xl font-medium tracking-tight italic">
-              Delete dream?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground pt-2 text-sm leading-relaxed">
-              This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-6 flex flex-row gap-3 sm:justify-end">
-            <AlertDialogCancel className="hover:bg-muted/50 mt-0 flex-1 rounded-xl border-none bg-transparent sm:flex-none">
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() =>
-                deletingDream?.id && handleDelete(deletingDream.id)
-              }
-              className="min-w-[100px] flex-1 rounded-xl bg-red-500 text-white hover:bg-red-600 sm:flex-none"
-            >
-              {deleteMutation.isPending ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                "Delete"
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onConfirm={() => deletingDream?.id && handleDelete(deletingDream.id)}
+        title="Delete dream?"
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }

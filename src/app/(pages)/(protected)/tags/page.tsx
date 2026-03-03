@@ -19,16 +19,7 @@ import { GroupList } from "./_components/group-list";
 import { CreateGroupDialog } from "./_components/create-group-dialog";
 import { toast } from "sonner";
 import { type SharedTag } from "@/types/tag.types";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { DeleteAlertDialog } from "@/components/shared/delete-alert-dialog";
 
 export default function TagsPage() {
   const utils = api.useUtils();
@@ -250,39 +241,14 @@ export default function TagsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog
+      <DeleteAlertDialog
         open={!!deletingTag}
         onOpenChange={(open) => !open && setDeletingTag(null)}
-      >
-        <AlertDialogContent className="border-border/40 bg-card rounded-2xl p-6 shadow-2xl sm:max-w-[400px]">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-serif text-2xl font-medium tracking-tight italic">
-              Delete Tag{" "}
-              <span className="text-[#86A694]">#{deletingTag?.name}</span>?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground pt-2 text-sm leading-relaxed">
-              This will remove the tag from all your entries. This action cannot
-              be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-6 flex flex-row gap-3 sm:justify-end">
-            <AlertDialogCancel className="hover:bg-muted/50 mt-0 flex-1 rounded-xl border-none bg-transparent sm:flex-none">
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDelete}
-              className="min-w-[100px] flex-1 rounded-xl bg-[#86A694] !bg-none text-white hover:opacity-90 sm:flex-none"
-            >
-              {deleteMutation.isPending ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                "Delete"
-              )}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onConfirm={confirmDelete}
+        title={`Delete Tag #${deletingTag?.name}?`}
+        description="This will remove the tag from all your entries. This action cannot be undone."
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }

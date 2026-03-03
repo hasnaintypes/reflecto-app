@@ -41,11 +41,27 @@ export default function ReflectPage() {
   });
 
   // Total count for memory lane
-  const { data: totalData } = api.entry.list.useQuery({ limit: 1 });
+  const { data: totalEntriesCount } = api.entry.count.useQuery({});
 
   const yesterdayEntries = yesterdayData?.entries ?? [];
   const weekEntries = weekData?.entries ?? [];
-  const totalEntries = totalData?.entries.length ?? 0; // This is not quite right for total count, but good enough to check if > 0
+  const totalEntries = totalEntriesCount ?? 0;
+
+  // Fetch a random throwback entry for Memory Lane
+  const { data: randomEntry } = api.entry.list.useQuery(
+    { limit: 100 },
+    { enabled: totalEntries >= 10 },
+  );
+
+  const throwbackEntry = React.useMemo(() => {
+    if (!randomEntry || randomEntry.entries.length < 10) return null;
+    // Simple way to get a "random" old entry (older than a week)
+    const oldEntries = randomEntry.entries.filter(
+      (e) => new Date(e.createdAt) < subDays(new Date(), 7),
+    );
+    if (oldEntries.length === 0) return null;
+    return oldEntries[Math.floor(Math.random() * oldEntries.length)];
+  }, [randomEntry, totalEntries]);
 
   const getEntryIcon = (type: string) => {
     switch (type) {
@@ -202,12 +218,54 @@ export default function ReflectPage() {
           <h2 className="text-foreground mb-6 text-2xl font-medium">
             Memory lane
           </h2>
-          <div className="text-muted-foreground flex items-start gap-3 text-lg">
-            <span className="leading-relaxed lowercase">
-              {totalEntries < 10
-                ? `Throwbacks will show up here once you have created 10 or more entries, otherwise it would be quite boring... (currently ${totalEntries}/10)`
-                : "Looking back at your journey..."}
-            </span>
+          <div className="text-muted-foreground flex flex-col gap-6 text-lg">
+            {totalEntries < 10 ? (
+              <span className="leading-relaxed lowercase">
+                Throwbacks will show up here once you have created 10 or more
+                entries, otherwise it would be quite boring... (currently{" "}
+                {totalEntries}/10)
+              </span>
+            ) : throwbackEntry ? (
+              <Link
+                href={getEntryLink(throwbackEntry)}
+                className="group border-border/40 hover:border-primary/20 bg-muted/5 hover:bg-muted/10 flex flex-col gap-4 rounded-2xl border p-8 transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="bg-primary/10 rounded-full p-2 text-primary">
+                    <Sparkles size={16} />
+                  </div>
+                  <span className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">
+                    Throwback from{" "}
+                    {format(new Date(throwbackEntry.createdAt), "MMMM yyyy")}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-foreground group-hover:text-primary font-serif text-3xl font-medium italic transition-colors">
+                    {throwbackEntry.title || "Untitled Reflection"}
+                  </h3>
+                  <p className="text-muted-foreground/60 line-clamp-3 text-sm leading-relaxed lowercase">
+                    {throwbackEntry.content
+                      ?.replace(/<[^>]*>/g, "")
+                      .slice(0, 200)}
+                    ...
+                  </p>
+                </div>
+                <div className="flex items-center gap-4 pt-4">
+                  <span className="text-muted-foreground/40 font-mono text-[10px] font-bold tracking-widest uppercase">
+                    {format(new Date(throwbackEntry.createdAt), "MMM dd, yyyy")}
+                  </span>
+                  <div className="bg-border/20 h-px flex-1" />
+                  <span className="text-primary text-xs font-medium lowercase opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
+                    revisit this moment →
+                  </span>
+                </div>
+              </Link>
+            ) : (
+              <span className="leading-relaxed lowercase">
+                Looking back at your journey... highlights will appear here
+                soon.
+              </span>
+            )}
           </div>
         </section>
       </div>

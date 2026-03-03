@@ -13,15 +13,19 @@ import type { EntryMetadata } from "@/types/metadata.types";
 import type { EntryType } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { getSpecialDetails } from "@/lib/special-dates";
+import { LinkedContext } from "./_components/linked-context";
 
 function WritePageContent() {
   const searchParams = useSearchParams();
   const typeFromUrl = (searchParams.get("type") as EntryType) ?? "journal";
   const entryId = searchParams.get("id");
+  const dateParam = searchParams.get("date");
 
   const { setCurrentEntry, currentEntry } = useEntryStore();
   const preferences = usePreferencesStore((state) => state.preferences);
   const showBulletCount = preferences?.preferences?.bulletedMode ?? true;
+  const showSpecialDatesPref = preferences?.preferences?.specialDates ?? false;
 
   // Load specific entry if ID is provided
   const { data: fetchedEntry, isLoading: isEntryLoading } =
@@ -45,11 +49,30 @@ function WritePageContent() {
     }
   }, [fetchedEntry, entryId, setCurrentEntry]);
 
-  const displayDate = currentEntry?.createdAt
-    ? new Date(currentEntry.createdAt)
-    : entryId
-      ? null
-      : new Date();
+  // Handle entry clearing and transitions
+  useEffect(() => {
+    if (
+      entryId &&
+      currentEntry &&
+      currentEntry.id !== entryId &&
+      !isEntryLoading
+    ) {
+      setCurrentEntry(null);
+    }
+  }, [entryId, currentEntry, setCurrentEntry, isEntryLoading]);
+
+  // Re-calculate tomorrow/today/date-param based on URL
+  const displayDate = React.useMemo(() => {
+    if (fetchedEntry?.createdAt) return new Date(fetchedEntry.createdAt);
+    if (currentEntry?.createdAt && currentEntry.id === entryId)
+      return new Date(currentEntry.createdAt);
+    if (dateParam) return new Date(dateParam);
+    if (entryId) return null; // Wait for fetchedEntry
+    return new Date();
+  }, [fetchedEntry, currentEntry, entryId, dateParam]);
+
+  const specialDays =
+    displayDate && showSpecialDatesPref ? getSpecialDetails(displayDate) : [];
 
   const dateStr = displayDate
     ? format(displayDate, "MMMM do, yyyy").toLowerCase()
@@ -85,7 +108,7 @@ function WritePageContent() {
           metadata: {},
           createdAt: now,
           updatedAt: now,
-        } as EntryWithRelations); // Cast as partial/mock
+        } as EntryWithRelations);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,18 +135,6 @@ function WritePageContent() {
     }
   };
 
-  // Handle entry clearing and transitions
-  useEffect(() => {
-    if (
-      entryId &&
-      currentEntry &&
-      currentEntry.id !== entryId &&
-      !isEntryLoading
-    ) {
-      setCurrentEntry(null);
-    }
-  }, [entryId, currentEntry, setCurrentEntry, isEntryLoading]);
-
   if (isLoadingEntry) {
     return (
       <div className="animate-in fade-in flex h-screen flex-col items-center justify-center gap-4 duration-500">
@@ -140,11 +151,21 @@ function WritePageContent() {
       <div className="animate-in fade-in slide-in-from-top-4 transition-all duration-300 duration-1000">
         <header className="mb-8 space-y-4 pt-6">
           <div className="space-y-1">
-            <p className="text-primary font-mono text-[10px] font-bold tracking-[0.3em] uppercase">
-              {dateStr}
-            </p>
+            <div className="flex items-center gap-4">
+              {dateStr && (
+                <p className="text-primary font-mono text-[10px] font-bold tracking-[0.3em] uppercase">
+                  {dateStr}
+                </p>
+              )}
+              {specialDays.length > 0 && specialDays[0] && (
+                <div className="flex items-center gap-1.5 rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-bold tracking-wider text-primary animate-pulse uppercase">
+                  <Sparkles size={8} />
+                  {specialDays[0].name}
+                </div>
+              )}
+            </div>
             <h1 className="text-foreground font-serif text-7xl font-medium tracking-tight italic">
-              {dayStr}
+              {dayStr || "Reflection"}
             </h1>
             {showBulletCount &&
               currentEntry?.metadata &&
@@ -200,6 +221,9 @@ function WritePageContent() {
           id={entryId ?? undefined}
           initialType={typeFromUrl}
         />
+        {entryId && displayDate && showItemsInEntries && (
+          <LinkedContext entryId={entryId} date={displayDate} />
+        )}
       </div>
     </div>
   );
