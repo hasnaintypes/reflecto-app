@@ -263,7 +263,11 @@ export class EntryService {
     }
 
     if (type) {
-      where.type = type;
+      if (Array.isArray(type)) {
+        where.type = { in: type };
+      } else {
+        where.type = type;
+      }
     }
 
     if (search) {
@@ -458,6 +462,65 @@ export class EntryService {
     });
 
     return { success: true };
+  }
+
+  /**
+   * Count entries with filters
+   */
+  async count(
+    db: PrismaClient,
+    userId: string,
+    filters: ListEntriesInput,
+  ): Promise<number> {
+    const { type, search, tagIds, personIds, dateFrom, dateTo } = filters;
+
+    const where: Prisma.EntryWhereInput = {
+      userId,
+      deletedAt: null,
+    };
+
+    if (filters.isStarred !== undefined) {
+      where.isStarred = filters.isStarred;
+    }
+
+    if (type) {
+      if (Array.isArray(type)) {
+        where.type = { in: type };
+      } else {
+        where.type = type;
+      }
+    }
+
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: "insensitive" } },
+        { content: { contains: search, mode: "insensitive" } },
+      ];
+    }
+
+    if (tagIds && tagIds.length > 0) {
+      where.tags = {
+        some: {
+          id: { in: tagIds },
+        },
+      };
+    }
+
+    if (personIds && personIds.length > 0) {
+      where.people = {
+        some: {
+          id: { in: personIds },
+        },
+      };
+    }
+
+    if (dateFrom ?? dateTo) {
+      where.createdAt = {};
+      if (dateFrom) where.createdAt.gte = dateFrom;
+      if (dateTo) where.createdAt.lte = dateTo;
+    }
+
+    return db.entry.count({ where });
   }
 }
 

@@ -60,4 +60,12 @@ export const entryRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return entryService.delete(ctx.db, ctx.session.user.id, input.id);
     }),
+  /**
+   * Count entries with filters
+   */
+  count: protectedProcedure
+    .input(listEntriesSchema)
+    .query(async ({ ctx, input }) => {
+      return entryService.count(ctx.db, ctx.session.user.id, input);
+    }),
 });

@@ -84,7 +84,7 @@ export const updateEntrySchema = z.object({
  */
 export const listEntriesSchema = z.object({
   isStarred: z.boolean().optional(),
-  type: entryTypeSchema.optional(),
+  type: z.union([entryTypeSchema, z.array(entryTypeSchema)]).optional(),
   limit: z.number().min(1).max(1000).default(20),
   cursor: z.string().optional(),
   search: z.string().optional(),
