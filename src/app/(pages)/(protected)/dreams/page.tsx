@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { type DreamMetadata } from "@/types/metadata.types";
 import { toast } from "sonner";
 import { DeleteAlertDialog } from "@/components/shared/delete-alert-dialog";
+import { usePreferencesStore } from "@/stores/use-preferences-store";
 
 export default function DreamsPage() {
   const router = useRouter();
@@ -154,10 +155,15 @@ export default function DreamsPage() {
                     </div>
 
                     {/* Text Preview - Limits to 2 lines or 5 if collapsing enabled */}
-                    <p className={cn(
-                      "text-muted-foreground/60 max-w-2xl font-sans text-sm leading-relaxed md:text-base",
-                      usePreferencesStore.getState().preferences?.preferences?.collapseLongDreams !== false ? "line-clamp-5" : "line-clamp-none"
-                    )}>
+                    <p
+                      className={cn(
+                        "text-muted-foreground/60 max-w-2xl font-sans text-sm leading-relaxed md:text-base",
+                        usePreferencesStore.getState().preferences?.preferences
+                          ?.collapseLongDreams !== false
+                          ? "line-clamp-5"
+                          : "line-clamp-none",
+                      )}
+                    >
                       {previewText}
                       {previewText.length >= 160 && "..."}
                     </p>

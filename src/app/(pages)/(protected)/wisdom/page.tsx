@@ -29,7 +29,7 @@ import { toast } from "sonner";
 import { DeleteAlertDialog } from "@/components/shared/delete-alert-dialog";
 
 import { type WisdomMetadata } from "@/types/metadata.types";
-import { format, formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 
 type WisdomType = NonNullable<WisdomMetadata["wisdom_type"]>;
 
@@ -204,7 +204,7 @@ export default function WisdomPage() {
                   className="group focus:bg-muted focus:text-foreground flex w-full cursor-pointer items-center gap-3 px-3 py-2 transition-all"
                   onClick={() => handleNewWisdom(item.type as WisdomType)}
                 >
-                  {React.createElement(item.icon as any, {
+                  {React.createElement(item.icon as React.ElementType, {
                     size: 14,
                     className: item.color,
                   })}
@@ -267,7 +267,7 @@ export default function WisdomPage() {
                       >
                         {type === "quote" ? (
                           <>
-                            <span className="text-muted-foreground/20 absolute -left-8 top-0 font-serif text-7xl select-none">
+                            <span className="text-muted-foreground/20 absolute top-0 -left-8 font-serif text-7xl select-none">
                               &ldquo;
                             </span>
                             {entry.title ?? previewText}
@@ -276,7 +276,8 @@ export default function WisdomPage() {
                             </span>
                           </>
                         ) : (
-                          entry.title ?? (previewText || "A spark of wisdom...")
+                          (entry.title ??
+                          (previewText || "A spark of wisdom..."))
                         )}
                       </h3>
                       {entry.isStarred && (
@@ -339,14 +340,17 @@ export default function WisdomPage() {
 
                   {/* Right Side: Large Decorative Ghost Icon */}
                   <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 overflow-hidden opacity-[0.03] transition-all duration-1000 group-hover:scale-115 group-hover:opacity-[0.12] md:-right-8">
-                    {React.createElement(getTypeIcon(type) as any, {
-                      size: 180,
-                      strokeWidth: 0.3,
-                      className: cn(
-                        "rotate-12 transition-all duration-1000 group-hover:rotate-0",
-                        getTypeColor(type).replace("text-", "fill-"),
-                      ),
-                    })}
+                    {React.createElement(
+                      getTypeIcon(type) as React.ElementType,
+                      {
+                        size: 180,
+                        strokeWidth: 0.3,
+                        className: cn(
+                          "rotate-12 transition-all duration-1000 group-hover:rotate-0",
+                          getTypeColor(type).replace("text-", "fill-"),
+                        ),
+                      },
+                    )}
                   </div>
                 </Link>
               );
@@ -379,7 +383,13 @@ export default function WisdomPage() {
                 label="Add Thought"
                 type="thought"
                 onClick={handleNewWisdom}
-                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "thought"}
+                isPending={
+                  (
+                    createMutation.variables as {
+                      metadata?: WisdomMetadata;
+                    }
+                  )?.metadata?.wisdom_type === "thought"
+                }
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -387,7 +397,14 @@ export default function WisdomPage() {
                 label="Add Quote"
                 type="quote"
                 onClick={handleNewWisdom}
-                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "quote"}
+                isPending={
+                  createMutation.isPending &&
+                  (
+                    createMutation.variables as {
+                      metadata?: WisdomMetadata;
+                    }
+                  )?.metadata?.wisdom_type === "quote"
+                }
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -395,7 +412,14 @@ export default function WisdomPage() {
                 label="Add Fact"
                 type="fact"
                 onClick={handleNewWisdom}
-                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "fact"}
+                isPending={
+                  createMutation.isPending &&
+                  (
+                    createMutation.variables as {
+                      metadata?: WisdomMetadata;
+                    }
+                  )?.metadata?.wisdom_type === "fact"
+                }
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -403,7 +427,14 @@ export default function WisdomPage() {
                 label="Add Excerpt"
                 type="excerpt"
                 onClick={handleNewWisdom}
-                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "excerpt"}
+                isPending={
+                  createMutation.isPending &&
+                  (
+                    createMutation.variables as {
+                      metadata?: WisdomMetadata;
+                    }
+                  )?.metadata?.wisdom_type === "excerpt"
+                }
                 disabled={createMutation.isPending}
               />
               <ActionButton
@@ -411,7 +442,14 @@ export default function WisdomPage() {
                 label="Add Lesson"
                 type="lesson"
                 onClick={handleNewWisdom}
-                isPending={createMutation.isPending && (createMutation.variables as any)?.metadata?.wisdom_type === "lesson"}
+                isPending={
+                  createMutation.isPending &&
+                  (
+                    createMutation.variables as {
+                      metadata?: WisdomMetadata;
+                    }
+                  )?.metadata?.wisdom_type === "lesson"
+                }
                 disabled={createMutation.isPending}
               />
             </div>

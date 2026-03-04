@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { FileText, Plus, Star, ArrowUpDown, Loader2, Trash2 } from "lucide-react";
+import {
+  FileText,
+  Plus,
+  Star,
+  ArrowUpDown,
+  Loader2,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/trpc/react";
@@ -30,7 +37,7 @@ export default function NotesPage() {
       router.push(`/notes/${data.id}`);
     },
   });
-  
+
   const deleteMutation = api.entry.delete.useMutation({
     onSuccess: () => {
       void utils.entry.list.invalidate();
@@ -142,7 +149,7 @@ export default function NotesPage() {
                   {/* Center: Content & Preview */}
                   <div className="relative z-10 flex-1 space-y-4 transition-transform duration-500 group-hover:translate-x-1">
                     <div className="flex items-center gap-3">
-                      <h3 className="text-foreground group-hover:text-[#A78BFA] font-serif text-3xl font-light tracking-tight transition-colors duration-500 md:text-4xl">
+                      <h3 className="text-foreground font-serif text-3xl font-light tracking-tight transition-colors duration-500 group-hover:text-[#A78BFA] md:text-4xl">
                         {note.title ?? "Untitled Note"}
                       </h3>
                       {note.isStarred && (
@@ -185,7 +192,7 @@ export default function NotesPage() {
                     <FileText
                       size={180}
                       strokeWidth={0.3}
-                      className="fill-[#A78BFA] rotate-12 transition-all duration-1000 group-hover:rotate-0"
+                      className="rotate-12 fill-[#A78BFA] transition-all duration-1000 group-hover:rotate-0"
                     />
                   </div>
                 </Link>

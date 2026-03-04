@@ -61,7 +61,7 @@ export default function ReflectPage() {
     );
     if (oldEntries.length === 0) return null;
     return oldEntries[Math.floor(Math.random() * oldEntries.length)];
-  }, [randomEntry, totalEntries]);
+  }, [randomEntry]);
 
   const getEntryIcon = (type: string) => {
     switch (type) {
@@ -231,7 +231,7 @@ export default function ReflectPage() {
                 className="group border-border/40 hover:border-primary/20 bg-muted/5 hover:bg-muted/10 flex flex-col gap-4 rounded-2xl border p-8 transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <div className="bg-primary/10 rounded-full p-2 text-primary">
+                  <div className="bg-primary/10 text-primary rounded-full p-2">
                     <Sparkles size={16} />
                   </div>
                   <span className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">
@@ -241,7 +241,7 @@ export default function ReflectPage() {
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-foreground group-hover:text-primary font-serif text-3xl font-medium italic transition-colors">
-                    {throwbackEntry.title || "Untitled Reflection"}
+                    {throwbackEntry.title ?? "Untitled Reflection"}
                   </h3>
                   <p className="text-muted-foreground/60 line-clamp-3 text-sm leading-relaxed lowercase">
                     {throwbackEntry.content

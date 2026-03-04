@@ -156,7 +156,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="absolute right-2 bottom-2 rounded-full bg-[#86A694] !bg-none p-3 text-white shadow-lg transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
+                className="absolute right-2 bottom-2 z-20 rounded-full bg-[#86A694] !bg-none p-3 text-white shadow-lg transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
               >
                 {isUploading ? (
                   <Loader2 size={18} className="animate-spin" />

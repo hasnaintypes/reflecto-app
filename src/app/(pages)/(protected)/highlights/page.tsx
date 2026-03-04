@@ -140,7 +140,7 @@ export default function HighlightsPage() {
                   {/* Center: Content & Preview */}
                   <div className="relative z-10 flex-1 space-y-4 transition-transform duration-500 group-hover:translate-x-1">
                     <div className="flex items-center gap-3">
-                      <h2 className="text-foreground group-hover:text-[#F87171] font-serif text-3xl font-light tracking-tight transition-colors duration-500 md:text-4xl">
+                      <h2 className="text-foreground font-serif text-3xl font-light tracking-tight transition-colors duration-500 group-hover:text-[#F87171] md:text-4xl">
                         {highlight.title ?? "Untitled Highlight"}
                       </h2>
                       {highlight.isStarred && (
@@ -186,7 +186,7 @@ export default function HighlightsPage() {
                     <Sparkles
                       size={180}
                       strokeWidth={0.3}
-                      className="fill-[#F87171] rotate-12 transition-all duration-1000 group-hover:rotate-0"
+                      className="rotate-12 fill-[#F87171] transition-all duration-1000 group-hover:rotate-0"
                     />
                   </div>
                 </Link>
@@ -222,7 +222,9 @@ export default function HighlightsPage() {
       <DeleteAlertDialog
         open={!!deletingHighlight}
         onOpenChange={(open) => !open && setDeletingHighlight(null)}
-        onConfirm={() => deletingHighlight?.id && handleDelete(deletingHighlight.id)}
+        onConfirm={() =>
+          deletingHighlight?.id && handleDelete(deletingHighlight.id)
+        }
         title="Delete highlight?"
         isDeleting={deleteMutation.isPending}
       />

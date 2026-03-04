@@ -131,13 +131,18 @@ export default function JournalPage() {
           </div>
         </header>
 
-        {(showStreak) && (
-          <div className="mt-8 border-border/10 border-t pt-4">
+        {showStreak && (
+          <div className="border-border/10 mt-8 border-t pt-4">
             <StreakBar />
           </div>
         )}
 
-        <div className={cn("border-border/20 border-b py-4", !showStreak && "mt-4")}>
+        <div
+          className={cn(
+            "border-border/20 border-b py-4",
+            !showStreak && "mt-4",
+          )}
+        >
           <CalendarStrip entries={entries} />
         </div>
       </div>

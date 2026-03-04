@@ -26,6 +26,8 @@ function WritePageContent() {
   const preferences = usePreferencesStore((state) => state.preferences);
   const showBulletCount = preferences?.preferences?.bulletedMode ?? true;
   const showSpecialDatesPref = preferences?.preferences?.specialDates ?? false;
+  const showItemsInEntries =
+    preferences?.preferences?.showItemsInEntries ?? true;
 
   // Load specific entry if ID is provided
   const { data: fetchedEntry, isLoading: isEntryLoading } =
@@ -158,7 +160,7 @@ function WritePageContent() {
                 </p>
               )}
               {specialDays.length > 0 && specialDays[0] && (
-                <div className="flex items-center gap-1.5 rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-bold tracking-wider text-primary animate-pulse uppercase">
+                <div className="bg-primary/10 text-primary flex animate-pulse items-center gap-1.5 rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
                   <Sparkles size={8} />
                   {specialDays[0].name}
                 </div>

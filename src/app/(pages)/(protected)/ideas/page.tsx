@@ -73,7 +73,7 @@ export default function IdeasPage() {
     <div className="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-5xl px-6 pt-20 pb-24 duration-1000">
       <header className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div className="space-y-1">
-          <p className="text-[#10B981] text-[10px] font-bold tracking-[0.3em] uppercase">
+          <p className="text-[10px] font-bold tracking-[0.3em] text-[#10B981] uppercase">
             Workspace
           </p>
           <h1 className="text-foreground font-serif text-6xl font-medium tracking-tight italic">
@@ -138,7 +138,7 @@ export default function IdeasPage() {
                   {/* Center: Content & Preview */}
                   <div className="relative z-10 flex-1 space-y-4 transition-transform duration-500 group-hover:translate-x-1">
                     <div className="flex items-center gap-3">
-                      <h3 className="text-foreground group-hover:text-[#10B981] font-serif text-3xl font-light tracking-tight transition-colors duration-500 md:text-4xl">
+                      <h3 className="text-foreground font-serif text-3xl font-light tracking-tight transition-colors duration-500 group-hover:text-[#10B981] md:text-4xl">
                         {idea.title ?? "Untitled Idea"}
                       </h3>
                       {idea.isStarred && (
@@ -150,7 +150,7 @@ export default function IdeasPage() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="bg-[#10B981]/10 text-[#10B981] rounded px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase">
+                      <span className="rounded bg-[#10B981]/10 px-2 py-0.5 text-[10px] font-bold tracking-widest text-[#10B981] uppercase">
                         {(idea.metadata as IdeaMetadata)?.status ?? "New"}
                       </span>
                     </div>
@@ -187,7 +187,7 @@ export default function IdeasPage() {
                     <Lightbulb
                       size={180}
                       strokeWidth={0.3}
-                      className="fill-[#10B981] rotate-12 transition-all duration-1000 group-hover:rotate-0"
+                      className="rotate-12 fill-[#10B981] transition-all duration-1000 group-hover:rotate-0"
                     />
                   </div>
                 </Link>
@@ -200,7 +200,7 @@ export default function IdeasPage() {
               <p>
                 Save all your ideas in one place so that they don&apos;t get
                 lost.{" "}
-                <span className="text-[#10B981] decoration-[#10B981]/30 underline underline-offset-4">
+                <span className="text-[#10B981] underline decoration-[#10B981]/30 underline-offset-4">
                   Reflect
                 </span>{" "}
                 will bring them back up occasionally for contemplation.
@@ -211,7 +211,7 @@ export default function IdeasPage() {
               <span className="lowercase">More info in our</span>
               <a
                 href="#"
-                className="group text-muted-foreground decoration-border/60 hover:text-[#10B981] hover:decoration-[#10B981]/40 flex items-center gap-1 underline underline-offset-4 transition-colors"
+                className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#10B981] hover:decoration-[#10B981]/40"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">documentation.</span>
@@ -225,7 +225,7 @@ export default function IdeasPage() {
                 className="bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-2 rounded px-4 py-2 text-sm font-medium transition-all active:scale-95 disabled:opacity-50"
               >
                 {createMutation.isPending ? (
-                  <Loader2 size={16} className="text-[#10B981] animate-spin" />
+                  <Loader2 size={16} className="animate-spin text-[#10B981]" />
                 ) : (
                   <Lightbulb size={16} className="text-[#10B981]" />
                 )}
