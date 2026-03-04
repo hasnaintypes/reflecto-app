@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
-import Image from "next/image";
 import { NodeViewWrapper, type ReactNodeViewProps } from "@tiptap/react";
 import { X, Maximize2, Loader2 } from "lucide-react";
 import { DeleteImageDialog } from "@/components/shared";
@@ -96,27 +95,16 @@ export const ResizableImageNodeView = ({
           "group-hover:shadow-md",
         )}
       >
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           ref={imageRef}
           src={attrs.src}
           alt={attrs.alt ?? ""}
-          width={attrs.width ?? 800}
-          height={attrs.height ?? 600}
-          unoptimized
           style={{
             width: attrs.width ? `${attrs.width}px` : "100%",
-            height:
-              attrs.width && attrs.height
-                ? "auto"
-                : attrs.height
-                  ? `${attrs.height}px`
-                  : "auto",
-            aspectRatio:
-              attrs.width && attrs.height
-                ? `${attrs.width} / ${attrs.height}`
-                : "auto",
+            height: "auto",
             display: "block",
-            objectFit: "cover",
+            objectFit: "contain",
           }}
           className={cn(
             "transition-opacity",

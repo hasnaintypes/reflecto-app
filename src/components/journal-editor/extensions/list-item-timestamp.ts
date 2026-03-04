@@ -7,14 +7,16 @@ export const ListItemWithTimestamp = ListItem.extend({
       ...this.parent?.(),
       timestamp: {
         default: null,
-        parseHTML: (element: HTMLElement) => element.getAttribute("data-timestamp"),
-        renderHTML: (attributes) => {
-          if (!attributes.timestamp) {
+        parseHTML: (element: HTMLElement) =>
+          element.getAttribute("data-timestamp"),
+        renderHTML: (attributes: Record<string, unknown>) => {
+          const timestamp = attributes.timestamp as string | null;
+          if (!timestamp) {
             return {};
           }
           return {
-            "data-timestamp": attributes.timestamp,
-            "data-timestamp-display": format(new Date(attributes.timestamp), "h:mm a"),
+            "data-timestamp": timestamp,
+            "data-timestamp-display": format(new Date(timestamp), "h:mm a"),
           };
         },
       },
@@ -30,9 +32,12 @@ export const ListItemWithTimestamp = ListItem.extend({
         const { $from } = selection;
 
         // Check if we are in a list item and it's not empty
-        if ($from.parent.type.name === "listItem" && $from.parent.content.size > 0) {
+        if (
+          $from.parent.type.name === "listItem" &&
+          $from.parent.content.size > 0
+        ) {
           const timestamp = new Date().toISOString();
-          
+
           return this.editor
             .chain()
             .splitListItem("listItem")

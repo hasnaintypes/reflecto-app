@@ -11,8 +11,6 @@ import Link from "@tiptap/extension-link";
 import { cn } from "@/lib/utils";
 import { ResizableImage, TagMention, PeopleMention } from "../extensions";
 import { ListItemWithTimestamp } from "../extensions/list-item-timestamp";
-import { format } from "date-fns";
-
 
 import { useSharedEditor } from "./use-editor";
 import { api } from "@/trpc/react";
@@ -37,8 +35,10 @@ export default function JournalEditor({
   const spellChecking = preferences?.preferences?.spellChecking ?? true;
   const newlineOnEnter = preferences?.preferences?.newlineOnEnter ?? false;
   const autocomplete = preferences?.preferences?.autocomplete ?? true;
-  const showBulletTimestamps = preferences?.preferences?.bulletTimestamps ?? false;
-  const highlightMentions = preferences?.preferences?.highlightTagsAndMentions ?? true;
+  const showBulletTimestamps =
+    preferences?.preferences?.bulletTimestamps ?? false;
+  const highlightMentions =
+    preferences?.preferences?.highlightTagsAndMentions ?? true;
   const router = useRouter();
 
   const lastSavedContent = useRef<string>("");
@@ -52,7 +52,6 @@ export default function JournalEditor({
     onSuccess: (data) => {
       setCurrentEntry(data);
       lastSavedContent.current = data.content ?? "";
-      // Sync URL without full reload
       const url = new URL(window.location.href);
       url.searchParams.set("id", data.id);
       window.history.replaceState(null, "", url.toString());
@@ -75,7 +74,6 @@ export default function JournalEditor({
   const handleAutoSave = useDebounce((content: string) => {
     if (!effectiveId && (!content || content === "<p></p>")) return;
 
-    // Get latest metadata from store to avoid closure staleness
     const latestEntry = useEntryStore.getState().currentEntry;
     const latestMetadata = (latestEntry?.metadata as EntryMetadata) ?? {};
 
@@ -138,7 +136,7 @@ export default function JournalEditor({
           }
           if (!newlineOnEnter) {
             handleAutoSave.flush();
-            return false; // Allow default behavior (new line)
+            return false;
           }
         }
         return false;
@@ -183,7 +181,6 @@ export default function JournalEditor({
 
       const bulletCount = (html.match(/<li[^>]*>/g) ?? []).length;
 
-      // Update store with bullet count immediately
       const currentMetadata =
         (currentEntry?.metadata as Record<string, unknown>) ?? {};
       if (currentMetadata.bullets !== bulletCount) {
@@ -197,37 +194,45 @@ export default function JournalEditor({
     immediatelyRender: false,
   });
 
-  // Current entry is now fetched and synced by the parent WritePageContent
-  // which ensures fetching starts even while the loader is showing.
   const isEntryLoading = false;
 
-  // Sync entry content to editor whenever the store entry changes
   useEffect(() => {
-    if (editor && !editor.isDestroyed && currentEntry) {
-      const currentHTML = editor.getHTML();
-      // Only set content if it's different to avoid cursor jumps
-      if (currentEntry.content !== currentHTML) {
-        isHandlingContentSet.current = true;
-        editor.commands.setContent(currentEntry.content ?? "");
-        lastSavedContent.current = currentEntry.content ?? "";
+    if (!editor || editor.isDestroyed || !currentEntry) return;
 
-        setTimeout(() => {
-          isHandlingContentSet.current = false;
-          isInitialized.current = true;
-        }, 100);
-      }
-    } else if (
+    if (effectiveId && currentEntry.id !== effectiveId) return;
+
+    const currentHTML = editor.getHTML();
+    const entryContent = currentEntry.content ?? "";
+    if (entryContent !== currentHTML) {
+      isHandlingContentSet.current = true;
+
+      editor.commands.setContent(entryContent);
+      lastSavedContent.current = entryContent;
+
+      const timer = setTimeout(() => {
+        isHandlingContentSet.current = false;
+        isInitialized.current = true;
+      }, 50);
+
+      return () => clearTimeout(timer);
+    } else if (!isInitialized.current) {
+      isInitialized.current = true;
+      isHandlingContentSet.current = false;
+    }
+  }, [currentEntry, editor, effectiveId]);
+
+  useEffect(() => {
+    if (
       editor &&
       !editor.isDestroyed &&
-      !propId &&
+      !effectiveId &&
       !isInitialized.current
     ) {
-      // For truly new entries
       editor.commands.setContent("");
       isInitialized.current = true;
       isHandlingContentSet.current = false;
     }
-  }, [currentEntry, editor, propId]);
+  }, [editor, effectiveId]);
 
   useEffect(() => {
     if (editor) {
@@ -235,28 +240,6 @@ export default function JournalEditor({
     }
     return () => setEditor(null);
   }, [editor, setEditor]);
-
-  useEffect(() => {
-    if (editor && currentEntry && !editor.isFocused) {
-      const currentHTML = editor.getHTML();
-      if (currentEntry.content && currentEntry.content !== currentHTML) {
-        setTimeout(() => {
-          if (editor && !editor.isDestroyed) {
-            editor.commands.setContent(currentEntry.content);
-            lastSavedContent.current = currentEntry.content!;
-
-            if (
-              bulletedJournal &&
-              editor.isEmpty &&
-              !editor.isActive("bulletList")
-            ) {
-              editor.commands.toggleBulletList();
-            }
-          }
-        }, 0);
-      }
-    }
-  }, [editor, currentEntry, bulletedJournal]);
 
   if (isEntryLoading) {
     return (
@@ -378,7 +361,9 @@ export default function JournalEditor({
           border-radius: 0 !important;
           font-weight: normal !important;
           font-family: inherit !important;
-          text-decoration: ${highlightMentions ? "underline" : "none"} !important;
+          text-decoration: ${highlightMentions
+            ? "underline"
+            : "none"} !important;
           text-underline-offset: 4px !important;
           cursor: ${highlightMentions ? "pointer" : "text"} !important;
           box-shadow: none !important;
@@ -404,7 +389,9 @@ export default function JournalEditor({
           font-weight: normal !important;
           font-family: inherit !important;
           font-style: normal !important;
-          text-decoration: ${highlightMentions ? "underline" : "none"} !important;
+          text-decoration: ${highlightMentions
+            ? "underline"
+            : "none"} !important;
           text-underline-offset: 4px !important;
           cursor: ${highlightMentions ? "pointer" : "text"} !important;
           box-shadow: none !important;

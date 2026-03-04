@@ -3,40 +3,53 @@ import { ReactNodeViewRenderer } from "@tiptap/react";
 import { ResizableImageNodeView } from "./image-node-view";
 
 export const ResizableImage = Image.extend({
-  name: "resizableImage",
+  name: "image",
 
   addAttributes() {
     return {
-      ...this.parent?.(),
+      src: {
+        default: null,
+        parseHTML: (element: HTMLElement) => element.getAttribute("src"),
+        renderHTML: (attributes: Record<string, unknown>) => ({
+          src: attributes.src as string,
+        }),
+      },
+      alt: {
+        default: null,
+        parseHTML: (element: HTMLElement) => element.getAttribute("alt"),
+        renderHTML: (attributes: Record<string, unknown>) => ({
+          alt: attributes.alt as string,
+        }),
+      },
       width: {
         default: null,
-        parseHTML: (element: HTMLElement) => element.getAttribute("width"),
-        renderHTML: (
-          attributes: Record<string, string | number | undefined>,
-        ) => {
+        parseHTML: (element: HTMLElement) => {
+          const width = element.getAttribute("width") ?? element.style.width;
+          return width ? parseInt(width, 10) : null;
+        },
+        renderHTML: (attributes: Record<string, unknown>) => {
           if (!attributes.width) return {};
-          return { width: attributes.width };
+          return { width: attributes.width as number };
         },
       },
       height: {
         default: null,
-        parseHTML: (element: HTMLElement) => element.getAttribute("height"),
-        renderHTML: (
-          attributes: Record<string, string | number | undefined>,
-        ) => {
+        parseHTML: (element: HTMLElement) => {
+          const height = element.getAttribute("height") ?? element.style.height;
+          return height ? parseInt(height, 10) : null;
+        },
+        renderHTML: (attributes: Record<string, unknown>) => {
           if (!attributes.height) return {};
-          return { height: attributes.height };
+          return { height: attributes.height as number };
         },
       },
       fileId: {
         default: null,
         parseHTML: (element: HTMLElement) =>
           element.getAttribute("data-file-id"),
-        renderHTML: (
-          attributes: Record<string, string | number | undefined>,
-        ) => {
+        renderHTML: (attributes: Record<string, unknown>) => {
           if (!attributes.fileId) return {};
-          return { "data-file-id": attributes.fileId };
+          return { "data-file-id": attributes.fileId as string };
         },
       },
       status: {
@@ -46,6 +59,14 @@ export const ResizableImage = Image.extend({
         default: 0,
       },
     };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "img[src]",
+      },
+    ];
   },
 
   addNodeView() {
