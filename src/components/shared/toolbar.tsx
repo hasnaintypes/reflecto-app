@@ -7,7 +7,6 @@ import {
   Italic,
   Underline as UnderlineIcon,
   Strikethrough,
-  Sparkles,
   Heading1,
   Heading2,
   Quote,
@@ -161,19 +160,6 @@ export function EditorToolbar({
         </ToolbarButton>
         <ToolbarButton onClick={addImage} tooltip="Insert Image">
           <ImageIcon size={18} />
-        </ToolbarButton>
-      </div>
-
-      <div className="bg-border/40 mx-1 h-6 w-[1px]" />
-
-      {/* AI/Magic group */}
-      <div className="flex items-center gap-1 px-1">
-        <ToolbarButton
-          onClick={() => undefined} // Placeholder for AI
-          className="text-emerald-400/80 hover:bg-emerald-400/10 hover:text-emerald-400"
-          tooltip="AI Refine"
-        >
-          <Sparkles size={18} />
         </ToolbarButton>
       </div>
     </div>
