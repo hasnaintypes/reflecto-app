@@ -66,23 +66,26 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
             onClick={() => {
-              if (entry.type === "journal") {
-                router.push(`/write?id=${entry.id}`);
-              } else {
-                router.push(`/${entry.type}s`); // e.g. /dreams
-              }
+              const routeMap: Record<string, string> = {
+                journal: `/write?id=${entry.id}`,
+                dream: `/dreams/${entry.id}`,
+                highlight: `/highlights/${entry.id}`,
+                idea: `/ideas/${entry.id}`,
+                note: `/notes/${entry.id}`,
+                wisdom: `/wisdom/${entry.id}`,
+              };
+              const targetRoute =
+                routeMap[entry.type] ?? `/write?id=${entry.id}`;
+              router.push(targetRoute);
             }}
             className="group relative -mx-4 flex cursor-pointer gap-6 rounded-2xl px-4 py-8 transition-all duration-500 hover:bg-white/2"
           >
-            {/* Timeline Connector */}
             <div className="relative mt-1 flex flex-col items-center">
               <div className="bg-primary/40 ring-primary/10 group-hover:bg-primary group-hover:ring-primary/20 h-2 w-2 rounded-full ring-4 transition-all duration-500 group-hover:scale-125" />
               <div className="bg-border/20 group-hover:bg-primary/20 absolute top-2 -bottom-8 w-px transition-colors duration-500" />
             </div>
 
-            {/* Content 영역 */}
             <div className="min-w-0 flex-1 space-y-3">
-              {/* Header: Time & Meta */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-foreground/80 font-mono text-[10px] font-bold tracking-widest uppercase">
@@ -115,18 +118,15 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                 </div>
               </div>
 
-              {/* Entry Preview */}
               <div className="max-w-3xl">
                 {(() => {
-                  // Robust plain text extraction: strip tags, remove multiple spaces
                   const rawHtml = entry.content ?? "";
                   const plainText = rawHtml
-                    .replace(/<[^>]*>/g, " ") // Replace tags with space
-                    .replace(/&nbsp;/g, " ") // Replace non-breaking spaces
-                    .replace(/\s+/g, " ") // Collapse multiple spaces into one
+                    .replace(/<[^>]*>/g, " ")
+                    .replace(/&nbsp;/g, " ")
+                    .replace(/\s+/g, " ")
                     .trim();
 
-                  // We want to show the preview if there is ANY actual text OR if title exists
                   if (plainText.length === 0 && !entry.title) return null;
 
                   return (
@@ -137,10 +137,15 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                         </h3>
                       )}
                       {plainText.length > 0 && (
-                        <p className={cn(
-                          "text-muted-foreground/80 group-hover:text-foreground/90 font-serif text-[1.1rem] leading-relaxed tracking-tight transition-all duration-500",
-                          preferences?.preferences?.collapseLongBullets !== false ? "line-clamp-5" : "line-clamp-none"
-                        )}>
+                        <p
+                          className={cn(
+                            "text-muted-foreground/80 group-hover:text-foreground/90 font-serif text-[1.1rem] leading-relaxed tracking-tight transition-all duration-500",
+                            preferences?.preferences?.collapseLongBullets !==
+                              false
+                              ? "line-clamp-5"
+                              : "line-clamp-none",
+                          )}
+                        >
                           {plainText}
                         </p>
                       )}
@@ -162,7 +167,6 @@ export function JournalTimeline({ entries }: JournalTimelineProps) {
                 )}
               </div>
 
-              {/* Attachments */}
               {entry.attachments.length > 0 && (
                 <div className="relative w-full overflow-hidden pt-1">
                   <div className="no-scrollbar -mx-1 flex gap-4 overflow-x-auto py-2">

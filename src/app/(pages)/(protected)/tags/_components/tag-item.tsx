@@ -59,7 +59,7 @@ export function TagItem({ tag, onEditName, onDelete }: TagItemProps) {
               className="flex cursor-pointer items-center gap-2 py-2.5"
               onClick={() => onDelete(tag)}
             >
-              <Trash2 size={14} className="opacity-60 text-red-400" />
+              <Trash2 size={14} className="text-red-400 opacity-60" />
               <span>Delete Tag</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
