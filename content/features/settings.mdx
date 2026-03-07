@@ -1,0 +1,61 @@
+import { Callout } from 'nextra/components'
+
+# Settings
+
+The Settings page gives you full control over your Reflecto experience. Preferences are stored server-side and synced across sessions.
+
+## Editor Preferences
+
+| Setting | Options | Default | Description |
+|---------|---------|---------|-------------|
+| **Bulleted Mode** | On / Off | On | Show bullet count in the editor header |
+| **Spellcheck** | On / Off | On | Enable browser spellcheck in the editor |
+| **Editor Placeholder** | Custom text | — | Customize the placeholder text shown in an empty editor |
+| **Font Size** | Small / Medium / Large | Medium | Adjust the editor text size |
+
+## Display Preferences
+
+| Setting | Options | Default | Description |
+|---------|---------|---------|-------------|
+| **Theme** | Light / Dark / System | Dark | App-wide color scheme |
+| **Auto-Hide Navigation** | On / Off | Off | Sidebar auto-collapses and expands on hover |
+| **Show Items in Entries** | On / Off | On | Display linked context (tags, people) below entries |
+| **Special Dates** | On / Off | Off | Show holiday and observance badges on the Write page |
+
+## Feature Toggles
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| **Enable Dreams** | On | Show/hide the Dreams workspace in the sidebar |
+| **Enable Notes** | On | Show/hide the Notes workspace in the sidebar |
+
+<Callout type="info">
+When a workspace is disabled, it's hidden from the sidebar but your existing entries are preserved. Re-enable it anytime to access them again.
+</Callout>
+
+## Notification Preferences
+
+| Setting | Options | Default | Description |
+|---------|---------|---------|-------------|
+| **Notifications** | On / Off | On | Enable push notification support |
+| **Daily Reminder** | Time picker | — | Set a daily reminder to journal |
+
+## How Settings Are Stored
+
+Settings are stored in the `UserPreferences` model:
+
+- **`theme`** — `"light"`, `"dark"`, or `"system"`
+- **`fontSize`** — `"small"`, `"medium"`, or `"large"`
+- **`notificationEnabled`** — Boolean
+- **`dailyReminderTime`** — HH:mm format string
+- **`preferences`** — A JSON field containing all additional settings as key-value pairs
+
+Changes are saved immediately via a tRPC mutation and reflected across the app through the Zustand preferences store.
+
+## Sync Indicators
+
+Each setting shows either a **Cloud** or **Monitor** icon:
+- **Cloud** — Synced to the server and available across devices
+- **Monitor** — Applied locally to the current device
+
+Some settings marked as **Pro** indicate planned premium features.

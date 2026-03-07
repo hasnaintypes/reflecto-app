@@ -1,0 +1,144 @@
+# Architecture
+
+A technical overview of Reflecto's stack for developers looking to understand, contribute to, or learn from the codebase.
+
+## Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Framework** | Next.js 15 (App Router) | Server components, routing, API routes |
+| **Language** | TypeScript | Type safety across the entire stack |
+| **API** | tRPC v11 | End-to-end typesafe API with React Query |
+| **Database** | PostgreSQL + Prisma 6 | Relational data modeling and migrations |
+| **Auth** | NextAuth v5 (Auth.js) | Credentials + OAuth (Google, GitHub) |
+| **Editor** | TipTap v3 | Extensible rich text editor |
+| **Styling** | Tailwind CSS v4 | Utility-first CSS with custom design system |
+| **UI Components** | Radix UI + Custom | Accessible primitives with custom styling |
+| **Animations** | Framer Motion | Smooth transitions and layout animations |
+| **State** | Zustand | Lightweight client-side state management |
+| **Image CDN** | ImageKit | Image upload, transformation, and serving |
+| **Email** | Resend + Nodemailer | Transactional email delivery |
+| **Background Jobs** | Inngest | Event-driven background processing |
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── (pages)/
+│   │   ├── (protected)/     # Auth-required pages
+│   │   │   ├── write/       # Entry editor
+│   │   │   ├── journal/     # Calendar view
+│   │   │   ├── reflect/     # Timeline view
+│   │   │   ├── insights/    # Analytics dashboard
+│   │   │   ├── dreams/      # Dreams workspace
+│   │   │   ├── highlights/  # Highlights workspace
+│   │   │   ├── ideas/       # Ideas workspace
+│   │   │   ├── wisdom/      # Wisdom workspace
+│   │   │   ├── notes/       # Notes workspace
+│   │   │   ├── tags/        # Tag management
+│   │   │   ├── people/      # People management
+│   │   │   ├── settings/    # User preferences
+│   │   │   ├── profile/     # User profile
+│   │   │   └── changelog/   # App changelog
+│   │   └── (public)/        # Public pages
+│   │       ├── about/       # About page
+│   │       └── auth/        # Login / Signup
+│   ├── api/                 # API routes
+│   └── docs/                # This documentation (Nextra)
+├── components/
+│   ├── journal-editor/      # TipTap editor system
+│   │   ├── core/            # Editor, provider, metadata
+│   │   └── extensions/      # Custom TipTap extensions
+│   ├── layout/              # Sidebar, header, footer
+│   ├── ui/                  # Radix-based UI primitives
+│   └── shared/              # Reusable components
+├── server/
+│   ├── api/
+│   │   ├── routers/         # tRPC routers (14 modules)
+│   │   ├── trpc.ts          # tRPC initialization
+│   │   └── root.ts          # Root router
+│   ├── services/            # Business logic
+│   │   ├── entry/           # CRUD for all entry types
+│   │   ├── analytics/       # Activity, insights, streaks
+│   │   ├── attachment/      # File upload & storage
+│   │   └── extraction/      # Tag & people extraction
+│   ├── auth/                # NextAuth configuration
+│   └── schemas/             # Zod validation schemas
+├── stores/                  # Zustand state stores
+├── types/                   # TypeScript type definitions
+├── hooks/                   # Custom React hooks
+└── lib/                     # Utility functions
+```
+
+## Data Model
+
+The core database schema centers around the **Entry** model with polymorphic types:
+
+```
+User
+ ├── Entry (type: journal|dream|highlight|idea|wisdom|note)
+ │    ├── Tag[]        (many-to-many)
+ │    ├── Person[]     (many-to-many)
+ │    └── Attachment[]
+ ├── Tag[]
+ ├── Person[]
+ ├── ActivityLog[]     (daily activity tracking)
+ ├── Streak[]          (consecutive writing days)
+ └── UserPreferences   (settings & config)
+```
+
+### Entry Types
+
+All entry types share the same `Entry` table, differentiated by the `type` enum field. Type-specific data is stored in the `metadata` JSON column:
+
+| Entry Type | Metadata Fields |
+|------------|----------------|
+| `journal` | `category`, `mood` (1-5), `tags[]`, `bullets` |
+| `dream` | `bullets` |
+| `highlight` | `linked_entry_id`, `importance` (high/medium/low), `bullets` |
+| `idea` | `status` (Contemplating/Seed/Reflecting/Draft), `bullets` |
+| `wisdom` | `wisdom_type`, `author`, `source`, `bullets` |
+| `note` | `is_pinned`, `color`, `bullets` |
+
+## API Layer (tRPC)
+
+The tRPC router is split into 14 modules:
+
+| Router | Purpose |
+|--------|---------|
+| `entry` | CRUD for all entries (list, create, update, getById) |
+| `journal` | Journal-specific queries |
+| `dream` | Dream-specific queries |
+| `highlight` | Highlight-specific queries |
+| `idea` | Idea-specific queries |
+| `wisdom` | Wisdom-specific queries |
+| `note` | Note-specific queries |
+| `tag` | Tag management and extraction |
+| `person` | People management |
+| `attachment` | File upload and management |
+| `insights` | Analytics queries |
+| `preferences` | User setting CRUD |
+| `user` | User profile management |
+
+All procedures use Zod validation and run through the authenticated tRPC middleware.
+
+## Authentication
+
+NextAuth v5 with the Prisma adapter provides:
+
+- **Credentials** — Email/password with bcrypt hashing
+- **OAuth** — Google and GitHub providers
+- **Session Strategy** — Database sessions with secure tokens
+- **Middleware Protection** — Route-level auth via `middleware.ts`
+
+## State Management
+
+Client state is managed through Zustand stores:
+
+| Store | Purpose |
+|-------|---------|
+| `useEntryStore` | Current entry being edited, entry cache |
+| `usePreferencesStore` | User preferences (synced from server) |
+
+Server state is managed through **React Query** (via tRPC), providing automatic caching, refetching, and optimistic updates.

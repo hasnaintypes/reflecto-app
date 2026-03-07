@@ -1,0 +1,77 @@
+import { Callout } from 'nextra/components'
+
+# Tags & People
+
+Reflecto automatically extracts **tags** and **people** from your entries, building a connected knowledge graph of your reflections.
+
+## Tags
+
+### How Tags Work
+
+1. **Inline Tagging** — Type `#tagname` anywhere in your editor content
+2. **Auto-Extraction** — When you save, tags are extracted and stored as `Tag` records
+3. **Suggestion Dropdown** — As you type `#`, existing tags appear for quick selection
+4. **Tag-Entry Links** — Tags are stored as many-to-many relationships with entries
+
+### Tag Management Page
+
+Navigate to **Tags** in the sidebar to manage your tags. The page provides:
+
+- **Tag List** — All your tags displayed with entry counts
+- **Search** — Filter tags by name
+- **Sorting** — Sort alphabetically (A-Z / Z-A) or by entry count
+- **Edit** — Click a tag to rename it
+- **Delete** — Remove a tag (with confirmation dialog)
+- **Grouping** — Organize tags into named groups
+
+### Tag Groups
+
+Create groups to organize related tags together:
+1. Select multiple tags
+2. Click **Create Group**
+3. Enter a group name
+4. Tags are visually grouped on the management page
+
+<Callout type="info">
+Tags are scoped per user — only you can see your tags. Each tag name is unique within your account.
+</Callout>
+
+---
+
+## People
+
+### How People Work
+
+1. **@Mention** — Type `@name` in the editor to mention someone
+2. **Auto-Extraction** — People are extracted and stored as `Person` records
+3. **Suggestion Dropdown** — Existing people appear as you type `@`
+4. **People-Entry Links** — Stored as many-to-many relationships
+
+### People Management Page
+
+Navigate to **People** in the sidebar:
+
+- **People List** — All mentioned people with entry counts showing how often you mention them
+- **Sorting** — Sort by name or mention frequency
+- **Edit** — Rename a person (useful for fixing typos)
+- **Delete** — Remove a person record (with confirmation)
+- **Grouping** — Organize people into named groups (Family, Work, Friends, etc.)
+
+### People Groups
+
+Similar to tag groups, people can be organized:
+1. Select multiple people
+2. Click **Create Group**
+3. Enter a group name (e.g., "Family", "Colleagues")
+4. People are visually grouped for better organization
+
+---
+
+## How They Connect
+
+Tags and People create a **connected web** across your entries:
+
+- **Insights** — The Tags and People tabs in Insights show frequency analysis
+- **Entry Relations** — Each entry stores its tags and people, visible in entry detail views
+- **Cross-Reference** — Find all entries mentioning a specific person or tagged with a specific topic
+- **ComprehensiveEntry** — The full entry type includes `tags: Tag[]` and `people: Person[]` arrays

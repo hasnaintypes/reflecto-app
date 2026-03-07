@@ -16,7 +16,6 @@ db.sqlite
 /.next/
 /out/
 next-env.d.ts
-docs
 
 # production
 /build

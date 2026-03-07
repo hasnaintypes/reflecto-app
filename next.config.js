@@ -3,6 +3,11 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import nextra from "nextra";
+
+const withNextra = nextra({
+  contentDirBasePath: "/docs",
+});
 
 /** @type {import("next").NextConfig} */
 
@@ -23,4 +28,4 @@ const config = {
   },
 };
 
-export default config;
+export default withNextra(config);
