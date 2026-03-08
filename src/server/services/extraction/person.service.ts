@@ -5,7 +5,12 @@ export class PersonService {
   /**
    * List all people for a user with entry counts
    */
-  async listPeople(db: PrismaClient, userId: string) {
+  async listPeople(
+    db: PrismaClient,
+    userId: string,
+    options?: { cursor?: string; limit?: number },
+  ) {
+    const limit = options?.limit ?? 50;
     return db.person.findMany({
       where: { userId },
       include: {
@@ -14,6 +19,8 @@ export class PersonService {
         },
       },
       orderBy: { name: "asc" },
+      take: limit + 1,
+      ...(options?.cursor ? { cursor: { id: options.cursor }, skip: 1 } : {}),
     });
   }
 
@@ -49,12 +56,21 @@ export class PersonService {
   async deletePerson(db: PrismaClient, userId: string, personId: string) {
     const person = await db.person.findFirst({
       where: { id: personId, userId },
+      include: { entries: { select: { id: true } } },
     });
 
     if (!person) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Person not found",
+      });
+    }
+
+    // Disconnect from all entries first
+    if (person.entries.length > 0) {
+      await db.person.update({
+        where: { id: personId },
+        data: { entries: { set: [] } },
       });
     }
 

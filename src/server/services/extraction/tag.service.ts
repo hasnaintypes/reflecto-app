@@ -5,7 +5,12 @@ export class TagService {
   /**
    * List all tags for a user with entry counts
    */
-  async listTags(db: PrismaClient, userId: string) {
+  async listTags(
+    db: PrismaClient,
+    userId: string,
+    options?: { cursor?: string; limit?: number },
+  ) {
+    const limit = options?.limit ?? 50;
     return db.tag.findMany({
       where: { userId },
       include: {
@@ -14,6 +19,8 @@ export class TagService {
         },
       },
       orderBy: { name: "asc" },
+      take: limit + 1,
+      ...(options?.cursor ? { cursor: { id: options.cursor }, skip: 1 } : {}),
     });
   }
 
@@ -49,12 +56,21 @@ export class TagService {
   async deleteTag(db: PrismaClient, userId: string, tagId: string) {
     const tag = await db.tag.findFirst({
       where: { id: tagId, userId },
+      include: { entries: { select: { id: true } } },
     });
 
     if (!tag) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Tag not found",
+      });
+    }
+
+    // Disconnect from all entries first
+    if (tag.entries.length > 0) {
+      await db.tag.update({
+        where: { id: tagId },
+        data: { entries: { set: [] } },
       });
     }
 

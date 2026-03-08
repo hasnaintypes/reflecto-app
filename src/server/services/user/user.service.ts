@@ -1,5 +1,10 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 
+const DEFAULT_PREFERENCES = {
+  theme: "system",
+  fontSize: "medium",
+} as const;
+
 export class UserService {
   /**
    * Get user preferences
@@ -12,8 +17,7 @@ export class UserService {
     preferences ??= await db.userPreferences.create({
       data: {
         userId,
-        theme: "system",
-        fontSize: "medium",
+        ...DEFAULT_PREFERENCES,
       },
     });
 
@@ -33,8 +37,7 @@ export class UserService {
       update: data,
       create: {
         userId,
-        theme: "system",
-        fontSize: "medium",
+        ...DEFAULT_PREFERENCES,
         ...data,
       } as Prisma.UserPreferencesCreateInput,
     });
