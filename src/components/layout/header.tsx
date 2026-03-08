@@ -99,6 +99,7 @@ export function Header() {
         ) : (
           <button
             onClick={() => setOpen(true)}
+            aria-label="Search journal (Ctrl+K)"
             className="group border-border/40 bg-muted/50 hover:bg-muted/80 flex w-[300px] items-center gap-3 rounded-full border px-4 py-2 transition-all"
           >
             <Search
