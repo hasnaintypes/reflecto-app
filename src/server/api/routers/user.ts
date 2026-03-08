@@ -8,7 +8,6 @@ import { type AppPreferences } from "@/stores/use-preferences-store";
  */
 const updateUserSchema = z.object({
   name: z.string().min(1).max(100).optional(),
-  email: z.string().email().optional(),
   avatarUrl: z.string().url().optional(),
 });
 
@@ -131,7 +130,6 @@ export const userRouter = createTRPCRouter({
           where: { id: userId },
           data: {
             ...(input.name !== undefined ? { name: input.name } : {}),
-            ...(input.email !== undefined ? { email: input.email } : {}),
             ...(input.avatarUrl !== undefined
               ? { image: input.avatarUrl }
               : {}),
@@ -160,7 +158,11 @@ export const userRouter = createTRPCRouter({
   deactivateUser: protectedProcedure.mutation(async ({ ctx }) => {
     const userId = ctx.session.user.id;
     try {
-      console.log(`Deactivating user ${userId}`);
+      // Soft-delete all user entries
+      await ctx.db.entry.updateMany({
+        where: { userId, deletedAt: null },
+        data: { deletedAt: new Date() },
+      });
       return { message: "User deactivated successfully." };
     } catch {
       throw new TRPCError({

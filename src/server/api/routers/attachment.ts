@@ -24,17 +24,22 @@ export const attachmentRouter = createTRPCRouter({
 
       // Optionally register the attachment in the database
       if (input.entryId) {
-        await attachmentService.createImageAttachment(
-          ctx.db,
-          ctx.session.user.id,
-          {
-            entryId: input.entryId,
-            fileUrl: result.url,
-            filePath: result.filePath,
-            fileType: result.fileType,
-            fileSize: result.size,
-          },
-        );
+        try {
+          await attachmentService.createImageAttachment(
+            ctx.db,
+            ctx.session.user.id,
+            {
+              entryId: input.entryId,
+              fileUrl: result.url,
+              filePath: result.filePath,
+              fileType: result.fileType,
+              fileSize: result.size,
+            },
+          );
+        } catch (err) {
+          console.error("DB registration failed after upload, file may be orphaned:", err);
+          throw err;
+        }
       }
 
       return result;
