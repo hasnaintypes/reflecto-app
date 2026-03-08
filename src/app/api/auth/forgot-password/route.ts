@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import crypto from "crypto";
 import { db } from "@/server/db";
-import { resend } from "@/lib/resend/client";
+import { sendEmail } from "@/lib/email/send";
 import { env } from "@/env";
 import createRateLimit from "next-rate-limit";
 
@@ -67,8 +67,7 @@ export async function POST(request: NextRequest) {
     // Send reset email
     const resetUrl = `${env.NEXTAUTH_URL ?? ""}/auth/reset-password?token=${token}&email=${encodeURIComponent(email)}`;
 
-    await resend.emails.send({
-      from: "Reflecto <onboarding@resend.dev>",
+    await sendEmail({
       to: email,
       subject: "Reset your password — Reflecto",
       html: `

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { hash } from "bcryptjs";
 import crypto from "crypto";
 import { db } from "@/server/db";
-import { resend } from "@/lib/resend/client";
+import { sendEmail } from "@/lib/email/send";
 import { env } from "@/env";
 import createRateLimit from "next-rate-limit";
 import { AUTH_ERRORS } from "@/constants/errors";
@@ -73,8 +73,7 @@ export async function POST(request: NextRequest) {
     // Send verification email
     const verifyUrl = `${env.NEXTAUTH_URL ?? ""}/auth/verify-email?token=${token}&email=${encodeURIComponent(email)}`;
 
-    await resend.emails.send({
-      from: "Reflecto <onboarding@resend.dev>",
+    await sendEmail({
       to: email,
       subject: "Verify your email — Reflecto",
       html: `
