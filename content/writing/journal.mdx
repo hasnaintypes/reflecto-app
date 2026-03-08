@@ -1,0 +1,692 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Journal & Daily Writing
+
+The journal is the heart of Reflecto. It combines a powerful calendar system, streak tracking, categories, and mood logging to build your daily reflection habit.
+
+<Callout type="info">
+Journaling in Reflecto is designed to be flexible — from quick bullet logs to deep reflections, the system adapts to your style.
+</Callout>
+
+---
+
+## The Write Page
+
+The **Write** page is your primary writing workspace. Access it by:
+- Clicking **Write** in the sidebar
+- Pressing `Ctrl/Cmd + W` from anywhere
+- Navigating to `/write`
+
+### Write Page Layout
+
+```
+┌─────────────────────────────────────────────┐
+│  Fri, Mar 7              ☁️ Saved    ⭐     │
+│  ──────────────────────────────────────────  │
+│  Friday                                      │
+│                                              │
+│  [ Journal ▼ ]  [ Category ▼ ]  [ 😊 3 ]   │
+│                                              │
+│  ┌──────────────────────────────────────┐   │
+│  │  Start writing your thoughts here... │   │
+│  │                                       │   │
+│  │  Use **markdown**, #tags, @mentions  │   │
+│  │                                       │   │
+│  │                                       │   │
+│  └──────────────────────────────────────┘   │
+│                                              │
+│  Tagged: #gratitude #work                   │
+│  Mentioned: @Alice                          │
+└─────────────────────────────────────────────┘
+```
+
+### Header Elements
+
+| Element | Description |
+|---------|-------------|
+| **Date Label** | Small mono font showing current date |
+| **Day Display** | Large serif italic typography showing the day of the week |
+| **Special Date Badge** | Pulsing ✨ sparkle on holidays (if enabled) |
+| **Cloud Sync** | Real-time save status indicator |
+| **Star Button** | Mark entry as important |
+| **Bullet Count** | Shows `#42` when bulleted mode is active |
+
+### Special Dates
+
+Reflecto recognizes holidays and observances:
+- **Badge indicator** — Sparkle (✨) appears next to the date
+- **Tooltip** — Hover to see the holiday name
+- **Custom dates** — Add your own special dates in Settings
+- **Toggle** — Disable in Settings → Preferences if not desired
+
+<Callout>
+Special dates include major holidays, awareness days, and culturally significant events. You can customize which dates appear.
+</Callout>
+
+---
+
+## Entry Types
+
+While the Write page defaults to **Journal** entries, you can create any of six entry types:
+
+<Tabs items={['Journal', 'Dreams', 'Highlights', 'Ideas', 'Wisdom', 'Notes']}>
+  <Tabs.Tab>
+    **Journal — Daily Reflections**
+    
+    **Best for:**
+    - Daily logs and diaries
+    - General thoughts and musings
+    - Processing emotions
+    - Tracking daily events
+    
+    **Metadata:**
+    - Category (Thoughts, Gratitude, Reflections, etc.)
+    - Mood score (1-5 scale)
+    - Date
+    
+    **URL:** `/write` or `/write?type=journal`
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Dreams — Future Aspirations**
+    
+    **Best for:**
+    - Long-term goals
+    - Bucket list items
+    - Life visions
+    - Future planning
+    
+    **Metadata:**
+    - Date only
+    
+    **URL:** `/write?type=dream` or `/dreams`
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Highlights — Meaningful Moments**
+    
+    **Best for:**
+    - Special memories
+    - Important milestones
+    - Moments of joy
+    - Achievements
+    
+    **Metadata:**
+    - Importance level (High, Medium, Low)
+    - Date
+    
+    **URL:** `/write?type=highlight` or `/highlights`
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Ideas — Creative Thoughts**
+    
+    **Best for:**
+    - Brainstorming
+    - Project concepts
+    - Creative inspirations
+    - Problem-solving
+    
+    **Metadata:**
+    - Status (Seed → Draft → Refined → Implemented)
+    - Date
+    
+    **URL:** `/write?type=idea` or `/ideas`
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Wisdom — Collected Knowledge**
+    
+    **Best for:**
+    - Quotes from books/people
+    - Life lessons learned
+    - Facts and excerpts
+    - Philosophical thoughts
+    
+    **Metadata:**
+    - Wisdom type (Quote, Thought, Fact, Excerpt, Lesson)
+    - Author (optional)
+    - Source (optional)
+    - Date
+    
+    **URL:** `/write?type=wisdom` or `/wisdom`
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Notes — Quick Captures**
+    
+    **Best for:**
+    - Quick thoughts
+    - Reminders
+    - Lists and checklists
+    - Short captures
+    
+    **Metadata:**
+    - Color (7 options)
+    - Pin to top toggle
+    - Date
+    
+    **URL:** `/write?type=note` or `/notes`
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## Journal Calendar
+
+Navigate to **Journal** in the sidebar to access the calendar system.
+
+### Calendar View
+
+The full monthly calendar provides:
+
+**Visual Elements:**
+- **Current month** — Displayed at the top with month/year
+- **Entry indicators** — Dots on dates that have entries
+- **Selected date** — Highlighted with accent color
+- **Today indicator** — Circle around current date
+- **Navigation arrows** — Move between months
+
+**Features:**
+- Click any date to view entries from that day
+- Dates with entries show a small dot
+- Multiple entries per day show multiple dots
+- Hover to see entry count tooltip
+
+### Calendar Strip
+
+Toggle to the **calendar strip** for a compact view:
+
+```
+┌─────────────────────────────────────────┐
+│  ← Mon 4  Tue 5  Wed 6  [Thu 7]  Fri 8 →│
+│      •       •              •            │
+└─────────────────────────────────────────┘
+```
+
+**Features:**
+- Shows 5-7 days at a time
+- Scroll horizontally to navigate
+- Entry indicators below dates
+- Selected date highlighted
+- Great for mobile and focused navigation
+
+<Callout type="info">
+The calendar strip is perfect for quickly navigating recent entries without the overhead of a full monthly calendar.
+</Callout>
+
+### Entry List View
+
+When you select a date, entries from that day appear below:
+
+```
+┌─────────────────────────────────────────┐
+│  Friday, March 7, 2026                  │
+│  ─────────────────────────────────────  │
+│                                         │
+│  ⭐ Journal · Gratitude · 😊 4          │
+│  "Had an amazing day with @Alice..."    │
+│  #gratitude #friendship                 │
+│                                         │
+│  Highlight · High Importance            │
+│  "Finished #project-alpha!"             │
+│                                         │
+│  Note · Blue · 📌 Pinned                │
+│  "Remember to call @Bob tomorrow"       │
+└─────────────────────────────────────────┘
+```
+
+**Entry Card Elements:**
+- **Star indicator** — Shows if entry is starred
+- **Entry type** — Journal, Dream, Highlight, etc.
+- **Metadata** — Category, mood, importance, etc.
+- **Content preview** — First few lines of the entry
+- **Tags & people** — Visible at a glance
+- **Click to edit** — Opens entry in Write page
+
+---
+
+## Entry Categories
+
+Journal entries support categorization for better organization.
+
+### Built-In Categories
+
+| Category | Use For | Example |
+|----------|---------|---------|
+| **Thoughts** | General musings | Random observations and ideas |
+| **Involved Me** | Personal events | Things I directly participated in |
+| **Around Me** | Observations | Events happening in my environment |
+| **Memories** | Past experiences | Recalling and processing old memories |
+| **Gratitude** | Thankfulness | Things I'm grateful for today |
+| **Reflections** | Deep introspection | Analyzing patterns and growth |
+| **Tiny Wins** | Small victories | Celebrating small achievements |
+| **Daily Log** | Factual records | What I did today, time-stamped |
+| **Venting** | Emotional release | Getting frustrations off my chest |
+
+### Custom Categories
+
+The category field accepts **free-form text**, so you can:
+- Create your own categories
+- Use project names (e.g., "Project Alpha Log")
+- Create sub-categories (e.g., "Work Thoughts")
+- Leave blank if not needed
+
+<Callout>
+**Pro tip:** Be consistent with category names to build patterns over time. Check Insights to see category distribution.
+</Callout>
+
+---
+
+## Mood Tracking
+
+Journal entries support mood scoring on a 1-5 scale.
+
+### How It Works
+
+1. **Set mood** — Use the mood slider in the metadata editor
+2. **Scale meanings:**
+   - **1** — Very low / struggling
+   - **2** — Low / below average
+   - **3** — Neutral / okay
+   - **4** — Good / positive
+   - **5** — Excellent / euphoric
+3. **Emoji indicators** — Visual representation of mood
+4. **Analytics** — Mood trends appear in Insights
+
+### Mood Display
+
+Moods are shown with both numbers and emoji:
+- 😢 1 — Very low
+- 😕 2 — Low
+- 😐 3 — Neutral
+- 🙂 4 — Good
+- 😊 5 — Excellent
+
+### Tracking Over Time
+
+Navigate to **Insights** to see:
+- **Mood chart** — Line graph showing mood trends
+- **Average mood** — By day, week, month
+- **Mood patterns** — Correlations with tags, categories, days of week
+- **Mood heatmap** — Visual representation of emotional journey
+
+<Callout type="info">
+Mood tracking is optional but provides valuable insights into emotional patterns. Set moods retroactively by editing past entries.
+</Callout>
+
+---
+
+## Streak Tracking
+
+Reflecto tracks your **writing streak** — consecutive days with at least one entry.
+
+### How Streaks Work
+
+- **Active streak** — Currently ongoing streak
+- **Longest streak** — All-time record
+- **Start date** — When current streak began
+- **End date** — Last day of streak (for past streaks)
+
+### Where to See Your Streak
+
+**Journal Page:**
+- Streak indicator at the top
+- Shows current streak length
+- Animated flame icon 🔥
+
+**Insights Page:**
+- Detailed streak statistics
+- Streak history graph
+- Breakdown by entry type
+
+**Write Page (Coming Soon):**
+- Streak reminder before midnight
+- Motivational message to maintain streak
+
+### Maintaining Your Streak
+
+Tips for consistency:
+- **Write daily** — Even short entries count
+- **Use bullet mode** — Quick logs on busy days
+- **Set reminders** — Enable notifications in Settings
+- **Review progress** — Check Insights weekly
+
+<Callout type="success">
+Don't stress about maintaining streaks — they're meant to motivate, not pressure. Focus on building a sustainable habit.
+</Callout>
+
+---
+
+## Starring Entries
+
+Mark important entries with a star for easy retrieval.
+
+### How to Star an Entry
+
+**From Write Page:**
+- Click the star icon (⭐) in the header
+- Toggle on/off with a single click
+- Keyboard shortcut: `Ctrl/Cmd + Enter`
+
+**From Journal/Reflect:**
+- Click the star icon on the entry card
+- Starred entries show a gold star indicator
+
+### Filtering Starred Entries
+
+**Coming Soon:**
+- Filter by starred entries on Journal page
+- "Starred" workspace page
+- Quick access from sidebar
+
+<Callout>
+Use stars to mark entries you want to revisit: important decisions, memorable moments, insights worth reviewing.
+</Callout>
+
+---
+
+## Bulleted Mode
+
+Enable **Bulleted Mode** for structured, list-style journal entries.
+
+### When to Use Bulleted Mode
+
+- **Daily logs** — Quick summaries of the day
+- **Gratitude lists** — Multiple things you're thankful for
+- **Activity tracking** — What you did throughout the day
+- **Idea dumps** — Rapid-fire thoughts
+- **Quick captures** — When you don't have time for paragraphs
+
+### How It Works
+
+<Steps>
+### Enable Bulleted Mode
+
+Click the bullet icon in the Write page header, or set it as default in Settings.
+
+### Write with Bullets
+
+Each new line becomes a bullet point:
+```
+• Woke up feeling refreshed
+• Morning yoga session
+• Productive work meeting with @Alice about #project
+• Lunch with #team
+• Evening walk in the park
+• Feeling #grateful for today
+```
+
+### See Bullet Count
+
+The header shows `#15` indicating total bullet points in the entry.
+
+### Save Normally
+
+Auto-save works the same way — bullets are preserved.
+</Steps>
+
+<Callout type="info">
+Bulleted mode is perfect for building a quick logging habit. Even 5-10 bullets capture the essence of your day.
+</Callout>
+
+---
+
+## Linked Context
+
+When editing an existing entry, **Linked Context** appears below the editor.
+
+### What Is Linked Context?
+
+A section showing related entries:
+- **Same date entries** — Other entries from the same day
+- **Tagged entries** — Entries with shared tags
+- **People entries** — Entries mentioning the same people
+
+### Why It's Useful
+
+- **Recall the full picture** — See everything from that day
+- **Spot patterns** — Notice recurring themes
+- **Make connections** — Link related thoughts
+- **Complete the story** — Fill in context gaps
+
+### Example
+
+```
+┌─────────────────────────────────────────┐
+│  Linked Context                         │
+│  ─────────────────────────────────────  │
+│                                         │
+│  Other entries from Mar 7, 2026:       │
+│                                         │
+│  • Highlight: "Completed project alpha" │
+│  • Note: "Schedule meeting with Bob"    │
+│                                         │
+│  Related by #project tag:               │
+│                                         │
+│  • Mar 5: "Project update meeting"      │
+│  • Mar 3: "Project kickoff"             │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## Writing Workflows
+
+### Morning Journaling
+
+<Steps>
+### Open Reflecto
+
+Navigate to `/write` or press `Ctrl/Cmd + W`
+
+### Select Category
+
+Choose "Thoughts" or "Daily Log"
+
+### Free-write
+
+Brain dump for 5-10 minutes without editing
+
+### Add Tags & Mentions
+
+Highlight key topics with #tags and @mentions
+
+### Set Mood
+
+Rate how you're feeling to start the day
+
+### Review Yesterday
+
+Check Linked Context to recall yesterday's entries
+</Steps>
+
+### Evening Reflection
+
+<Steps>
+### Open Journal Calendar
+
+Navigate to today's date
+
+### Review Day's Entries
+
+See what you wrote throughout the day
+
+### Create Evening Summary
+
+Use bullet mode for a quick daily recap
+
+### Set Gratitude Category
+
+List 3-5 things you're grateful for
+
+### Rate Overall Mood
+
+Set mood based on the full day
+
+### Check Streak
+
+Celebrate maintaining your writing habit
+</Steps>
+
+### Weekly Review
+
+<Steps>
+### Navigate to Journal Calendar
+
+View the past week
+
+### Browse Each Day
+
+Click through dates to review entries
+
+### Spot Patterns
+
+Notice recurring themes, tags, people
+
+### Update Tags
+
+Add missing tags to improve connections
+
+### Check Insights
+
+View weekly stats, mood trends, activity
+
+### Set Intentions
+
+Write a Dream or Idea entry for next week
+</Steps>
+
+---
+
+## Best Practices
+
+### 1. Write Daily, Even If Brief
+
+Consistency matters more than length. Even 2-3 bullets maintain your habit.
+
+### 2. Categorize Intentionally
+
+Use categories to organize entries. Review Insights to see which categories you use most.
+
+### 3. Track Mood Consistently
+
+Set moods on all journal entries to build meaningful trend data.
+
+### 4. Star Important Entries
+
+Mark entries you want to revisit: breakthroughs, decisions, memorable moments.
+
+### 5. Review Linked Context
+
+When editing old entries, check linked context to recall the full story.
+
+### 6. Use Multiple Entry Types
+
+Don't limit yourself to journals—capture Dreams, Highlights, Ideas, and Wisdom too.
+
+### 7. Build Tag Consistency
+
+Reuse tags to create connections. Avoid `#work`, `#working`, `#workplace` — pick one.
+
+### 8. Mention People Liberally
+
+Track relationships by @mentioning people. Review the People page to see interaction patterns.
+
+### 9. Review Your Streak
+
+Check your streak in Insights weekly. Celebrate milestones (7 days, 30 days, 100 days).
+
+### 10. Experiment with Bullet Mode
+
+Try bulleted mode for a week. Many find it easier to maintain consistency.
+
+---
+
+## Tips for Building the Habit
+
+### Start Small
+
+- **Week 1:** Write 1-3 bullets daily
+- **Week 2-3:** Expand to 5-10 bullets
+- **Week 4+:** Mix bullets with paragraphs
+
+### Set a Time
+
+- **Morning** — Intentions and planning
+- **Lunch** — Midday check-in
+- **Evening** — Reflection and gratitude
+
+### Use Prompts
+
+When stuck, try these:
+- "Today I felt..."
+- "Something I learned..."
+- "I'm grateful for..."
+- "Tomorrow I want to..."
+- "A challenge I faced..."
+
+### Track Progress
+
+- Check Insights weekly
+- Celebrate streak milestones
+- Review mood trends
+- Notice tag patterns
+
+### Don't Break the Chain
+
+- Write something every day, no matter how small
+- Use bullet mode on busy days
+- Forgive yourself if you miss a day
+- Just start again the next day
+
+---
+
+## Troubleshooting
+
+### Can't find an old entry?
+
+- Use the Journal calendar to navigate to the date
+- Check the Reflect page for timeline view
+- Search by tag from the Tags page
+- Filter by person from the People page
+
+### Entry not saving?
+
+- Check cloud sync indicator
+- Verify internet connection
+- Try manual save with `Ctrl/Cmd + S`
+- Check browser console for errors
+
+### Calendar not loading?
+
+- Refresh the page
+- Clear browser cache
+- Check internet connection
+- Try a different browser
+
+### Mood slider not working?
+
+- Click in the slider area to set initial value
+- Drag left/right to adjust
+- Ensure JavaScript is enabled
+
+### Streak not updating?
+
+- Write at least one entry per day
+- Check that entries are saving successfully
+- Streaks update at midnight in your timezone
+- Refresh Insights page to see updates
+
+---
+
+## What's Next?
+
+Now that you understand the journal system, explore related features:
+
+<Callout type="success">
+Master the [Rich Editor →](/docs/writing/editor) for advanced formatting, or learn about [Tags →](/docs/writing/tags) and [People →](/docs/writing/people) management.
+</Callout>
+
+### Related Topics
+
+- [Rich Editor](/docs/writing/editor) — Advanced editor features and formatting
+- [Tags](/docs/writing/tags) — Tag organization and management
+- [People](/docs/writing/people) — Relationship tracking
+- [Insights](/docs/insights) — View analytics and trends
+- [Settings](/docs/settings) — Customize journal preferences

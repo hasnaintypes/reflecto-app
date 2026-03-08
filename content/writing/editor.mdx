@@ -1,0 +1,572 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# Rich Editor
+
+Reflecto's editor is built on [TipTap](https://tiptap.dev), a powerful, extensible rich text framework. It provides a premium writing experience with markdown shortcuts, inline formatting, smart extraction, and real-time collaboration features.
+
+<Callout type="info">
+The editor is designed to feel like a natural extension of your thoughts — minimal friction, maximum expression.
+</Callout>
+
+## Editor Overview
+
+The Reflecto editor combines:
+- **Markdown support** — Type markdown shortcuts that convert as you type
+- **Rich formatting** — Bold, italic, headings, lists, and more
+- **Smart extraction** — Auto-detect and extract tags and people
+- **Image uploads** — Drag & drop or paste images directly
+- **Auto-save** — Your work is continuously saved to the cloud
+- **Type-specific metadata** — Different fields based on entry type
+
+---
+
+## Writing Basics
+
+### Markdown Shortcuts
+
+The editor supports standard markdown syntax that converts as you type:
+
+| Shortcut | Result | Example |
+|----------|--------|---------|
+| `# ` | Heading 1 | # My Heading |
+| `## ` | Heading 2 | ## Section Title |
+| `### ` | Heading 3 | ### Subsection |
+| `**text**` | **Bold** | **important** |
+| `*text*` | *Italic* | *emphasis* |
+| `~~text~~` | ~~Strikethrough~~ | ~~mistake~~ |
+| `` `code` `` | `Inline code` | `console.log()` |
+| `- ` or `* ` | Bullet list | - Item one |
+| `1. ` | Numbered list | 1. First step |
+| `> ` | Blockquote | > Quote text |
+| `---` | Horizontal rule | --- |
+| `[text](url)` | Link | [Google](https://google.com) |
+
+<Callout>
+**Pro tip:** Markdown shortcuts trigger when you type the pattern and then press space or enter.
+</Callout>
+
+### Keyboard Shortcuts
+
+Speed up your writing with these keyboard shortcuts:
+
+#### Text Formatting
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + B` | **Bold** selected text |
+| `Ctrl/Cmd + I` | *Italic* selected text |
+| `Ctrl/Cmd + U` | <u>Underline</u> selected text |
+| `Ctrl/Cmd + Shift + X` | ~~Strikethrough~~ text |
+| `Ctrl/Cmd + E` | Inline `code` |
+| `Ctrl/Cmd + Shift + C` | Code block |
+
+#### Structure
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + Alt + 1` | Heading 1 |
+| `Ctrl/Cmd + Alt + 2` | Heading 2 |
+| `Ctrl/Cmd + Alt + 3` | Heading 3 |
+| `Ctrl/Cmd + Shift + 8` | Toggle bullet list |
+| `Ctrl/Cmd + Shift + 7` | Toggle numbered list |
+| `Ctrl/Cmd + Shift + B` | Toggle blockquote |
+| `Ctrl/Cmd + Enter` | Insert line break |
+
+#### General
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + Z` | Undo |
+| `Ctrl/Cmd + Y` | Redo |
+| `Ctrl/Cmd + Shift + Z` | Redo (alternative) |
+| `Ctrl/Cmd + K` | Insert/edit link |
+| `Ctrl/Cmd + S` | Manually trigger save |
+| `Ctrl/Cmd + A` | Select all |
+
+---
+
+## Formatting Toolbar
+
+When you select text, a **floating toolbar** appears with quick-access buttons:
+
+```
+┌─────────────────────────────────────────┐
+│ B  I  U  S  H1 H2 H3  •  1  "  <>  🔗  │
+└─────────────────────────────────────────┘
+```
+
+### Toolbar Buttons
+
+| Button | Action |
+|--------|--------|
+| **B** | Bold |
+| **I** | Italic |
+| **U** | Underline |
+| **S** | Strikethrough |
+| **H1, H2, H3** | Heading levels |
+| **•** | Bullet list |
+| **1** | Numbered list |
+| **"** | Blockquote |
+| **code** | Code block |
+| **🔗** | Insert/edit link |
+
+<Callout type="info">
+The toolbar automatically positions itself above your selection for easy access without obscuring your text.
+</Callout>
+
+---
+
+## @Mentions — People
+
+Type `@` followed by a name to mention someone in your entry.
+
+### How @Mentions Work
+
+1. **Type `@`** — A suggestion dropdown appears
+2. **See existing people** — Previously mentioned people appear in the list
+3. **Select or create** — Choose an existing person or type a new name
+4. **Auto-extraction** — People are extracted when you save the entry
+5. **Relationship tracking** — Mentions are stored as links between entries and people
+
+### Mention Syntax
+
+```markdown
+Had lunch with @Alice and @Bob today.
+@Sarah shared some interesting insights about #productivity.
+```
+
+### Suggestion Dropdown
+
+As you type, the dropdown shows:
+- **Matching people** — Filtered by what you've typed
+- **Entry counts** — How many times you've mentioned each person
+- **Create new option** — Add a new person if no match exists
+
+<Callout type="info">
+People mentioned with `@` are tracked across all entries. Visit the [People page](/docs/writing/people) to manage your relationships.
+</Callout>
+
+---
+
+## #Tags — Auto-Extraction
+
+Use `#tagname` anywhere in your content to categorize and connect entries.
+
+### How Tags Work
+
+1. **Type `#`** — A suggestion dropdown appears
+2. **See existing tags** — Previously used tags appear in the list
+3. **Select or create** — Choose an existing tag or type a new one
+4. **Auto-extraction** — Tags are extracted when you save the entry
+5. **Connection building** — Tags link related entries together
+
+### Tag Syntax
+
+```markdown
+Working on #project-alpha with focus on #design and #ux.
+Feeling #grateful for #team progress today.
+```
+
+### Suggestion Dropdown
+
+As you type, the dropdown shows:
+- **Matching tags** — Filtered by what you've typed
+- **Entry counts** — How many entries use each tag
+- **Create new option** — Add a new tag if no match exists
+
+### Tag Naming Best Practices
+
+- **Use lowercase** — Tags are case-insensitive but displayed as typed
+- **Use hyphens** — For multi-word tags: `#project-alpha` instead of `#project alpha`
+- **Be consistent** — Reuse tags to build connections (avoid `#work` and `#working`)
+- **Use hierarchies** — Consider patterns like `#project-name`, `#project-alpha`, `#project-beta`
+
+<Callout type="info">
+Tags are scoped per user — your tags are completely private. Learn more about [tag management](/docs/writing/tags).
+</Callout>
+
+---
+
+## Image Uploads
+
+Reflecto supports inline images with seamless cloud uploads.
+
+### Upload Methods
+
+<Tabs items={['Drag & Drop', 'Paste', 'Toolbar Button']}>
+  <Tabs.Tab>
+    **Drag & Drop**
+    
+    1. Open your file explorer
+    2. Drag an image file into the editor
+    3. Drop it where you want the image to appear
+    4. Image uploads automatically to ImageKit
+    5. Thumbnail and full-size versions are created
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Paste from Clipboard**
+    
+    1. Copy an image (screenshot, copied from web, etc.)
+    2. Click in the editor where you want the image
+    3. Press `Ctrl/Cmd + V` to paste
+    4. Image uploads automatically
+    5. Appears inline immediately after upload
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Toolbar Button**
+    
+    1. Click the image icon in the toolbar
+    2. Select an image file from your device
+    3. Image uploads to ImageKit
+    4. Appears at cursor position
+  </Tabs.Tab>
+</Tabs>
+
+### Image Features
+
+- **Cloud storage** — Images are stored in ImageKit CDN
+- **Automatic thumbnails** — Resized versions for fast loading
+- **Inline display** — Images appear directly in your entry
+- **Resizable** — Drag corners to resize (maintains aspect ratio)
+- **Lazy loading** — Images load as you scroll for performance
+- **Secure links** — Only you can access your uploaded images
+
+### Supported Formats
+
+- JPEG / JPG
+- PNG
+- GIF
+- WebP
+- SVG (limited support)
+
+<Callout type="warning">
+**File size limit:** Maximum 10MB per image. Large images are automatically optimized by ImageKit.
+</Callout>
+
+### Image Management
+
+Images are stored as `Attachment` records linked to your entry:
+- Each image has a unique filename
+- Original and thumbnail URLs are stored
+- Images persist even if you delete them from the entry
+- You can re-insert images from your image library (feature coming soon)
+
+---
+
+## Links
+
+Create clickable links in your entries.
+
+### Link Creation
+
+**Markdown syntax:**
+```markdown
+[Link text](https://example.com)
+```
+
+**Keyboard shortcut:**
+1. Select the text you want to link
+2. Press `Ctrl/Cmd + K`
+3. Enter the URL
+4. Press Enter
+
+**Toolbar button:**
+1. Select text
+2. Click the link button (🔗) in the toolbar
+3. Enter URL in the popup
+4. Click OK
+
+### Link Features
+
+- **Auto-detection** — Paste a URL and it becomes clickable
+- **Edit links** — Click a link and press `Ctrl/Cmd + K` to edit
+- **Remove links** — Select a link and press `Ctrl/Cmd + Shift + K`
+- **Open in new tab** — Ctrl/Cmd + click to open links
+- **Visual indicator** — Links are underlined and colored
+
+---
+
+## Metadata Editor
+
+Above the main editor, you'll see type-specific metadata fields that vary based on entry type.
+
+### Metadata by Entry Type
+
+<Tabs items={['Journal', 'Highlight', 'Idea', 'Wisdom', 'Note', 'Dream']}>
+  <Tabs.Tab>
+    **Journal Metadata**
+    
+    - **Category** — Dropdown selector:
+      - Thoughts
+      - Involved Me
+      - Around Me
+      - Memories
+      - Gratitude
+      - Reflections
+      - Tiny Wins
+      - Daily Log
+      - Venting
+      - *(Custom text allowed)*
+    - **Mood** — Slider from 1 (low) to 5 (high)
+    - **Date** — Date picker (defaults to today)
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Highlight Metadata**
+    
+    - **Importance** — Dropdown:
+      - 🔴 High
+      - 🟡 Medium
+      - 🟢 Low
+    - **Date** — Date picker
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Idea Metadata**
+    
+    - **Status** — Progression dropdown:
+      - 💡 Seed
+      - 📝 Draft
+      - ✨ Refined
+      - ✅ Implemented
+    - **Date** — Date picker
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Wisdom Metadata**
+    
+    - **Wisdom Type** — Dropdown:
+      - Quote
+      - Thought
+      - Fact
+      - Excerpt
+      - Lesson
+    - **Author** — Text input (optional)
+    - **Source** — Text input (optional, e.g., book title, URL)
+    - **Date** — Date picker
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Note Metadata**
+    
+    - **Color** — Color picker with presets:
+      - Gray (default)
+      - Blue
+      - Green
+      - Yellow
+      - Red
+      - Purple
+      - Pink
+    - **Pin** — Toggle to pin note to top
+    - **Date** — Date picker
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Dream Metadata**
+    
+    - **Date** — Date picker
+    - *(Minimal metadata — focus is on content)*
+  </Tabs.Tab>
+</Tabs>
+
+<Callout>
+Metadata helps you organize and filter entries. All metadata is searchable and appears in entry lists.
+</Callout>
+
+---
+
+## Bulleted Mode
+
+Enable **Bulleted Mode** for structured, list-style entries.
+
+### How It Works
+
+1. Click the bullet icon in the header
+2. Each new line becomes a bullet point
+3. A bullet count appears in the header (e.g., `#15`)
+4. Great for daily logs, gratitude lists, and quick captures
+
+### Example
+
+```
+• Woke up feeling energized
+• Morning coffee with @Alice
+• Completed #project-alpha milestone
+• Feeling #grateful for team support
+```
+
+### Bullet Count
+
+The `#42` indicator in the header shows:
+- Total number of bullet points in the entry
+- Updates in real-time as you write
+- Encourages consistent, structured writing
+
+<Callout type="info">
+Bulleted mode can be set as the default in [Settings → Preferences](/docs/settings).
+</Callout>
+
+---
+
+## Auto-Save
+
+Your entries are automatically saved as you type.
+
+### How Auto-Save Works
+
+1. **Type in the editor** — Content is tracked
+2. **Debounce delay** — System waits 1 second after you stop typing
+3. **Save trigger** — Content is saved to the database via tRPC
+4. **Sync indicator** — Cloud icon in header shows status:
+   - ☁️ **Saving...** — Upload in progress
+   - ✅ **Saved** — Successfully synced
+   - ⚠️ **Error** — Save failed (retries automatically)
+
+### Manual Save
+
+You can also manually save with `Ctrl/Cmd + S`, which immediately triggers a save without waiting for the debounce.
+
+### What Gets Saved
+
+- **Entry content** — The full HTML/plaintext of your entry
+- **Metadata** — Category, mood, status, etc.
+- **Tags & People** — Automatically extracted on save
+- **Entry type** — Journal, Dream, Highlight, etc.
+- **Date** — The entry's timestamp
+
+<Callout type="success">
+Don't worry about losing your work — auto-save runs continuously and stores everything securely in the cloud.
+</Callout>
+
+---
+
+## Editor Modes
+
+Reflecto supports two editor modes for different preferences.
+
+### Classic Mode (Default)
+
+- Traditional rich text editor
+- Formatting toolbar visible
+- WYSIWYG (What You See Is What You Get)
+- Best for most users
+
+### Minimalist Mode
+
+- Cleaner interface
+- Toolbar hidden until text is selected
+- Markdown-first writing
+- Enable in Settings → Appearance
+
+<Callout type="info">
+Editor mode preference is saved per-user and persists across sessions.
+</Callout>
+
+---
+
+## Advanced Features
+
+### Linked Context
+
+When editing an existing entry, a **Linked Context** section appears below the editor showing:
+- Other entries from the same date
+- Entries with the same tags
+- Entries mentioning the same people
+
+This helps you see connections and patterns across your reflections.
+
+### Paste Handling
+
+The editor intelligently handles pasted content:
+- **Plain text** — Inserted directly
+- **Rich text** — Basic formatting preserved (bold, italic, links)
+- **Images** — Uploaded to ImageKit automatically
+- **URLs** — Converted to clickable links
+- **Code** — Syntax preserved
+
+### Undo/Redo History
+
+- **Unlimited history** — Undo back to when you opened the editor
+- **Keyboard shortcuts** — `Ctrl/Cmd + Z` and `Ctrl/Cmd + Y`
+- **History preserved** — Until you navigate away from the page
+
+### Character Count (Coming Soon)
+
+A character and word count indicator will appear at the bottom of the editor, showing:
+- Word count
+- Character count
+- Estimated reading time
+
+---
+
+## Tips for Better Writing
+
+### 1. Use Tags Consistently
+
+Build a tag taxonomy that makes sense for you:
+- `#work`, `#personal`, `#health`
+- `#project-name` for project-specific tags
+- `#learning`, `#ideas`, `#goals` for themes
+
+### 2. Mention People Often
+
+Track relationships and interactions by @mentioning people frequently. Over time, you'll see patterns in who you interact with and when.
+
+### 3. Write Daily
+
+Even short entries build the habit. Use bullet mode for quick logs on busy days.
+
+### 4. Leverage Metadata
+
+Set mood scores on journal entries to track emotional patterns. Use importance levels on highlights to remember what matters most.
+
+### 5. Review Linked Context
+
+When editing an entry, check the linked context to recall what else happened that day or what else is related.
+
+### 6. Experiment with Entry Types
+
+Don't just write journals — use Dreams for aspirations, Ideas for brainstorms, and Wisdom for quotes and lessons.
+
+---
+
+## Troubleshooting
+
+### Editor not loading?
+
+- Check your internet connection
+- Clear browser cache and reload
+- Try a different browser
+- Check browser console for errors
+
+### Auto-save failing?
+
+- Verify you're signed in
+- Check network status indicator
+- Retry manually with `Ctrl/Cmd + S`
+- If persistent, sign out and back in
+
+### Images not uploading?
+
+- Check file size (max 10MB)
+- Verify file format is supported
+- Check internet connection
+- Try a different image
+
+### Suggestions not appearing?
+
+- Make sure you've created tags/people before
+- Type at least one character after `@` or `#`
+- Check that JavaScript is enabled
+
+---
+
+## What's Next?
+
+Now that you understand the editor, explore related features:
+
+<Callout type="success">
+Learn about the [Journal system →](/docs/writing/journal) to master daily writing workflows, or dive into [Tags →](/docs/writing/tags) and [People →](/docs/writing/people) management.
+</Callout>
+
+### Related Topics
+
+- [Journal & Daily Writing](/docs/writing/journal) — Calendar navigation and categories
+- [Tags](/docs/writing/tags) — Tag management and organization
+- [People](/docs/writing/people) — Relationship tracking
+- [Settings](/docs/settings) — Customize editor preferences

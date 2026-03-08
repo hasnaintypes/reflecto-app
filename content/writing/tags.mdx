@@ -1,0 +1,727 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Tags
+
+Tags are the connective tissue of your Reflecto experience. They link entries together, reveal patterns, and help you navigate your thoughts across time.
+
+<Callout type="info">
+Tags in Reflecto are automatically extracted from your entries and tracked across all entry types. Use them to create your own personal knowledge graph.
+</Callout>
+
+---
+
+## What Are Tags?
+
+Tags are keywords prefixed with `#` that categorize and connect your entries.
+
+### How Tags Work
+
+1. **Write with #hashtags** — Type `#work`, `#fitness`, `#learning` in your entries
+2. **Auto-extraction** — Tags are extracted when you save
+3. **Suggestion dropdown** — Existing tags appear as you type
+4. **Entry linking** — Tags create bidirectional links between entries
+5. **Private & scoped** — Your tags are completely private to you
+
+### Tag Syntax
+
+```markdown
+Had a productive meeting about #project-alpha today.
+Discussed #design and #ux decisions with @Alice.
+Feeling motivated about #learning and #growth.
+```
+
+When you save this entry, five tags are automatically extracted:
+- `#project-alpha`
+- `#design`
+- `#ux`
+- `#learning`
+- `#growth`
+
+---
+
+## Creating Tags
+
+### Inline in Editor
+
+The easiest way to create tags is while writing:
+
+<Steps>
+### Type `#`
+
+The suggestion dropdown appears instantly
+
+### Start Typing
+
+See existing tags that match what you type
+
+### Select Existing or Create New
+
+- **Arrow keys** — Navigate suggestions
+- **Enter** — Select highlighted tag
+- **Keep typing** — Create a new tag
+- **Space/Tab** — Finalize tag
+
+### Tag Is Created on Save
+
+New tags are added to your tag library when you save the entry
+</Steps>
+
+### Tag Suggestions
+
+As you type, the dropdown shows:
+```
+┌─────────────────────────────┐
+│ #work (23 entries)          │
+│ #workout (12 entries)       │
+│ #working-out (3 entries)    │
+│ ───────────────────────────  │
+│ Create "#worklife"          │
+└─────────────────────────────┘
+```
+
+- **Matching tags** — Filtered by what you've typed
+- **Entry counts** — How many entries use each tag
+- **Create new option** — Always available at the bottom
+
+<Callout>
+**Pro tip:** Check suggestions before creating new tags to maintain consistency and avoid duplicates.
+</Callout>
+
+---
+
+## Tag Naming Best Practices
+
+### Use Lowercase
+
+Tags are case-insensitive but displayed as you first type them:
+- ✅ `#project-alpha`
+- ❌ `#Project-Alpha` or `#PROJECT-ALPHA`
+
+### Use Hyphens for Multi-Word Tags
+
+- ✅ `#product-launch`
+- ❌ `#product launch` (space breaks the tag)
+- ❌ `#productLaunch` (camelCase is less readable)
+
+### Be Consistent
+
+Avoid creating similar tags:
+- ✅ Choose one: `#work`
+- ❌ Don't use: `#work`, `#working`, `#workplace`, `#job`
+
+### Create Hierarchies
+
+Use prefixes for related tags:
+- `#project-alpha`, `#project-beta`, `#project-gamma`
+- `#book-fiction`, `#book-nonfiction`, `#book-reference`
+- `#exercise-running`, `#exercise-yoga`, `#exercise-strength`
+
+### Keep Tags Focused
+
+- ✅ `#meditation` — Clear and specific
+- ❌ `#trying-to-meditate-more` — Too verbose
+
+### Use Descriptive Names
+
+- ✅ `#quarterly-review`
+- ❌ `#qr` (ambiguous)
+
+<Callout type="warning">
+Tag names cannot contain spaces, special characters (except hyphens), or emoji. Stick to letters, numbers, and hyphens.
+</Callout>
+
+---
+
+## Tags Management Page
+
+Navigate to **Tags** in the sidebar to manage all your tags.
+
+### Page Layout
+
+```
+┌─────────────────────────────────────────┐
+│  Tags                                   │
+│  ──────────────────────────────────     │
+│                                         │
+│  🔍 Search tags...     [A-Z ▼] [Edit]  │
+│                                         │
+│  #work (45) ⭐                          │
+│  #fitness (23)                          │
+│  #learning (18)                         │
+│  #gratitude (34)                        │
+│                                         │
+│  ───── Work ─────                       │
+│  #project-alpha (12)                    │
+│  #meetings (8)                          │
+│  #team (15)                             │
+│                                         │
+│  ───── Personal ─────                   │
+│  #meditation (9)                        │
+│  #reading (14)                          │
+└─────────────────────────────────────────┘
+```
+
+### Features
+
+| Feature | Description |
+|---------|-------------|
+| **Search** | Filter tags by name |
+| **Sort** | Alphabetical (A-Z, Z-A) or by entry count (Most, Least) |
+| **Entry count** | Number in parentheses shows usage frequency |
+| **Groups** | Organize tags into named groups |
+| **Edit** | Click a tag to rename |
+| **Delete** | Remove tags with confirmation |
+| **Click to view** | See all entries with that tag |
+
+---
+
+## Viewing Tagged Entries
+
+Click any tag to see all entries using that tag.
+
+### Tag Detail View
+
+```
+┌─────────────────────────────────────────┐
+│  ← Back to Tags                         │
+│                                         │
+│  #work                                  │
+│  45 entries                             │
+│  ──────────────────────────────────     │
+│                                         │
+│  ⭐ Journal · Mar 7, 2026               │
+│  "Productive meeting about #project..." │
+│  #work #meetings #team                  │
+│                                         │
+│  Idea · Mar 6, 2026                     │
+│  "New approach for #work automation"    │
+│  #work #automation #productivity        │
+│                                         │
+│  Journal · Mar 5, 2026                  │
+│  "Long day at #work but made progress"  │
+│  #work #tired #progress                 │
+└─────────────────────────────────────────┘
+```
+
+### Filtering Options
+
+- **By entry type** — Show only Journals, Dreams, etc.
+- **By date range** — Last week, month, year, or custom
+- **By starred** — Show only starred entries
+- **Sort by** — Most recent, oldest, or most relevant
+
+<Callout>
+Tag detail views help you see patterns: how often you mention a topic, when you wrote about it most, and how it connects to other tags.
+</Callout>
+
+---
+
+## Tag Groups
+
+Organize related tags into named groups for better clarity.
+
+### Creating a Tag Group
+
+<Steps>
+### Select Tags
+
+On the Tags page, click the checkbox next to multiple tags:
+- `#project-alpha`
+- `#project-beta`
+- `#project-gamma`
+
+### Click "Create Group"
+
+Button appears at the top when tags are selected
+
+### Name the Group
+
+Enter a group name, e.g., "Projects"
+
+### Group Is Created
+
+Tags are visually grouped together on the Tags page
+</Steps>
+
+### Example Groups
+
+**Work:**
+- `#meetings`
+- `#project-alpha`
+- `#team`
+- `#deadlines`
+
+**Health:**
+- `#exercise`
+- `#nutrition`
+- `#meditation`
+- `#sleep`
+
+**Learning:**
+- `#books`
+- `#courses`
+- `#articles`
+- `#podcasts`
+
+**Personal:**
+- `#family`
+- `#friends`
+- `#hobbies`
+- `#travel`
+
+### Managing Groups
+
+- **Rename** — Click the group header to edit name
+- **Reorder** — Drag groups to rearrange (coming soon)
+- **Add tags** — Drag tags into existing groups
+- **Remove tags** — Uncheck tag and remove from group
+- **Delete group** — Click the trash icon (tags remain)
+
+<Callout type="info">
+Groups are purely organizational — they don't affect how tags work in entries, they just make the Tags page easier to navigate.
+</Callout>
+
+---
+
+## Editing Tags
+
+### Renaming a Tag
+
+<Steps>
+### Navigate to Tags Page
+
+Click **Tags** in the sidebar
+
+### Click the Tag
+
+Select the tag you want to rename
+
+### Click Edit Button
+
+Found in the tag detail view header
+
+### Enter New Name
+
+Type the new tag name
+
+### Confirm
+
+Changes apply to all entries using this tag
+</Steps>
+
+<Callout type="warning">
+Renaming a tag updates it across **all entries**. This is useful for fixing typos or consolidating similar tags.
+</Callout>
+
+### Merging Tags
+
+To merge duplicate tags:
+
+1. Rename one tag to match another
+2. System detects duplicate
+3. Confirms merge
+4. All entries now use the single tag
+
+**Example:**
+- You have `#work` (40 entries) and `#working` (5 entries)
+- Rename `#working` to `#work`
+- Now `#work` has 45 entries
+- `#working` no longer exists
+
+---
+
+## Deleting Tags
+
+### When to Delete Tags
+
+- **Typos** — Created by mistake (better to rename)
+- **Irrelevant** — Tag no longer useful
+- **Cleanup** — Consolidating tags
+
+### How to Delete
+
+<Steps>
+### Navigate to Tags Page
+
+Click **Tags** in the sidebar
+
+### Click the Tag
+
+Open the tag detail view
+
+### Click Delete Button
+
+Usually a trash icon
+
+### Confirm Deletion
+
+Warning appears: "This tag will be removed from all entries"
+
+### Tag Is Deleted
+
+Removed from your library and all entries
+</Steps>
+
+<Callout type="warning">
+Deleting a tag is **permanent** and removes it from all entries. Consider renaming instead if you might want the data later.
+</Callout>
+
+---
+
+## Tag Analytics & Insights
+
+View tag statistics and patterns in the **Insights** page.
+
+### Tag Insights Include:
+
+**Usage Frequency:**
+- Total unique tags
+- Most used tags
+- Least used tags
+- Tags per entry average
+
+**Trends:**
+- Tag usage over time (line chart)
+- New tags created by month
+- Trending tags (increasing usage)
+- Declining tags (decreasing usage)
+
+**Relationships:**
+- Tags frequently used together
+- Entry type distribution per tag
+- Mood correlation with tags (e.g., `#exercise` correlates with high mood)
+
+**Heatmap:**
+- Tag activity heatmap showing when tags are used most
+- Day-of-week patterns (e.g., `#work` peaks Mon-Fri)
+
+<Callout>
+Insights help you understand your focus areas, spot trends, and identify tags worth organizing into groups.
+</Callout>
+
+---
+
+## Advanced Tag Usage
+
+### Tagging Strategies
+
+<Tabs items={['Topic-Based', 'Project-Based', 'Time-Based', 'Mood-Based']}>
+  <Tabs.Tab>
+    **Topic-Based Tagging**
+    
+    Categorize by subject matter:
+    - `#work`, `#personal`, `#health`
+    - `#family`, `#friends`, `#relationships`
+    - `#finance`, `#career`, `#education`
+    
+    **Best for:** Broad categorization
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Project-Based Tagging**
+    
+    Tag by specific projects or goals:
+    - `#project-alpha`, `#project-beta`
+    - `#book-outliers`, `#book-atomic-habits`
+    - `#goal-fitness`, `#goal-learning`
+    
+    **Best for:** Tracking specific initiatives
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Time-Based Tagging**
+    
+    Add temporal context:
+    - `#2026-q1`, `#2026-march`
+    - `#year-review`, `#monthly-goals`
+    - `#daily-log`, `#weekly-review`
+    
+    **Best for:** Temporal tracking
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Mood-Based Tagging**
+    
+    Capture emotional context:
+    - `#grateful`, `#anxious`, `#excited`
+    - `#reflective`, `#motivated`, `#tired`
+    - `#peaceful`, `#stressed`, `#curious`
+    
+    **Best for:** Emotional tracking (complements mood scores)
+  </Tabs.Tab>
+</Tabs>
+
+### Tag Hierarchies
+
+Build taxonomy with prefixes:
+
+```
+#project-alpha
+  #project-alpha-design
+  #project-alpha-dev
+  #project-alpha-launch
+
+#health
+  #health-fitness
+  #health-nutrition
+  #health-mental
+
+#learning
+  #learning-books
+  #learning-courses
+  #learning-practice
+```
+
+**Benefits:**
+- Clear organization
+- Easy to filter hierarchically
+- Scalable as tag library grows
+
+### Tag Combos
+
+Some tag combinations are especially powerful:
+
+**Context + Action:**
+- `#work` + `#learning` = professional development
+- `#personal` + `#goals` = life planning
+- `#health` + `#habits` = wellness routines
+
+**Project + Status:**
+- `#project-alpha` + `#in-progress`
+- `#project-beta` + `#completed`
+- `#project-gamma` + `#planning`
+
+**Topic + Emotion:**
+- `#work` + `#stressed` = work pressure tracking
+- `#exercise` + `#energized` = positive reinforcement
+- `#family` + `#grateful` = gratitude focus
+
+---
+
+## Search & Filters
+
+### Search Tags
+
+On the Tags page, use the search box:
+
+```markdown
+Search: "project"
+
+Results:
+- #project-alpha (12 entries)
+- #project-beta (8 entries)
+- #project-planning (5 entries)
+```
+
+**Search Features:**
+- **Instant filtering** — Results update as you type
+- **Fuzzy matching** — Finds partial matches
+- **Entry count shown** — See usage frequency
+- **Click to view** — Jump to tag detail
+
+### Filter by Entry Type
+
+When viewing tagged entries, filter by type:
+
+```markdown
+#work entries:
+
+All Types (45) | Journal (32) | Ideas (8) | Notes (5)
+```
+
+### Date Range Filtering
+
+View tag usage within specific timeframes:
+- **Last 7 days**
+- **Last 30 days**
+- **Last 3 months**
+- **Last year**
+- **All time**
+- **Custom range**
+
+---
+
+## Best Practices
+
+### 1. Start Simple
+
+Begin with 5-10 core tags:
+- `#work`, `#personal`, `#health`, `#learning`, `#goals`
+
+Expand as needed.
+
+### 2. Review Tags Monthly
+
+Check the Tags page monthly:
+- Merge similar tags
+- Delete unused tags
+- Create groups for organization
+- Identify trending topics
+
+### 3. Use Tags Consistently
+
+Decide on a naming convention early:
+- All lowercase
+- Hyphens for multi-word
+- Hierarchical prefixes
+
+### 4. Don't Over-Tag
+
+3-5 tags per entry is usually enough. Too many tags dilute their value.
+
+### 5. Combine with People
+
+Tags + @mentions create rich context:
+- "Meeting with @Alice about #project-alpha and #design"
+
+### 6. Check Insights
+
+Review tag analytics to understand your focus areas and spot patterns.
+
+### 7. Use Groups
+
+Once you have 20+ tags, organize them into groups for easier navigation.
+
+### 8. Tag Retroactively
+
+Edit old entries to add tags you weren't using before. This builds richer connections.
+
+---
+
+## Common Tag Patterns
+
+### Daily Logging
+
+```markdown
+#daily-log #morning
+• Coffee with @Alice
+• Worked on #project-alpha
+• Feeling #motivated
+```
+
+### Goal Tracking
+
+```markdown
+#goal-fitness #progress #month-2
+Completed 15 workouts this month!
+See improvement in #strength and #endurance.
+```
+
+### Project Updates
+
+```markdown
+#project-beta #milestone #completed
+Shipped v2.0 today! 🎉
+Thanks to @team for the hard work.
+#proud #achievement
+```
+
+### Learning & Books
+
+```markdown
+#book-atomic-habits #learning #insights
+Key takeaway: Identity-based habits.
+Connect to my #goal-habits work.
+```
+
+### Reflection & Gratitude
+
+```markdown
+#gratitude #reflection #end-of-week
+Grateful for:
+• #family time this weekend
+• Progress on #work projects
+• #health improvements
+```
+
+---
+
+## Tips for Power Users
+
+### Create a Tag Index
+
+Maintain a note (or external document) defining your tag taxonomy:
+
+```markdown
+# My Tag System
+
+## Projects
+- #project-alpha — Main client project
+- #project-beta — Side project
+
+## Health
+- #exercise — Physical activity
+- #nutrition — Diet and eating
+- #meditation — Mindfulness practice
+
+## Work
+- #meetings — All meeting notes
+- #1-on-1 — One-on-one conversations
+- #planning — Strategic planning
+```
+
+### Use Tag Combos for Queries
+
+Combine tags to find specific entries:
+- `#work` + `#goals` = career objectives
+- `#learning` + `#books` = reading insights
+- `#health` + `#weekly-review` = wellness check-ins
+
+### Set Tag Goals
+
+Track how often you write about important topics:
+- Goal: Use `#gratitude` 3x per week
+- Goal: Tag `#exercise` daily
+- Goal: Review `#goals` monthly
+
+### Export Tagged Entries
+
+(Coming soon) Export all entries with a specific tag to markdown or PDF for external review.
+
+---
+
+## Troubleshooting
+
+### Tag not appearing in suggestions?
+
+- Type at least 2 characters after `#`
+- Check that you've created the tag before (in another entry)
+- Verify entry was saved successfully
+
+### Tag not extracted from entry?
+
+- Ensure tag has `#` prefix
+- Check there's no space after `#` (e.g., `# work` won't work)
+- Save the entry (tags extract on save, not during typing)
+
+### Can't delete a tag?
+
+- Ensure you have permission (shouldn't be an issue for your own tags)
+- Check browser console for errors
+- Refresh the page and try again
+
+### Tag count seems wrong?
+
+- Counts update when entries are saved
+- Refresh the Tags page
+- Check that entries weren't deleted
+
+### Groups not saving?
+
+- Ensure you've selected multiple tags
+- Enter a group name
+- Check internet connection
+
+---
+
+## What's Next?
+
+Now that you understand tags, explore related features:
+
+<Callout type="success">
+Learn about [People →](/docs/writing/people) to track relationships, or dive into [Insights →](/docs/insights) to see your tag analytics.
+</Callout>
+
+### Related Topics
+
+- [People](/docs/writing/people) — Relationship tracking with @mentions
+- [Rich Editor](/docs/writing/editor) — Learn more about the editor
+- [Journal](/docs/writing/journal) — Daily writing workflows
+- [Insights](/docs/insights) — Tag analytics and trends

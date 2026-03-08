@@ -1,0 +1,849 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# People
+
+People are the human connections in your reflection journey. Track relationships, interactions, and conversations by mentioning people in your entries with `@mentions`.
+
+<Callout type="info">
+People in Reflecto are automatically extracted from your entries and tracked across all entry types. See who you interact with most, when, and in what context.
+</Callout>
+
+---
+
+## What Are People?
+
+People are contacts mentioned in your entries using the `@` symbol.
+
+### How People Work
+
+1. **Write with @mentions** — Type `@Alice`, `@Bob`, `@Sarah` in your entries
+2. **Auto-extraction** — People are extracted when you save
+3. **Suggestion dropdown** — Existing people appear as you type
+4. **Entry linking** — @mentions create bidirectional links between entries and people
+5. **Private & scoped** — Your people list is completely private to you
+
+### @Mention Syntax
+
+```markdown
+Had coffee with @Alice this morning.
+She introduced me to @Bob from the #design team.
+Later, @Sarah and I discussed #project-alpha.
+```
+
+When you save this entry, three people are automatically extracted:
+- @Alice
+- @Bob
+- @Sarah
+
+---
+
+## Creating People
+
+### Inline in Editor
+
+The easiest way to add people is while writing:
+
+<Steps>
+### Type `@`
+
+The suggestion dropdown appears instantly
+
+### Start Typing
+
+See existing people that match what you type
+
+### Select Existing or Create New
+
+- **Arrow keys** — Navigate suggestions
+- **Enter** — Select highlighted person
+- **Keep typing** — Create a new person
+- **Space/Tab** — Finalize mention
+
+### Person Is Created on Save
+
+New people are added to your people library when you save the entry
+</Steps>
+
+### People Suggestions
+
+As you type, the dropdown shows:
+```
+┌─────────────────────────────┐
+│ @Alice (34 mentions)        │
+│ @Alicia (7 mentions)        │
+│ @Alan (2 mentions)          │
+│ ───────────────────────────  │
+│ Create "@Alexandra"         │
+└─────────────────────────────┘
+```
+
+- **Matching people** — Filtered by what you've typed
+- **Mention counts** — How many entries mention each person
+- **Create new option** — Always available at the bottom
+
+<Callout>
+**Pro tip:** Check suggestions before creating new people to avoid duplicates (e.g., @Alice vs @AliceSmith).
+</Callout>
+
+---
+
+## People Naming Best Practices
+
+### Use Consistent Names
+
+Decide how you'll refer to each person:
+- ✅ `@Alice` — First name only
+- ✅ `@Alice-Smith` — First + last with hyphen
+- ❌ Don't mix: `@Alice`, `@AliceS`, `@Alice Smith`, `@A.Smith`
+
+### Capitalize Properly
+
+Names should use standard capitalization:
+- ✅ `@Alice`, `@Bob`, `@Sarah`
+- ❌ `@alice`, `@ALICE`, `@aLiCe`
+
+### Use Hyphens for Full Names
+
+If you need full names, use hyphens:
+- ✅ `@Alice-Johnson`
+- ❌ `@Alice Johnson` (space breaks the mention)
+
+### Consider Context
+
+Add context for common names:
+- ✅ `@Mike-Work`, `@Mike-Family`
+- ✅ `@Sarah-Designer`, `@Sarah-Manager`
+
+### Professional vs Personal
+
+You might want different naming conventions:
+- **Work:** `@Alice-Smith` (formal)
+- **Personal:** `@Mom`, `@Dad`, `@Sister` (familiar)
+
+<Callout type="warning">
+@mention names cannot contain spaces or special characters (except hyphens). Stick to letters, numbers, and hyphens.
+</Callout>
+
+---
+
+## People Management Page
+
+Navigate to **People** in the sidebar to manage all your contacts.
+
+### Page Layout
+
+```
+┌─────────────────────────────────────────┐
+│  People                                 │
+│  ──────────────────────────────────     │
+│                                         │
+│  🔍 Search people...   [A-Z ▼] [Edit]  │
+│                                         │
+│  @Alice (45 mentions) ⭐                │
+│  @Bob (23 mentions)                     │
+│  @Sarah (18 mentions)                   │
+│  @Mike (34 mentions)                    │
+│                                         │
+│  ───── Work ─────                       │
+│  @Alice-Johnson (12)                    │
+│  @Team-Lead (8)                         │
+│  @Mentor (15)                           │
+│                                         │
+│  ───── Family ─────                     │
+│  @Mom (24)                              │
+│  @Dad (19)                              │
+│  @Sister (16)                           │
+└─────────────────────────────────────────┘
+```
+
+### Features
+
+| Feature | Description |
+|---------|-------------|
+| **Search** | Filter people by name |
+| **Sort** | Alphabetical (A-Z, Z-A) or by mention count (Most, Least) |
+| **Mention count** | Number in parentheses shows how often you mention them |
+| **Groups** | Organize people into named groups (Family, Work, Friends) |
+| **Edit** | Click a person to rename |
+| **Delete** | Remove people with confirmation |
+| **Click to view** | See all entries mentioning that person |
+
+---
+
+## Viewing Person's Entries
+
+Click any person to see all entries mentioning them.
+
+### Person Detail View
+
+```
+┌─────────────────────────────────────────┐
+│  ← Back to People                       │
+│                                         │
+│  @Alice                                 │
+│  45 mentions across all entries         │
+│  ──────────────────────────────────     │
+│                                         │
+│  ⭐ Journal · Mar 7, 2026               │
+│  "Coffee with @Alice. Great discussion  │
+│   about #project-alpha..."              │
+│  @Alice · #work #coffee #project-alpha  │
+│                                         │
+│  Highlight · Mar 5, 2026                │
+│  "@Alice helped me solve a tough..."   │
+│  @Alice · #gratitude #teamwork          │
+│                                         │
+│  Journal · Mar 1, 2026                  │
+│  "Team meeting with @Alice and @Bob"    │
+│  @Alice @Bob · #work #meetings          │
+└─────────────────────────────────────────┘
+```
+
+### Filtering Options
+
+- **By entry type** — Show only Journals, Dreams, etc.
+- **By date range** — Last week, month, year, or custom
+- **By starred** — Show only starred entries
+- **Sort by** — Most recent, oldest, or most relevant
+- **Co-mentions** — Filter by entries that also mention specific people
+
+<Callout>
+Person detail views help you understand your relationship: how often you interact, what you discuss (via tags), and the nature of the connection.
+</Callout>
+
+---
+
+## People Groups
+
+Organize people into named groups for better clarity.
+
+### Creating a People Group
+
+<Steps>
+### Select People
+
+On the People page, click the checkbox next to multiple people:
+- @Alice
+- @Bob  
+- @Sarah
+
+### Click "Create Group"
+
+Button appears at the top when people are selected
+
+### Name the Group
+
+Enter a group name, e.g., "Work Team"
+
+### Group Is Created
+
+People are visually grouped together on the People page
+</Steps>
+
+### Example Groups
+
+**Work:**
+- @Alice
+- @Boss
+- @Team-Lead
+- @Mentor
+
+**Family:**
+- @Mom
+- @Dad
+- @Sister
+- @Brother
+
+**Friends:**
+- @Best-Friend
+- @College-Roommate
+- @Neighbor
+- @Gym-Buddy
+
+**Professional Network:**
+- @Career-Coach
+- @Recruiter
+- @Industry-Contact
+
+### Managing Groups
+
+- **Rename** — Click the group header to edit name
+- **Reorder** — Drag groups to rearrange (coming soon)
+- **Add people** — Drag people into existing groups
+- **Remove people** — Uncheck person and remove from group
+- **Delete group** — Click the trash icon (people remain)
+
+<Callout type="info">
+Groups are purely organizational — they don't affect how @mentions work in entries, they just make the People page easier to navigate.
+</Callout>
+
+---
+
+## Editing People
+
+### Renaming a Person
+
+<Steps>
+### Navigate to People Page
+
+Click **People** in the sidebar
+
+### Click the Person
+
+Select the person you want to rename
+
+### Click Edit Button
+
+Found in the person detail view header
+
+### Enter New Name
+
+Type the new person name
+
+### Confirm
+
+Changes apply to all entries mentioning this person
+</Steps>
+
+<Callout type="warning">
+Renaming a person updates them across **all entries**. This is useful for fixing typos or consolidating duplicate people.
+</Callout>
+
+### Merging People
+
+To merge duplicate people:
+
+1. Rename one person to match another
+2. System detects duplicate
+3. Confirms merge
+4. All entries now mention the single person
+
+**Example:**
+- You have @Alice (30 mentions) and @Alice-Work (15 mentions)
+- Rename @Alice-Work to @Alice
+- Now @Alice has 45 mentions
+- @Alice-Work no longer exists
+
+---
+
+## Deleting People
+
+### When to Delete People
+
+- **Typos** — Created by mistake (better to rename)
+- **Irrelevant** — Person no longer in your life
+- **Cleanup** — Consolidating duplicate entries
+
+### How to Delete
+
+<Steps>
+### Navigate to People Page
+
+Click **People** in the sidebar
+
+### Click the Person
+
+Open the person detail view
+
+### Click Delete Button
+
+Usually a trash icon
+
+### Confirm Deletion
+
+Warning appears: "This person will be removed from all entries"
+
+### Person Is Deleted
+
+Removed from your library and all entries
+</Steps>
+
+<Callout type="warning">
+Deleting a person is **permanent** and removes them from all entries. Consider renaming instead if you might want the data later.
+</Callout>
+
+---
+
+## People Analytics & Insights
+
+View people statistics and patterns in the **Insights** page.
+
+### People Insights Include:
+
+**Mention Frequency:**
+- Total unique people
+- Most mentioned people
+- Mention frequency chart
+- Mentions per entry average
+
+**Trends:**
+- Mention activity over time (line chart)
+- New people added by month
+- Active relationships (increasing mentions)
+- Fading relationships (decreasing mentions)
+
+**Relationships:**
+- People frequently mentioned together
+- Entry type distribution per person (e.g., @Boss mostly in Journal entries)
+- Mood correlation with people (e.g., mentions of @Best-Friend correlate with high mood)
+- Tag associations (e.g., @Alice often appears with #work)
+
+**Heatmap:**
+- Mention activity heatmap showing when people are mentioned most
+- Day-of-week patterns (e.g., @Boss peaks Mon-Fri)
+
+<Callout>
+Insights help you understand your relationships, identify who you interact with most, and spot patterns in your social connections.
+</Callout>
+
+---
+
+## Advanced People Usage
+
+### Relationship Tracking Strategies
+
+<Tabs items={['Context-Based', 'Role-Based', 'Frequency-Based', 'Combined']}>
+  <Tabs.Tab>
+    **Context-Based Tracking**
+    
+    Track where you interact with people:
+    - @Alice-Work (colleague)
+    - @Alice-Gym (workout partner)
+    - @Bob-Coffee (coffee shop regular)
+    
+    **Best for:** People who appear in multiple contexts
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Role-Based Tracking**
+    
+    Define people by their role:
+    - @Mentor, @Coach, @Teacher
+    - @Manager, @Team-Lead, @Boss
+    - @Mom, @Dad, @Sister
+    
+    **Best for:** Clarity on relationships
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Frequency-Based Tracking**
+    
+    Track interaction patterns:
+    - Daily mentions: Close relationships
+    - Weekly mentions: Regular contacts
+    - Monthly mentions: Acquaintances
+    - Rare mentions: Distant connections
+    
+    **Best for:** Understanding relationship strength
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Combined Approach**
+    
+    Mix strategies as needed:
+    - @Alice (primary friend)
+    - @Boss-Work (manager)
+    - @Mom (family)
+    - @Mentor-Career (professional)
+    
+    **Best for:** Personalized system
+  </Tabs.Tab>
+</Tabs>
+
+### Co-Mention Patterns
+
+Track who you mention together:
+
+**Work Relationships:**
+```markdown
+Team meeting with @Alice, @Bob, and @Sarah about #project-alpha.
+```
+
+**Social Connections:**
+```markdown
+Dinner with @Best-Friend and @College-Roommate.
+Lots of #laughter and #memories.
+```
+
+**Family Time:**
+```markdown
+Weekend with @Mom, @Dad, and @Sister.
+Feeling #grateful for #family.
+```
+
+### Relationship Journaling
+
+Use people mentions for relationship insights:
+
+**1-on-1 Conversations:**
+```markdown
+Deep conversation with @Alice about #career-goals.
+She shared insights about #leadership and #growth.
+Grateful for her #mentorship.
+```
+
+**Relationship Check-Ins:**
+```markdown
+Reflecting on my relationship with @Partner.
+Things are going well: #communication #support #love
+Want to work on: #quality-time #shared-hobbies
+```
+
+**Gratitude for People:**
+```markdown
+#gratitude for @Mentor who helped me with #career-transition.
+Also thankful for @Best-Friend's #support during tough times.
+```
+
+---
+
+## Search & Filters
+
+### Search People
+
+On the People page, use the search box:
+
+```markdown
+Search: "alice"
+
+Results:
+- @Alice (45 mentions)
+- @Alice-Work (12 mentions)
+- @Alicia (7 mentions)
+```
+
+**Search Features:**
+- **Instant filtering** — Results update as you type
+- **Fuzzy matching** — Finds partial matches
+- **Mention count shown** — See interaction frequency
+- **Click to view** — Jump to person detail
+
+### Filter by Entry Type
+
+When viewing a person's entries, filter by type:
+
+```markdown
+@Alice in entries:
+
+All Types (45) | Journal (32) | Highlights (8) | Notes (5)
+```
+
+### Date Range Filtering
+
+View mentions within specific timeframes:
+- **Last 7 days** — Recent interactions
+- **Last 30 days** — This month
+- **Last 3 months** — This quarter
+- **Last year** — Annual view
+- **All time** — Complete history
+- **Custom range** — Specific dates
+
+### Co-Mention Filtering
+
+See entries mentioning multiple people:
+
+```markdown
+Entries mentioning both @Alice and @Bob: 12 entries
+```
+
+This helps identify group activities and shared contexts.
+
+---
+
+## Best Practices
+
+### 1. Be Consistent with Names
+
+Decide on a naming convention early:
+- First name only: @Alice
+- First + last: @Alice-Johnson
+- Role-based: @Boss, @Mentor
+- Context: @Alice-Work, @Alice-Friend
+
+### 2. Review People Monthly
+
+Check the People page monthly:
+- Merge duplicate entries
+- Delete people no longer relevant
+- Create groups for organization
+- Identify who you're interacting with most
+
+### 3. Use @Mentions Liberally
+
+Don't just mention names — use @mentions for:
+- Direct interactions
+- References in conversation
+- People you're thinking about
+- Relationship reflections
+
+### 4. Combine with Tags
+
+People + Tags create rich context:
+```markdown
+Meeting with @Alice about #project-alpha and #design.
+@Bob shared ideas on #marketing strategy.
+```
+
+### 5. Track Important Relationships
+
+Create entries specifically about key relationships:
+```markdown
+Checking in on my relationship with @Partner.
+Entry type: Journal
+Category: Reflections
+Tags: #relationships #love #growth
+```
+
+### 6. Use Groups Effectively
+
+Once you have 15+ people, organize them:
+- Work, Family, Friends
+- Close vs. Acquaintances
+- Active vs. Past relationships
+
+### 7. Check Insights
+
+Review people analytics to:
+- See who you mention most
+- Identify fading relationships
+- Spot patterns in interactions
+- Track relationship health
+
+### 8. Mention Retroactively
+
+Edit old entries to add @mentions you weren't using before. This builds richer relationship data.
+
+---
+
+## Common Mention Patterns
+
+### Daily Interactions
+
+```markdown
+#daily-log
+• Coffee with @Alice
+• 1-on-1 with @Boss about #career-goals
+• Lunch with @Team at the new #restaurant
+```
+
+### Relationship Gratitude
+
+```markdown
+#gratitude
+Grateful for:
+• @Partner's #support during tough times
+• @Best-Friend always being available
+• @Mentor's #guidance on #career decisions
+```
+
+### Team & Collaboration
+
+```markdown
+#project-alpha #teamwork
+Amazing collaboration today with @Alice, @Bob, and @Sarah.
+We finalized #design and #roadmap.
+Feeling #proud of our #team.
+```
+
+### Family Updates
+
+```markdown
+#family #weekend
+Quality time with @Mom and @Dad.
+@Sister visited from out of town.
+Lots of #laughter and #memories made.
+```
+
+### Professional Growth
+
+```markdown
+#career #learning
+Valuable advice from @Mentor today:
+- Focus on #strengths
+- Build #leadership skills
+- Network with @Industry-Connections
+```
+
+---
+
+## Relationship Insights Scenarios
+
+### Scenario 1: Identifying Close Relationships
+
+**Question:** Who am I closest to?
+
+**Method:**
+1. Go to People page
+2. Sort by mention count (Most → Least)
+3. Top 5-10 people are your closest connections
+
+**Insights:**
+- @Partner (89 mentions) — Primary relationship
+- @Best-Friend (67 mentions) — Close friendship
+- @Mom (54 mentions) — Family connection
+
+### Scenario 2: Tracking Work Relationships
+
+**Question:** How often do I interact with my team?
+
+**Method:**
+1. Create "Work Team" group
+2. Add relevant people
+3. Check mention frequency
+4. Compare week-over-week
+
+**Insights:**
+- @Boss (12 mentions this month) — Regular 1-on-1s
+- @Alice (18 mentions) — Close collaboration
+- @Bob (4 mentions) — Less interaction, consider reaching out
+
+### Scenario 3: Relationship Evolution
+
+**Question:** How has my relationship with @Alice changed?
+
+**Method:**
+1. Navigate to @Alice's detail page
+2. Filter by date (e.g., last 6 months)
+3. Review entries chronologically
+4. Note tag and mood correlations
+
+**Insights:**
+- Early: Mostly #work tags, neutral moods
+- Recent: More #personal tags, positive moods
+- Evolution: Work relationship → friendship
+
+### Scenario 4: Finding Fading Relationships
+
+**Question:** Who am I losing touch with?
+
+**Method:**
+1. Go to Insights → People tab
+2. Check "Declining Mentions" chart
+3. Identify people with decreasing mentions
+
+**Action:**
+- Reach out to reconnect
+- Reflect on why contact decreased
+- Decide if relationship is worth maintaining
+
+---
+
+## Privacy & Considerations
+
+### Your Data Is Private
+
+- People list is **completely private** to you
+- No one else can see who you mention
+- Names are not shared or visible to others
+- Full control over your relationship data
+
+### Ethical Considerations
+
+**Be Mindful:**
+- People mentioned are likely unaware they're in your journal
+- Don't rely on Reflecto for relationship management alone
+- Real communication with people is irreplaceable
+- Use @mentions as reflection tools, not substitutes for connection
+
+**Best Practices:**
+- Write honestly but respectfully
+- Reflect on relationships constructively
+- Use insights to improve real-world connections
+- Don't obsess over mention counts
+
+<Callout type="warning">
+Reflecto is a personal reflection tool. While tracking relationships can provide insights, it's not a replacement for genuine communication and connection with people in your life.
+</Callout>
+
+---
+
+## Tips for Power Users
+
+### Create a People Index
+
+Maintain a note defining your relationship context:
+
+```markdown
+# My Relationship Map
+
+## Close Family
+- @Mom — Mother, lives nearby
+- @Dad — Father, retired
+- @Sister — Younger sister, graphic designer
+
+## Work
+- @Boss — Manager, tech background
+- @Alice — Senior designer, mentor figure
+- @Bob — Developer, teammate
+
+## Friends
+- @Best-Friend — Known since college
+- @Gym-Buddy — Workout partner
+- @Neighbor — Lives next door
+```
+
+### Track Relationship Goals
+
+Set interaction goals:
+- Goal: Mention @Mom at least 3x per week (family time)
+- Goal: @Mentor at least 1x per month (career guidance)
+- Goal: @Best-Friend weekly (maintain friendship)
+
+### Use Co-Mentions for Context
+
+Find patterns in who you mention together:
+- @Alice + @Bob + #project-alpha = work team
+- @Partner + @Best-Friend + #dinner = social gatherings
+- @Mom + @Dad + #family = family events
+
+### Export Person Timeline
+
+(Coming soon) Export all entries mentioning a specific person to create a timeline of your relationship.
+
+---
+
+## Troubleshooting
+
+### Person not appearing in suggestions?
+
+- Type at least 2 characters after `@`
+- Check that you've mentioned them before (in another entry)
+- Verify entry was saved successfully
+
+### Person not extracted from entry?
+
+- Ensure name has `@` prefix
+- Check there's no space after `@` (e.g., `@ Alice` won't work)
+- Save the entry (people extract on save, not during typing)
+
+### Can't delete a person?
+
+- Ensure you have permission (shouldn't be an issue for your own data)
+- Check browser console for errors
+- Refresh the page and try again
+
+### Mention count seems wrong?
+
+- Counts update when entries are saved
+- Refresh the People page
+- Check that entries weren't deleted
+
+### Groups not saving?
+
+- Ensure you've selected multiple people
+- Enter a group name
+- Check internet connection
+
+---
+
+## What's Next?
+
+Now that you understand people tracking, explore related features:
+
+<Callout type="success">
+Learn about [Tags →](/docs/writing/tags) to complement people tracking, or check [Insights →](/docs/insights) to see your relationship analytics.
+</Callout>
+
+### Related Topics
+
+- [Tags](/docs/writing/tags) — Topic and theme tracking
+- [Rich Editor](/docs/writing/editor) — Learn more about the editor
+- [Journal](/docs/writing/journal) — Daily writing workflows
+- [Insights](/docs/insights) — People and relationship analytics
