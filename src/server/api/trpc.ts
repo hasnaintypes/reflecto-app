@@ -15,6 +15,39 @@ import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 
 /**
+ * In-memory sliding-window rate limiter
+ */
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(key: string, maxRequests: number, windowMs: number) {
+  const now = Date.now();
+  const entry = rateLimitStore.get(key);
+
+  if (!entry || now > entry.resetTime) {
+    rateLimitStore.set(key, { count: 1, resetTime: now + windowMs });
+    return;
+  }
+
+  entry.count++;
+  if (entry.count > maxRequests) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Too many requests. Please try again later.",
+    });
+  }
+}
+
+// Periodically clean up expired entries (every 5 minutes)
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of rateLimitStore) {
+    if (now > entry.resetTime) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 5 * 60 * 1000).unref();
+
+/**
  * 1. CONTEXT
  *
  * This section defines the "contexts" that are available in the backend API.
@@ -102,13 +135,31 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 /**
+ * Rate limiting middleware for tRPC procedures.
+ * Authenticated: 100 req/60s, Unauthenticated: 30 req/60s
+ */
+const rateLimitMiddleware = t.middleware(async ({ ctx, next }) => {
+  const isAuthenticated = !!ctx.session?.user;
+  const key = isAuthenticated
+    ? `user:${ctx.session!.user.id}`
+    : `ip:${ctx.headers.get("x-forwarded-for") ?? ctx.headers.get("x-real-ip") ?? "unknown"}`;
+  const maxRequests = isAuthenticated ? 100 : 30;
+
+  checkRateLimit(key, maxRequests, 60 * 1000);
+
+  return next();
+});
+
+/**
  * Public (unauthenticated) procedure
  *
  * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(rateLimitMiddleware);
 
 /**
  * Protected (authenticated) procedure
@@ -120,6 +171,7 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  */
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
+  .use(rateLimitMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
