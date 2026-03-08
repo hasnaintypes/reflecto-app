@@ -13,7 +13,17 @@ import { ThemeApplier } from "@/components/providers/theme-applier";
 export const metadata: Metadata = {
   title: "Reflecto App",
   description: "A journaling app to reflect on your day",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [
+    { rel: "icon", url: "/favicon.ico" },
+    { rel: "apple-touch-icon", url: "/icons/apple-touch-icon.png" },
+  ],
+  manifest: "/manifest.json",
+  themeColor: "#86A694",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Reflecto",
+  },
 };
 
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });

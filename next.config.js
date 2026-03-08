@@ -4,9 +4,16 @@
  */
 import "./src/env.js";
 import nextra from "nextra";
+import withSerwistInit from "@serwist/next";
 
 const withNextra = nextra({
   contentDirBasePath: "/docs",
+});
+
+const withSerwist = withSerwistInit({
+  swSrc: "src/app/sw.ts",
+  swDest: "public/sw.js",
+  disable: process.env.NODE_ENV === "development",
 });
 
 /** @type {import("next").NextConfig} */
@@ -52,4 +59,4 @@ const config = {
   },
 };
 
-export default withNextra(config);
+export default withSerwist(withNextra(config));
