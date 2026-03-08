@@ -20,6 +20,7 @@ export class NoteService {
     nextCursor?: string;
   }> {
     return entryService.list(db, userId, {
+      type: "note",
       limit: filters.limit ?? 20,
       cursor: filters.cursor,
       metadata: {

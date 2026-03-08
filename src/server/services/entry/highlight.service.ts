@@ -20,6 +20,7 @@ export class HighlightService {
     nextCursor?: string;
   }> {
     return entryService.list(db, userId, {
+      type: "highlight",
       limit: filters.limit ?? 20,
       cursor: filters.cursor,
       metadata: {

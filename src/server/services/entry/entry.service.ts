@@ -27,53 +27,53 @@ export class EntryService {
     input: CreateEntryInput,
   ): Promise<EntryWithRelations> {
     try {
-      // 0. For journal entries, check if one already exists for the targeted date
-      if (input.type === "journal") {
-        const targetDate = input.createdAt
-          ? new Date(input.createdAt)
-          : new Date();
-        targetDate.setHours(0, 0, 0, 0);
-        const nextDay = new Date(targetDate);
-        nextDay.setDate(nextDay.getDate() + 1);
-
-        const existingJournal = await db.entry.findFirst({
-          where: {
-            userId,
-            type: "journal",
-            deletedAt: null,
-            createdAt: {
-              gte: targetDate,
-              lt: nextDay,
-            },
-          },
-          include: {
-            tags: {
-              select: { id: true, name: true },
-            },
-            people: {
-              select: { id: true, name: true },
-            },
-            attachments: {
-              select: {
-                id: true,
-                fileUrl: true,
-                fileType: true,
-                thumbnailUrl: true,
-              },
-            },
-          },
-        });
-
-        if (existingJournal) {
-          return existingJournal as EntryWithRelations;
-        }
-      }
-
       // 1. Validate metadata
       const validatedMetadata = validateMetadata(input.type, input.metadata);
 
-      // Create entry in transaction
+      // Create entry in transaction (journal duplicate check is inside for atomicity)
       const entry = await db.$transaction(async (tx) => {
+        // 0. For journal entries, check if one already exists for the targeted date
+        if (input.type === "journal") {
+          const targetDate = input.createdAt
+            ? new Date(input.createdAt)
+            : new Date();
+          targetDate.setHours(0, 0, 0, 0);
+          const nextDay = new Date(targetDate);
+          nextDay.setDate(nextDay.getDate() + 1);
+
+          const existingJournal = await tx.entry.findFirst({
+            where: {
+              userId,
+              type: "journal",
+              deletedAt: null,
+              createdAt: {
+                gte: targetDate,
+                lt: nextDay,
+              },
+            },
+            include: {
+              tags: {
+                select: { id: true, name: true },
+              },
+              people: {
+                select: { id: true, name: true },
+              },
+              attachments: {
+                select: {
+                  id: true,
+                  fileUrl: true,
+                  fileType: true,
+                  thumbnailUrl: true,
+                },
+              },
+            },
+          });
+
+          if (existingJournal) {
+            return existingJournal as EntryWithRelations;
+          }
+        }
+
         // 1. Extract tags and people names/ids first
         let tags: { id: string; name: string }[] = [];
         let people: { id: string; name: string }[] = [];
@@ -299,13 +299,28 @@ export class EntryService {
       if (dateTo) where.createdAt.lte = dateTo;
     }
 
+    if (filters.metadata) {
+      const metaFilters = filters.metadata;
+      const conditions: Prisma.EntryWhereInput[] = [];
+      for (const [key, value] of Object.entries(metaFilters)) {
+        if (value !== undefined) {
+          conditions.push({
+            metadata: { path: [key], equals: value as Prisma.InputJsonValue },
+          });
+        }
+      }
+      if (conditions.length > 0) {
+        where.AND = [...(Array.isArray(where.AND) ? where.AND : []), ...conditions];
+      }
+    }
+
     // Query with cursor pagination
     const entries = await db.entry.findMany({
       where,
       take: limit + 1, // Take one extra to determine if there are more
       ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
       orderBy: { createdAt: "desc" },
-      include: {
+      include: filters.includeRelations !== false ? {
         tags: {
           select: { id: true, name: true },
         },
@@ -320,7 +335,7 @@ export class EntryService {
             thumbnailUrl: true,
           },
         },
-      },
+      } : undefined,
     });
 
     let nextCursor: string | undefined = undefined;
@@ -383,10 +398,12 @@ export class EntryService {
             set: people.map((p) => ({ id: p.id })),
           };
 
-          // 3. Metadata Merge
+          // 3. Metadata Merge (with validation)
           const existingMetadata =
             (existing.metadata as Record<string, unknown>) ?? {};
-          const inputMetadata = input.metadata ?? {};
+          const inputMetadata = input.metadata
+            ? validateMetadata(existing.type, input.metadata)
+            : {};
 
           data.metadata = {
             ...existingMetadata,
@@ -394,12 +411,16 @@ export class EntryService {
             tags: tags.map((t) => t.name),
           } as Prisma.InputJsonValue;
         } else if (input.metadata !== undefined) {
-          // If content didn't change but metadata did
+          // If content didn't change but metadata did (with validation)
+          const validatedMeta = validateMetadata(
+            existing.type,
+            input.metadata,
+          );
           const existingMetadata =
             (existing.metadata as Record<string, unknown>) ?? {};
           data.metadata = {
             ...existingMetadata,
-            ...input.metadata,
+            ...validatedMeta,
           } as Prisma.InputJsonValue;
         }
 
@@ -453,6 +474,15 @@ export class EntryService {
       });
     }
 
+    // Disconnect tags and people before soft delete
+    await db.entry.update({
+      where: { id: entryId },
+      data: {
+        tags: { set: [] },
+        people: { set: [] },
+      },
+    });
+
     // Soft delete
     await db.entry.update({
       where: { id: entryId },
@@ -462,6 +492,67 @@ export class EntryService {
     });
 
     return { success: true };
+  }
+
+  /**
+   * Get aggregated insights stats (server-side)
+   */
+  async getInsightsStats(
+    db: PrismaClient,
+    userId: string,
+  ) {
+    const [entries, totalCount] = await Promise.all([
+      db.entry.findMany({
+        where: { userId, deletedAt: null },
+        select: {
+          id: true,
+          type: true,
+          title: true,
+          content: true,
+          isStarred: true,
+          metadata: true,
+          createdAt: true,
+          tags: { select: { id: true, name: true } },
+          people: { select: { id: true, name: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 500,
+      }),
+      db.entry.count({ where: { userId, deletedAt: null } }),
+    ]);
+
+    return { entries, totalCount };
+  }
+
+  /**
+   * Get a random old entry for memory lane (older than 7 days)
+   */
+  async getRandomOldEntry(
+    db: PrismaClient,
+    userId: string,
+  ): Promise<EntryWithRelations | null> {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const count = await db.entry.count({
+      where: { userId, deletedAt: null, createdAt: { lt: sevenDaysAgo } },
+    });
+
+    if (count === 0) return null;
+
+    const skip = Math.floor(Math.random() * count);
+    const entries = await db.entry.findMany({
+      where: { userId, deletedAt: null, createdAt: { lt: sevenDaysAgo } },
+      include: {
+        tags: { select: { id: true, name: true } },
+        people: { select: { id: true, name: true } },
+        attachments: { select: { id: true, fileUrl: true, fileType: true, thumbnailUrl: true } },
+      },
+      skip,
+      take: 1,
+    });
+
+    return (entries[0] as EntryWithRelations) ?? null;
   }
 
   /**

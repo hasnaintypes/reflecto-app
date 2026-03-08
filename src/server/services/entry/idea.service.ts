@@ -20,6 +20,7 @@ export class IdeaService {
     nextCursor?: string;
   }> {
     return entryService.list(db, userId, {
+      type: "idea",
       limit: filters.limit ?? 20,
       cursor: filters.cursor,
       metadata: {

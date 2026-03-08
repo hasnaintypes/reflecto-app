@@ -19,6 +19,7 @@ export class DreamService {
     nextCursor?: string;
   }> {
     return entryService.list(db, userId, {
+      type: "dream",
       limit: filters.limit ?? 20,
       cursor: filters.cursor,
       metadata: {},
