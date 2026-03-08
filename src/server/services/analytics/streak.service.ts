@@ -38,7 +38,7 @@ export class StreakService {
    */
   async updateStreak(db: DbClient, userId: string) {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
@@ -62,8 +62,8 @@ export class StreakService {
       });
     }
 
-    const lastDate = activeStreak.endDate ?? activeStreak.startDate;
-    lastDate.setHours(0, 0, 0, 0);
+    const lastDate = new Date(activeStreak.endDate ?? activeStreak.startDate);
+    lastDate.setUTCHours(0, 0, 0, 0);
 
     if (lastDate.getTime() === today.getTime()) {
       // Already posted today, no change

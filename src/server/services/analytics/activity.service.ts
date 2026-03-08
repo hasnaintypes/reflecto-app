@@ -8,40 +8,40 @@ export class ActivityService {
    */
   async logActivity(db: DbClient, userId: string, entryType: EntryType) {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
-    // Get current activity log for today
-    const current = await db.activityLog.findUnique({
-      where: {
-        userId_date: {
-          userId,
-          date: today,
-        },
-      },
-    });
-
-    if (current) {
-      // Update existing log
-      const entryTypes = (current.entryTypes as Record<string, number>) ?? {};
-      entryTypes[entryType] = (entryTypes[entryType] ?? 0) + 1;
-
-      return db.activityLog.update({
-        where: { id: current.id },
-        data: {
-          entryCount: { increment: 1 },
-          entryTypes,
-        },
+    try {
+      // Try to update existing log first
+      const current = await db.activityLog.findUnique({
+        where: { userId_date: { userId, date: today } },
       });
-    } else {
-      // Create new log for today
-      return db.activityLog.create({
-        data: {
-          userId,
-          date: today,
-          entryCount: 1,
-          entryTypes: { [entryType]: 1 },
-        },
+
+      if (current) {
+        const entryTypes = (current.entryTypes as Record<string, number>) ?? {};
+        entryTypes[entryType] = (entryTypes[entryType] ?? 0) + 1;
+        return db.activityLog.update({
+          where: { id: current.id },
+          data: { entryCount: { increment: 1 }, entryTypes },
+        });
+      } else {
+        return db.activityLog.create({
+          data: { userId, date: today, entryCount: 1, entryTypes: { [entryType]: 1 } },
+        });
+      }
+    } catch {
+      // On unique constraint violation, retry as update
+      const existing = await db.activityLog.findUnique({
+        where: { userId_date: { userId, date: today } },
       });
+      if (existing) {
+        const entryTypes = (existing.entryTypes as Record<string, number>) ?? {};
+        entryTypes[entryType] = (entryTypes[entryType] ?? 0) + 1;
+        return db.activityLog.update({
+          where: { id: existing.id },
+          data: { entryCount: { increment: 1 }, entryTypes },
+        });
+      }
+      throw new Error("Failed to log activity");
     }
   }
 
