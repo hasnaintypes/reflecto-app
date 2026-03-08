@@ -21,7 +21,6 @@ import type { JournalEditorProps } from "./types";
 import type { EntryMetadata } from "@/types/metadata.types";
 
 import "tippy.js/dist/tippy.css";
-import { Loader2 } from "lucide-react";
 
 export default function JournalEditor({
   id: propId,
@@ -194,7 +193,17 @@ export default function JournalEditor({
     immediatelyRender: false,
   });
 
-  const isEntryLoading = false;
+  // Warn user about unsaved changes on tab close
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (lastSavedContent.current !== editor?.getHTML()) {
+        handleAutoSave.flush();
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [editor, handleAutoSave]);
 
   useEffect(() => {
     if (!editor || editor.isDestroyed || !currentEntry) return;
@@ -240,14 +249,6 @@ export default function JournalEditor({
     }
     return () => setEditor(null);
   }, [editor, setEditor]);
-
-  if (isEntryLoading) {
-    return (
-      <div className="flex h-full items-center justify-center py-20">
-        <Loader2 className="text-muted-foreground/40 animate-spin" size={32} />
-      </div>
-    );
-  }
 
   return (
     <div className="animate-in fade-in flex h-full flex-col duration-1000">

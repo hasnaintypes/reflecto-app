@@ -9,6 +9,15 @@ import type {
   MentionNodeAttributes,
 } from "../../core/types";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export const PeopleMention = Mention.extend({
   name: "mention-person",
   inline: true,
@@ -58,11 +67,11 @@ export const PeopleMention = Mention.extend({
         "data-id": (node.attrs as MentionNodeAttributes).id,
         "data-label": (node.attrs as MentionNodeAttributes).label,
       },
-      `@${(node.attrs as MentionNodeAttributes).label}`,
+      `@${escapeHtml(String((node.attrs as MentionNodeAttributes).label ?? ""))}`,
     ];
   },
   renderText({ node }) {
-    return `@${(node.attrs as MentionNodeAttributes).label}`;
+    return `@${escapeHtml(String((node.attrs as MentionNodeAttributes).label ?? ""))}`;
   },
 }).configure({
   HTMLAttributes: {

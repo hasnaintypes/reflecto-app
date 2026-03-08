@@ -4,6 +4,7 @@ import React from "react";
 import { Star, ChevronDown } from "lucide-react";
 import { useEntryStore } from "@/stores/use-entry-store";
 import { api } from "@/trpc/react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -53,10 +54,10 @@ export function MetadataEditor() {
     updateEntry(currentEntry.id, { metadata: updatedMetadata });
 
     if (currentEntry.id) {
-      updateMutation.mutate({
-        id: currentEntry.id,
-        metadata: updatedMetadata,
-      });
+      updateMutation.mutate(
+        { id: currentEntry.id, metadata: updatedMetadata },
+        { onError: () => toast.error("Failed to update mood") },
+      );
     }
   };
 
@@ -66,10 +67,10 @@ export function MetadataEditor() {
     updateEntry(currentEntry.id, { metadata: updatedMetadata });
 
     if (currentEntry.id) {
-      updateMutation.mutate({
-        id: currentEntry.id,
-        metadata: updatedMetadata,
-      });
+      updateMutation.mutate(
+        { id: currentEntry.id, metadata: updatedMetadata },
+        { onError: () => toast.error("Failed to update category") },
+      );
     }
   };
 
