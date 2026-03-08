@@ -2,161 +2,119 @@ import { Steps, Callout, Tabs } from 'nextra/components'
 
 # Installation & Setup
 
-Get your Reflecto account set up and ready to use. This guide covers account creation, email verification, and initial configuration.
+Reflecto is a web application -- no installation required. Open your browser, create an account, and start writing.
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+- A modern browser (Chrome, Firefox, Safari, or Edge)
+- A valid email address
+- Optionally, a Google or GitHub account for OAuth sign-in
 
-- A modern web browser (Chrome, Firefox, Safari, or Edge)
-- A valid email address for account creation
-- Optionally: A Google or GitHub account for OAuth sign-in
+## Create Your Account
 
-<Callout type="info">
-Reflecto is a web application — no installation required! Simply access it through your browser.
-</Callout>
-
-## Creating Your Account
-
-<Steps>
-### Navigate to Reflecto
-
-Open your browser and go to the Reflecto homepage. You'll see the landing page with a **Sign Up** button in the header.
-
-### Choose Your Sign-Up Method
-
-Reflecto offers multiple ways to create an account:
-
-<Tabs items={['Email & Password', 'OAuth (Google/GitHub)']}>
+<Tabs items={['Email & Password', 'Google / GitHub OAuth']}>
   <Tabs.Tab>
-    **Email & Password Sign-Up**
-    
-    1. Click **Sign Up** in the header
-    2. Fill in the registration form:
-       - **Email address** — Your primary email
-       - **Password** — Choose a strong password (minimum 8 characters)
-       - **Confirm password** — Re-enter your password
-    3. Click **Create Account**
-    4. Check your email for a verification link
-    
+    <Steps>
+    ### Visit the sign-up page
+
+    Open Reflecto in your browser and click **Sign Up** in the header.
+
+    ### Fill in the registration form
+
+    Enter your details:
+    - **Name** -- at least 2 characters
+    - **Email** -- your primary email address
+    - **Password** -- must meet the requirements below
+
+    | Requirement | Rule |
+    |---|---|
+    | Minimum length | 8 characters |
+    | Uppercase | At least one uppercase letter |
+    | Lowercase | At least one lowercase letter |
+    | Number | At least one digit |
+
+    ### Click Create Account
+
+    If validation passes, you will see a confirmation message.
+
+    ### Verify your email
+
+    Check your inbox for an email from Reflecto with the subject "Verify your email". Click the **Verify Email** button in that email. The verification link expires in 24 hours.
+
     <Callout type="warning">
-    Passwords are securely hashed using bcrypt. Make sure to use a unique, strong password.
+    Can't find the email? Check your spam folder. If it's still missing, return to the sign-in page and request a new verification link.
     </Callout>
+
+    ### Sign in
+
+    After verification, return to the sign-in page, enter your email and password, and you're in.
+    </Steps>
   </Tabs.Tab>
   <Tabs.Tab>
-    **OAuth Sign-Up**
-    
-    1. Click **Sign Up** in the header
-    2. Choose your preferred provider:
-       - **Continue with Google** — Use your Google account
-       - **Continue with GitHub** — Use your GitHub account
-    3. Authorize Reflecto to access your basic profile information
-    4. You'll be automatically signed in — no email verification needed
-    
+    <Steps>
+    ### Visit the sign-up page
+
+    Open Reflecto and click **Sign Up** in the header.
+
+    ### Choose your provider
+
+    Click **Continue with Google** or **Continue with GitHub**.
+
+    ### Authorize access
+
+    Your provider will ask you to grant Reflecto access to your basic profile (name and email). No password is stored by Reflecto.
+
+    ### You're in
+
+    OAuth accounts are verified automatically. You will be signed in and redirected to the Write page immediately.
+    </Steps>
+
     <Callout type="info">
-    OAuth is powered by NextAuth and only accesses your email and basic profile. No password is stored.
+    OAuth accounts skip email verification entirely. Only your name and email are read from the provider.
     </Callout>
   </Tabs.Tab>
 </Tabs>
 
-### Verify Your Email (Email Sign-Up Only)
+## What You See After First Login
 
-If you signed up with email and password:
+After signing in you land on the **Write** page -- your primary workspace. The page shows today's date, the editor area, and entry type controls. You can start writing immediately.
 
-1. Check your inbox for an email from Reflecto
-2. Open the email and click the **Verify Email** button
-3. You'll be redirected to the sign-in page
-4. Enter your credentials and sign in
+The sidebar on the left gives you access to every section of the app: Write, Journal, Reflect, Insights, and all entry type workspaces.
 
-<Callout type="warning">
-Can't find the verification email? Check your spam folder. If it's still missing, request a new verification link from the sign-in page.
-</Callout>
+## Recommended Initial Settings
 
-### Complete Your Profile
+Click your profile avatar at the bottom-left of the sidebar, then select **Settings** to configure:
 
-After signing in for the first time, you'll be prompted to complete your profile:
-
-1. **Display Name** (optional) — How you'd like to be addressed in the app
-2. **Profile Image** (optional) — Upload an avatar or use your OAuth provider's image
-
-These can be updated later in Settings.
-
-### You're In!
-
-🎉 Your account is now active! You'll be redirected to the **Write** page, ready to create your first entry.
-</Steps>
-
-## Initial Configuration
-
-After signing in, take a moment to configure your preferences:
-
-### Access Settings
-
-Click your profile avatar in the bottom-left corner of the sidebar, then select **Settings**.
-
-### Recommended Settings to Review
-
-| Setting | Location | Purpose |
-|---------|----------|---------|
-| **Appearance** | Settings → Appearance | Adjust theme, font size, and editor mode preference |
-| **Special Dates** | Settings → Preferences | Toggle holiday badges and sparkle indicators |
-| **Auto-Hide Navigation** | Settings → Preferences | Set sidebar behavior for distraction-free writing |
-| **Default Entry Type** | Settings → Preferences | Choose what type loads on the Write page |
-| **Bulleted Mode** | Settings → Preferences | Enable bullet-point style entries by default |
+| Setting | Location | What it does |
+|---|---|---|
+| **Appearance** | Settings | Theme, font size, and editor mode |
+| **Default Entry Type** | Settings > Preferences | Choose what type opens on the Write page |
+| **Bulleted Mode** | Settings > Preferences | Start entries as bullet lists by default |
+| **Auto-Hide Navigation** | Settings > Preferences | Collapse sidebar automatically for focused writing |
+| **Special Dates** | Settings > Preferences | Show sparkle indicators on holidays |
 
 <Callout type="info">
-All settings are stored per-user and sync across devices if you sign in from multiple locations.
+All preferences are stored per-user and apply across devices when you sign in.
 </Callout>
 
-## Security & Privacy
+## Security Overview
 
-Reflecto takes your privacy seriously:
-
-- ✅ **Secure Authentication** — Email/password with bcrypt hashing, or OAuth via NextAuth
-- ✅ **Session Management** — Secure session tokens with automatic expiration
-- ✅ **Data Encryption** — All data transmitted over HTTPS
-- ✅ **Private by Default** — Only you can see your entries
-- ✅ **No Third-Party Tracking** — Your data stays with Reflecto
-
-### Managing Your Account
-
-- **Change Password** — Settings → Security (email accounts only)
-- **Sign Out** — Click your profile avatar → Sign Out
-- **Delete Account** — Contact support (feature coming soon)
+- Passwords are hashed with bcrypt before storage
+- Sessions use secure tokens with automatic expiration
+- All traffic is encrypted over HTTPS
+- OAuth is handled by NextAuth with no password stored
+- Your entries are private -- only you can access them
 
 ## Troubleshooting
 
-### Can't sign in?
+**Can't sign in?** Make sure your email is verified (password accounts). Try resetting your password via the "Forgot Password" link.
 
-- **Check your credentials** — Ensure email and password are correct
-- **Verify your email** — Email accounts must be verified before first sign-in
-- **Clear browser cache** — Try signing in from an incognito/private window
-- **Reset password** — Click "Forgot Password" on the sign-in page
+**OAuth failed?** Confirm you granted Reflecto access to your email. If you previously signed up with email, use that method instead.
 
-### OAuth Issues
+**Page won't load?** Clear your browser cache, disable extensions, or try an incognito window.
 
-- **Authorization failed** — Check that you granted Reflecto access to your email
-- **Account already exists** — If you previously signed up with email, use that method instead
-- **Redirect error** — Ensure JavaScript and cookies are enabled in your browser
-
-### Still Having Issues?
-
-Reflecto is in alpha and we're actively fixing bugs. If you encounter persistent issues:
-
-- Check the browser console for error messages
-- Try a different browser
-- Clear your browser's cache and cookies
-
-## What's Next?
-
-Now that your account is set up, you're ready to start writing!
+## Next Step
 
 <Callout type="success">
-Continue to [Your First Entry →](/docs/getting-started/first-entry) to learn how to use the editor and create your first reflection.
+Your account is ready. Continue to [Your First Entry](/docs/getting-started/first-entry) to learn the editor.
 </Callout>
-
-Or explore other features:
-
-- [Navigation Guide](/docs/getting-started/navigation) — Learn to navigate the app
-- [Rich Editor](/docs/editor) — Master the writing experience
-- [Settings](/docs/settings) — Customize your Reflecto experience

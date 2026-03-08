@@ -2,306 +2,120 @@ import { Steps, Callout, Tabs } from 'nextra/components'
 
 # Your First Entry
 
-Learn how to create your first reflection in Reflecto. This guide covers the Write page, editor basics, and entry types.
+This page walks you through creating your first reflection in Reflecto, explains the Write page interface, and introduces the six entry types.
 
 ## The Write Page
 
-After signing in, you'll land on the **Write** page — your primary workspace for capturing thoughts and reflections.
+After signing in you land on the Write page. Here is what you will see:
 
-<Callout type="info">
-The Write page is designed to be distraction-free. The editor takes center stage with minimal UI elements.
-</Callout>
+- **Date header** -- today's date in a large serif display, with a day-of-week label
+- **Save indicator** -- a cloud icon that shows "Saving..." or a checkmark when saved
+- **Star button** -- marks the entry as important for easy filtering later
+- **Type selector** -- dropdown to switch between Journal, Dreams, Highlights, Ideas, Wisdom, and Notes
+- **Metadata controls** -- category, mood, or type-specific fields depending on the entry type
+- **Editor area** -- the main writing space, powered by TipTap
 
-### Interface Overview
-
-Here's what you'll see on the Write page:
-
-```
-┌─────────────────────────────────────────────┐
-│  Fri, Mar 7              ☁️ Saved    ⭐     │
-│  ──────────────────────────────────────────  │
-│  Friday                                      │
-│                                              │
-│  [ Journal ▼ ]  [ Category ▼ ]  [ Mood ]   │
-│                                              │
-│  ┌──────────────────────────────────────┐   │
-│  │  Start writing...                    │   │
-│  │                                       │   │
-│  │  The editor supports markdown,       │   │
-│  │  **bold**, *italic*, lists, and more │   │
-│  │                                       │   │
-│  └──────────────────────────────────────┘   │
-│                                              │
-│  Tagged: #work @Alice                       │
-└─────────────────────────────────────────────┘
-```
-
-### Header Elements
-
-| Element | Description |
-|---------|-------------|
-| **Date Display** | Current date in small mono font, day in large serif italic |
-| **Special Date Badge** | Pulsing ✨ sparkle on holidays (if enabled in settings) |
-| **Cloud Sync** | Green checkmark when your entry is saved |
-| **Star Icon** | Click to mark this entry as important |
-| **Bullet Count** | Shows `#42` when bulleted mode is active |
-
-## Creating Your First Entry
+## Create Your First Entry
 
 <Steps>
-### Start Writing
+### Click in the editor and start typing
 
-Click in the editor area and start typing. The editor automatically focuses when you load the page.
+The editor auto-focuses when the page loads. Type anything -- a few sentences about your day, a quick thought, a goal.
 
-```markdown
-Today I started using Reflecto. I'm excited to build a journaling habit!
+### Choose an entry type (optional)
 
-This editor supports **bold**, *italic*, and even lists:
-- Privacy-first design
-- Beautiful interface
-- Connected thinking
-```
+By default you are writing a **Journal** entry. Use the type dropdown above the editor to switch. Each type has its own metadata fields.
 
-The editor will render your formatting in real-time.
+### Add tags and people (optional)
 
-### Choose an Entry Type
+Type `#` to create a tag (e.g. `#work`, `#gratitude`) or `@` to mention a person (e.g. `@Alice`). A suggestion dropdown appears as you type, showing existing tags or people. Select one or keep typing to create a new one.
 
-By default, you're writing a **Journal** entry. But Reflecto supports six entry types:
+### Let auto-save do its job
+
+Reflecto saves automatically 3 seconds after you stop typing. Watch the cloud icon in the header change from "Saving..." to a checkmark.
+</Steps>
+
+<Callout type="info">
+There is no save button. Your entry is continuously backed up as you write. You can also press `Ctrl/Cmd + S` to force an immediate save.
+</Callout>
+
+## Entry Types at a Glance
 
 <Tabs items={['Journal', 'Dreams', 'Highlights', 'Ideas', 'Wisdom', 'Notes']}>
   <Tabs.Tab>
-    **Journal** — Daily reflections, logs, and thoughts
-    
-    Perfect for:
-    - Daily logs and diaries
-    - Mood tracking with 1-5 scale
-    - Categorized entries (Thoughts, Gratitude, Reflections, etc.)
+    **Journal** -- daily reflections and logs.
+
+    Metadata: **Category** (Thoughts, Gratitude, Reflections, Daily Log, Venting, and more) and **Mood** (1-5 scale).
+
+    Default entry type. Supports bulleted mode for quick list-style entries.
   </Tabs.Tab>
   <Tabs.Tab>
-    **Dreams** — Future aspirations and visions
-    
-    Perfect for:
-    - Long-term goals
-    - Bucket list items
-    - Life visions and ambitions
+    **Dreams** -- future aspirations and long-term visions.
+
+    Minimal metadata. The focus is entirely on the content of your aspirations.
   </Tabs.Tab>
   <Tabs.Tab>
-    **Highlights** - Meaningful moments worth remembering
-    
-    Perfect for:
-    - Special memories
-    - Important milestones
-    - Moments of joy
-    - Importance levels (Low, Medium, High)
+    **Highlights** -- meaningful moments worth remembering.
+
+    Metadata: **Importance** level (Low, Medium, High). Great for milestones and special memories.
   </Tabs.Tab>
   <Tabs.Tab>
-    **Ideas** — Creative thoughts and concepts
-    
-    Perfect for:
-    - Brainstorming
-    - Project ideas
-    - Creative inspirations
-    - Status tracking (Seed → Draft → Refined → Implemented)
+    **Ideas** -- creative concepts with status tracking.
+
+    Metadata: **Status** progression (Seed, Draft, Refined, Implemented). Track ideas from spark to completion.
   </Tabs.Tab>
   <Tabs.Tab>
-    **Wisdom** — Collected knowledge and insights
-    
-    Perfect for:
-    - Quotes from books or people
-    - Life lessons
-    - Facts and excerpts
-    - Thoughts worth preserving
-    - Wisdom types (Quote, Thought, Fact, Excerpt, Lesson)
+    **Wisdom** -- collected knowledge and insights.
+
+    Metadata: **Wisdom Type** (Quote, Thought, Fact, Excerpt, Lesson), **Author**, and **Source**.
   </Tabs.Tab>
   <Tabs.Tab>
-    **Notes** — Quick captures and reminders
-    
-    Perfect for:
-    - Quick thoughts
-    - Reminders
-    - Lists and checklists
-    - Color coding (multiple colors available)
-    - Pinning important notes
+    **Notes** -- quick captures and reminders.
+
+    Metadata: **Color** (Gray, Blue, Green, Yellow, Red, Purple, Pink) and **Pin** toggle to keep important notes at the top.
   </Tabs.Tab>
 </Tabs>
 
-To change the entry type, use the dropdown at the top of the editor.
+## Toolbar Quick Reference
 
-### Add Tags and People
-
-As you write, you can reference tags and people using special syntax:
-
-- **Tags** — Type `#` followed by the tag name (e.g., `#work`, `#fitness`, `#learning`)
-- **People** — Type `@` followed by the person's name (e.g., `@Alice`, `@Bob`)
-
-```markdown
-Had a great meeting with @Sarah about the #project. 
-Feeling grateful for #teamwork.
-```
-
-<Callout type="info">
-Tags and people are automatically extracted from your entries and can be managed from the Tags and People pages in the sidebar.
-</Callout>
-
-### Set Metadata (Optional)
-
-Depending on the entry type, you can set additional metadata:
-
-**For Journal entries:**
-- **Category** — Thoughts, Gratitude, Reflections, Daily Log, etc.
-- **Mood** — Rate your mood from 1-5
-
-**For other entry types:**
-- **Importance** (Highlights) — Low, Medium, High
-- **Status** (Ideas) — Seed, Draft, Refined, Implemented
-- **Wisdom Type** (Wisdom) — Quote, Thought, Fact, Excerpt, Lesson
-- **Color** (Notes) — Choose from multiple colors
-- **Pin** (Notes) — Pin important notes to the top
-
-### Auto-Save
-
-Reflecto automatically saves your entry as you type. Look for the cloud sync indicator in the header:
-
-- **Saving...** — Entry is being synced
-- **✓ Saved** — Entry is safely stored
-
-<Callout type="success">
-No need to click a save button! Your work is continuously backed up.
-</Callout>
-
-### Star Important Entries
-
-Click the star icon (⭐) in the header to mark this entry as important. Starred entries can be filtered across all views.
-
-</Steps>
-
-## Editor Basics
-
-The Reflecto editor is powered by TipTap and supports rich text formatting:
-
-### Keyboard Shortcuts
+When you select text, a floating toolbar appears. You can also use these keyboard shortcuts:
 
 | Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + B` | **Bold** text |
-| `Ctrl/Cmd + I` | *Italic* text |
-| `Ctrl/Cmd + U` | <u>Underline</u> text |
+|---|---|
+| `Ctrl/Cmd + B` | **Bold** |
+| `Ctrl/Cmd + I` | *Italic* |
+| `Ctrl/Cmd + U` | Underline |
 | `Ctrl/Cmd + K` | Insert link |
-| `Ctrl/Cmd + Z` | Undo |
-| `Ctrl/Cmd + Y` | Redo |
 | `Ctrl/Cmd + Shift + 8` | Bullet list |
 | `Ctrl/Cmd + Shift + 7` | Numbered list |
+| `Ctrl/Cmd + Z` | Undo |
+| `Ctrl/Cmd + Y` | Redo |
 
-### Markdown Support
+The editor also supports markdown shortcuts -- type `# ` for a heading, `- ` for a bullet, `**text**` for bold, and `> ` for a blockquote. Shortcuts trigger when you press Space or Enter after the pattern.
 
-You can also use markdown syntax:
+## Bulleted Mode
 
-```markdown
-# Heading 1
-## Heading 2
-### Heading 3
-
-**bold** or __bold__
-*italic* or _italic_
-
-- Bullet list item
-- Another item
-
-1. Numbered list
-2. Next item
-
-[Link text](https://example.com)
-
-> Blockquote
-```
-
-### Image Uploads
-
-To add images to your entry:
-
-1. Click the image icon in the toolbar (or drag & drop)
-2. Select an image file from your device
-3. The image will be uploaded to ImageKit CDN
-4. It appears inline in your entry
-
-<Callout type="warning">
-Image uploads require an active internet connection. The first upload may take a few seconds.
-</Callout>
-
-### Bulleted Mode
-
-For quick, list-style entries, enable **Bulleted Mode**:
-
-1. Click the bullet icon in the header
-2. Each paragraph becomes a bullet point
-3. A bullet count (`#42`) appears in the header
-
-This is perfect for daily logs and quick captures.
+Click the bullet icon in the header to enable **Bulleted Mode**. Every new line becomes a bullet point and a count (e.g. `#12`) appears in the header. This is ideal for daily logs and gratitude lists.
 
 ## Viewing Your Entry
 
-After creating your entry, you can view it in different ways:
+Once saved, your entry appears in several places:
 
-### From the Journal Page
+- **Journal** -- navigate by calendar to today's date
+- **Reflect** -- see it in the timeline of recent entries
+- **Workspace pages** -- if you wrote a Dream, check the Dreams page; Highlights appear on the Highlights page, and so on
 
-1. Click **Journal** in the sidebar
-2. Navigate to today's date
-3. Your entry appears in the list
+Click any entry from these pages to reopen it in the editor.
 
-### From the Reflect Page
+## Tips
 
-1. Click **Reflect** in the sidebar
-2. See your entry in the timeline view
+- **Write every day**, even a single bullet. Consistency builds streaks and gives Insights meaningful data.
+- **Use tags liberally.** Tags connect entries across dates and types. Recurring themes become visible over time.
+- **Star entries that matter.** Starred entries are easy to filter and revisit later.
+- **Try different types.** A quick Note today, a Dream tomorrow, a Highlight on the weekend -- variety keeps reflection fresh.
 
-### From Entry Type Pages
-
-1. Navigate to the entry type page (e.g., Dreams, Highlights)
-2. Your entry appears in the corresponding workspace
-
-## Editing Existing Entries
-
-To edit an entry you've already created:
-
-1. Navigate to the entry from Journal, Reflect, or a workspace page
-2. Click the entry to open it
-3. Make your changes in the editor
-4. Changes are auto-saved
-
-<Callout type="info">
-When editing an existing entry, you'll see a **Linked Context** section below the editor showing related entries from the same date.
-</Callout>
-
-## Tips for Better Entries
-
-### Be Consistent
-Try to write every day, even if it's just a few sentences. Consistency builds the habit and helps Reflecto track your streaks and patterns.
-
-### Use Tags Liberally
-Tags help you connect thoughts across entries. Use them for topics, projects, emotions, or anything you want to track over time.
-
-### Mention People
-@mentions let you track relationships and interactions. You can see all entries mentioning a person from the People page.
-
-### Experiment with Entry Types
-Don't limit yourself to Journal entries. Try Dreams for goals, Highlights for special moments, and Ideas for creative thinking.
-
-### Star What Matters
-Use the star feature to mark entries you want to revisit. Starred entries are easy to filter and find later.
-
-### Review the Insights
-Periodically check the Insights page to see your writing patterns, streaks, and trends.
-
-## What's Next?
-
-Now that you've created your first entry, learn how to navigate the rest of Reflecto!
+## Next Step
 
 <Callout type="success">
-Continue to [Navigation Guide →](/docs/getting-started/navigation) to explore the full app interface.
+Continue to the [Navigation Guide](/docs/getting-started/navigation) to learn how to move through the full app.
 </Callout>
-
-Or dive deeper into specific features:
-
-- [Rich Editor](/docs/editor) — Advanced editor features and formatting
-- [Journal System](/docs/journal) — Calendar, categories, and mood tracking
-- [Tags & People](/docs/tags) — Organize and connect your thoughts
-- [Insights](/docs/insights) — View your reflection analytics

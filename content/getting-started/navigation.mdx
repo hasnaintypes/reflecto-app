@@ -2,381 +2,152 @@ import { Callout, Tabs } from 'nextra/components'
 
 # Navigation Guide
 
-Learn how to navigate Reflecto's interface and access all features efficiently. This guide covers the sidebar, page structure, and navigation patterns.
+Reflecto uses a sidebar-based layout. The sidebar on the left controls navigation; the main content area on the right displays the current page.
 
-## Interface Layout
+## Sidebar Structure
 
-Reflecto uses a sidebar-based navigation system with a clean, minimal design:
-
-```
-┌────────────┬──────────────────────────────┐
-│            │                              │
-│  Sidebar   │    Main Content Area         │
-│            │                              │
-│  - Write   │    [Current page content]    │
-│  - Journal │                              │
-│  - Reflect │                              │
-│  - Insights│                              │
-│            │                              │
-│  Dreams    │                              │
-│  Highlights│                              │
-│  Tags      │                              │
-│  People    │                              │
-│  Notes     │                              │
-│  Wisdom    │                              │
-│  Ideas     │                              │
-│            │                              │
-│  [Profile] │                              │
-└────────────┴──────────────────────────────┘
-```
-
-## The Sidebar
-
-The sidebar is your primary navigation hub, divided into three sections:
+The sidebar is divided into two sections separated by a divider.
 
 ### Primary Navigation
 
-These are your main pages for writing and reviewing:
+| Icon | Page | Purpose |
+|---|---|---|
+| Feather | **Write** | Create or edit entries. Your main workspace. |
+| Book | **Journal** | Browse entries by date using a calendar view. |
+| Rotate | **Reflect** | Timeline of recent entries across all types. |
+| Chart | **Insights** | Activity heatmap, writing streaks, mood trends, and stats. |
 
-| Page | Purpose | Keyboard Shortcut |
-|------|---------|-------------------|
-| **Write** | Create or edit entries | `Ctrl/Cmd + W` |
-| **Journal** | Browse entries by calendar | `Ctrl/Cmd + J` |
-| **Reflect** | Timeline view of recent activity | `Ctrl/Cmd + R` |
-| **Insights** | Analytics, charts, and statistics | `Ctrl/Cmd + I` |
+### Categories
 
-<Callout type="info">
-The primary navigation pages are always visible at the top of the sidebar.
-</Callout>
+| Icon | Page | Purpose |
+|---|---|---|
+| Moon | **Dreams** | View and create dream/aspiration entries. |
+| Heart | **Highlights** | View and create highlight entries with importance levels. |
+| Hash | **Tags** | Browse all tags, see entry counts, manage tag groups. |
+| At | **People** | Browse all @mentioned people, see mention counts, manage groups. |
+| Pin | **Notes** | View and create quick notes with colors and pinning. |
+| Gem | **Wisdom** | View and create wisdom entries (quotes, thoughts, lessons). |
+| Lightbulb | **Ideas** | View and create idea entries with status tracking. |
 
-### Entry Type Workspaces
+### Profile
 
-These pages show entries filtered by type:
-
-| Workspace | Entry Type | Purpose |
-|-----------|------------|---------|
-| **Dreams** | Future aspirations | Long-term goals and visions |
-| **Highlights** | Meaningful moments | Special memories with importance levels |
-| **Tags** | Tag management | View and organize all tags |
-| **People** | People management | View and organize @mentioned people |
-| **Notes** | Quick captures | Fast notes with colors and pinning |
-| **Wisdom** | Collected knowledge | Quotes, thoughts, facts, lessons |
-| **Ideas** | Creative concepts | Ideas with status progression |
-
-### Profile Section
-
-At the bottom of the sidebar:
-
-- **Profile Avatar** — Click to access:
-  - Settings
-  - Profile
-  - Sign Out
-
-## Sidebar Behavior
-
-The sidebar adapts to your device and preferences:
-
-### Desktop
-
-- Sidebar is expanded by default
-- Click the collapse icon to hide it for distraction-free writing
-- Toggle **Auto-Hide Navigation** in Settings to automatically hide the sidebar on certain pages
-
-### Tablet & Mobile  
-
-- Sidebar auto-hides behind a hamburger menu (☰)
-- Tap the menu icon to open
-- Sidebar appears as an overlay
-- Tap outside to close
+Your profile avatar sits at the bottom of the sidebar. Click it to access **Settings**, **Profile**, and **Sign Out**.
 
 <Callout type="info">
-The sidebar state persists across page navigation, so if you collapse it, it stays collapsed until you expand it again.
+Dreams and Notes can be toggled off in Settings > Preferences. When disabled, they disappear from the sidebar.
 </Callout>
 
-## Page Navigation Patterns
+## Desktop vs Mobile
 
-Different pages have unique navigation elements:
+<Tabs items={['Desktop', 'Mobile & Tablet']}>
+  <Tabs.Tab>
+    **Desktop (1024px and above)**
 
-### Write Page
+    - Sidebar is expanded by default showing icons and labels
+    - Click the collapse button (chevron icon at bottom) to shrink it to icons only
+    - Enable **Auto-Hide Navigation** in Settings to make the sidebar fade away and reappear on hover
+    - Collapsed/expanded state persists as you navigate between pages
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Mobile and Tablet (below 1024px)**
 
-**URL Format:** `/write` or `/write?type=<type>&date=<date>`
+    - Sidebar auto-collapses to icon-only mode
+    - On smaller screens, tap the menu icon to open the sidebar as an overlay
+    - Tap outside or navigate to a page to close it
+    - The full content area is available without the sidebar taking space
+  </Tabs.Tab>
+</Tabs>
 
-**Query Parameters:**
-- `type` — Entry type (journal, dream, highlight, idea, wisdom, note)
-- `date` — ISO date string for editing a specific date's entry
+## Page-by-Page Overview
 
-**Navigation:**
-- Select entry type from dropdown
-- Date automatically set to today (or from URL param)
-- Star button to mark as important
-- Sync indicator shows save status
+### Write
 
-### Journal Page
+**URL:** `/write` or `/write?type=dream&date=2026-03-08`
 
-**URL Format:** `/journal`
+The default landing page. Select an entry type from the dropdown, write in the editor, and auto-save handles the rest. Query parameters let you deep-link to a specific type or date.
 
-**Features:**
-- Calendar view or calendar strip toggle
-- Month navigation arrows
-- Date selector for viewing past entries
-- Entry list filtered by selected date
+### Journal
 
-**Navigation Flow:**
-1. Select a date from the calendar
-2. View all entries from that date
-3. Click an entry to edit it
-4. Use arrows to move between months
+**URL:** `/journal`
 
-### Reflect Page
+A calendar-based view of your entries. Use the month navigation arrows to browse past months. Click a date to see all entries from that day. Click an entry to open it in the editor.
 
-**URL Format:** `/reflect`
+### Reflect
 
-**Features:**
-- Timeline view of recent entries
-- Filter by entry type
-- Infinite scroll for older entries
-- Click any entry to open in Write page
+**URL:** `/reflect`
 
-**Navigation:**
-- Scroll down to load more entries
-- Use filter dropdowns to narrow by type
-- Click an entry card to edit
+A chronological timeline of recent entries. Scroll down to load more. Filter by entry type. Click any entry card to edit it.
 
-### Insights Page
+### Insights
 
-**URL Format:** `/insights`
+**URL:** `/insights`
 
-**Features:**
-- Activity heatmap (contribution graph)
-- Writing streak indicator
-- Statistics cards (total entries, tags, people)
-- Charts for entry types and categories
-
-**Navigation:**
-- Scroll through different insight sections
-- Click on heatmap cells to view entries from that day
-- Interactive charts filter data on click
+Your analytics dashboard. Includes an activity heatmap (contribution graph), current writing streak, total entry/tag/people counts, and charts breaking down entry types and categories. Click heatmap cells to view entries from that day.
 
 ### Workspace Pages
 
-**URL Format:** `/dreams`, `/highlights`, `/notes`, `/wisdom`, `/ideas`
+**URLs:** `/dreams`, `/highlights`, `/notes`, `/wisdom`, `/ideas`
 
-**Features:**
-- Entry list filtered by type
-- Type-specific metadata displayed
-- Create new entry button
-- Sort and filter options
+Each workspace lists entries of that type with type-specific metadata displayed (importance for highlights, status for ideas, color for notes, etc.). Create new entries or click existing ones to edit.
 
-**Navigation:**
-1. View all entries of this type
-2. Click an entry to edit
-3. Click "New {Type}" to create
-4. Use filters to narrow results
+### Tags
 
-### Tags Page
+**URL:** `/tags`
 
-**URL Format:** `/tags`
+All tags extracted from your entries, listed with entry counts. Tags can be organized into groups. Click a tag to view every entry that uses it.
 
-**Features:**
-- List of all tags extracted from entries
-- Grouped tags with entry counts
-- Click a tag to view all entries with that tag
+### People
 
-**Navigation:**
-- Browse tag list
-- Click a tag to filter entries
-- Manage tag groupings
+**URL:** `/people`
 
-### People Page
+All @mentioned people with mention counts. People can be organized into groups (Work, Family, Friends). Click a person to see every entry that mentions them.
 
-**URL Format:** `/people`
+## Calendar Navigation
 
-**Features:**
-- List of all @mentioned people
-- Entry counts per person
-- Click a person to view all entries mentioning them
+The Journal page features a monthly calendar view:
 
-**Navigation:**
-- Browse people list
-- Click a person to filter entries
-- Manage people details
+- **Month arrows** -- navigate forward and backward by month
+- **Date cells** -- dates with entries are visually marked; click to filter
+- **Calendar strip** -- a compact alternative showing the current week
+- **Today indicator** -- today's date is highlighted
 
-## Keyboard Navigation
+## Search and Filtering
 
-Reflecto supports keyboard shortcuts for faster navigation:
+Currently you can filter entries by:
 
-### Global Shortcuts
+- **Date** -- select from the Journal calendar
+- **Entry type** -- navigate to the corresponding workspace page
+- **Tags** -- click a tag on the Tags page
+- **People** -- click a person on the People page
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + W` | Go to Write page |
-| `Ctrl/Cmd + J` | Go to Journal page |
-| `Ctrl/Cmd + R` | Go to Reflect page |
-| `Ctrl/Cmd + I` | Go to Insights page |
-| `Ctrl/Cmd + K` | Open command palette (coming soon) |
-| `Ctrl/Cmd + /` | Toggle sidebar |
+Full-text search across all entries is planned for a future release.
 
-### Editor Shortcuts
+## URL Deep Linking
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + S` | Manually trigger save |
-| `Ctrl/Cmd + Enter` | Star current entry |
-| `Esc` | Blur editor / close dialogs |
-
-<Callout type="info">
-More keyboard shortcuts are planned for future releases, including a command palette for quick navigation.
-</Callout>
-
-## URL-Based Navigation
-
-Reflecto uses clean URLs for direct navigation:
-
-### Page URLs
+Bookmark specific views for quick access:
 
 ```
-/write                     → Write page (today's journal)
-/write?type=dream          → Write page (dream entry)
-/write?date=2026-03-07     → Write page (specific date)
-/journal                   → Journal calendar
-/reflect                   → Reflect timeline
-/insights                  → Insights dashboard
-/dreams                    → Dreams workspace
-/highlights                → Highlights workspace
-/tags                      → Tags page
-/people                    → People page
-/notes                     → Notes workspace
-/wisdom                    → Wisdom workspace
-/ideas                     → Ideas workspace
-/settings                  → Settings page
-/profile                   → Profile page
+/write                        Write page (today's journal)
+/write?type=idea              Write a new idea
+/write?date=2026-03-01        Edit a specific date's entry
+/journal                      Calendar view
+/insights                     Analytics dashboard
+/tags                         Tag management
+/people                       People management
+/settings                     App settings
 ```
 
-### Deep Linking
+## Settings and Profile
 
-You can bookmark specific views:
+Access settings by clicking your profile avatar in the sidebar bottom-left corner, then selecting **Settings**. Key areas:
 
-```
-/write?type=journal&date=2026-03-07
-/tags?filter=work
-/people?person=Alice
-/insights?view=heatmap
-```
+- **Appearance** -- theme, font size, editor mode
+- **Preferences** -- default entry type, bulleted mode, auto-hide nav, special dates
+- **Security** -- change password (email accounts only)
+- **Profile** -- display name, profile image
 
-<Callout type="info">
-Copy the URL from your browser to bookmark a specific view or share it (though entries themselves remain private).
-</Callout>
-
-## Mobile Navigation
-
-On mobile devices, navigation is optimized for smaller screens:
-
-### Mobile Menu
-
-- Tap the **☰** icon to open the sidebar
-- Sidebar slides in from the left
-- Tap outside or the **✕** to close
-
-### Bottom Navigation (Coming Soon)
-
-Future updates will include a bottom navigation bar on mobile for quicker access to primary pages.
-
-### Swipe Gestures (Coming Soon)
-
-Planned features:
-- Swipe left/right to navigate between dates in Journal
-- Swipe to dismiss entries in Reflect
-- Swipe to star/unstar entries
-
-## Search & Filtering
-
-### Search (Coming Soon)
-
-A global search feature is planned for future releases:
-
-- Search across all entries
-- Filter by tags, people, entry type
-- Full-text search with highlighting
-
-### Current Filtering
-
-Currently, you can filter entries by:
-- **Date** — Select from calendar on Journal page
-- **Entry Type** — Navigate to workspace pages
-- **Tags** — Click a tag on the Tags page
-- **People** — Click a person on the People page
-- **Starred** — Filter starred entries (feature coming soon)
-
-## Tips for Efficient Navigation
-
-### Create Daily Habits
-
-- Bookmark `/write` to quickly open the Write page
-- Use `Ctrl/Cmd + W` to start writing from anywhere
-- Keep the sidebar collapsed for focused writing
-
-### Organize with Tags
-
-- Use consistent tag names for easy filtering
-- Click tags from the Tags page to view related entries
-- Group related tags together
-
-### Review Regularly
-
-- Check Insights weekly to see your patterns
-- Use the Reflect page to review recent entries
-- Navigate to Journal to revisit specific dates
-
-### Customize Settings
-
-- Toggle Auto-Hide Navigation for distraction-free writing
-- Adjust font size for comfortable reading
-- Set your preferred default entry type
-
-## Common Navigation Flows
-
-### Daily Writing Flow
-
-1. Open Reflecto → lands on Write page
-2. Start typing your journal entry
-3. Add tags with `#` and people with `@`
-4. Entry auto-saves
-5. Navigate to Insights to see your streak
-
-### Reviewing Past Entries
-
-1. Click Journal in sidebar
-2. Select a past date from calendar
-3. View all entries from that date
-4. Click an entry to edit it
-
-### Exploring Connections
-
-1. Click Tags in sidebar
-2. Select a tag (e.g., `#work`)
-3. View all entries with that tag
-4. Navigate back to write a new entry
-
-### Checking Progress
-
-1. Click Insights in sidebar
-2. View your activity heatmap
-3. Check your writing streak
-4. Review entry type distribution chart
-
-## What's Next?
-
-Now that you know how to navigate Reflecto, dive deeper into specific features:
+## What's Next
 
 <Callout type="success">
-Explore the [Rich Editor](/docs/editor) to master the writing experience, or check out [Journal System](/docs/journal) to learn about calendars and categories.
+You have completed the getting started guide. Explore the [Writing & Editor](/docs/writing/editor) documentation to master the rich text editor, or dive into [Workspaces](/docs/workspaces) to learn about each entry type in depth.
 </Callout>
-
-### Recommended Next Steps
-
-- **[Rich Editor](/docs/editor)** — Advanced editor features and formatting
-- **[Journal System](/docs/journal)** — Calendar navigation and mood tracking
-- **[Workspaces](/docs/workspaces)** — Deep dive into all six entry types
-- **[Tags & People](/docs/tags)** — Master the connection system
-- **[Insights](/docs/insights)** — Understand your analytics
-- **[Settings](/docs/settings)** — Customize your experience
