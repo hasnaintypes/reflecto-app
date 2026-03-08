@@ -1,0 +1,144 @@
+import { Callout, Steps } from 'nextra/components'
+
+# Editor Preferences
+
+Fine-tune how the Reflecto editor responds to your input. These settings control list behavior, spellcheck, keyboard handling, autocomplete, and visual highlighting, plus notifications and reminders.
+
+---
+
+## Bulleted Mode
+
+**Setting:** Bulleted Mode (default: on)
+
+When enabled, new lines in the editor automatically start as bullet points. A bullet count displays in the editor header (e.g., `#15`). Ideal for daily logs, gratitude lists, and quick-capture entries.
+
+Turn it off if you prefer plain paragraphs for long-form prose, dream journals, or narrative entries.
+
+<Callout>
+You can toggle bulleted mode per-entry using the bullet icon in the editor header, regardless of the global default. This setting controls what new entries start with.
+</Callout>
+
+---
+
+## Spell Checking
+
+**Setting:** Spell Checking (default: on)
+
+Enables your browser's built-in spellcheck in the editor. Misspelled words appear underlined and right-clicking offers suggestions.
+
+Turn it off if you write in multiple languages or use many proper nouns and hashtags that trigger false positives.
+
+<Callout type="info">
+The dictionary and suggestion quality depend on your browser and OS, not Reflecto.
+</Callout>
+
+---
+
+## Enter Key Behavior
+
+**Setting:** New Line on Enter (default: off)
+
+| Setting | Enter | Shift+Enter |
+|---------|-------|-------------|
+| **Off** (default) | Submits or confirms | Creates a new line |
+| **On** | Creates a new line | Submits or confirms |
+
+<Callout type="warning">
+In bulleted mode, Enter always creates a new bullet point regardless of this setting. This preference applies to non-bulleted content.
+</Callout>
+
+---
+
+## Autocomplete
+
+**Setting:** Autocomplete (default: on)
+
+Enables the suggestion dropdown when you type `@` (people) or `#` (tags). Use arrow keys to navigate suggestions and Enter to select. A "Create new" option appears at the bottom for items that do not exist yet.
+
+With autocomplete off, no dropdown appears, but `@mentions` and `#tags` are still extracted when you save. The setting only controls the popup.
+
+---
+
+## Bullet Timestamps
+
+**Setting:** Bullet Timestamps (default: off)
+
+When enabled, each bullet point displays a small timestamp showing when it was written:
+
+```
+[9:15 AM] Morning standup with @Alice
+[9:42 AM] Reviewed #project-alpha pull requests
+[11:30 AM] Deep work session on #design
+```
+
+Useful for detailed daily logs where timing matters, meeting notes spanning a full day, or tracking when specific thoughts occurred.
+
+---
+
+## Highlight Tags and Mentions
+
+**Setting:** Highlight Tags and Mentions (default: on)
+
+Controls whether `#tags` and `@mentions` receive visual highlighting in the editor.
+
+- **On:** Tags and mentions display with a distinct background color, making them easy to spot in longer entries.
+- **Off:** They appear as plain text. Still extracted on save -- only the visual emphasis is removed.
+
+---
+
+## Notifications
+
+**Setting:** Enable Notifications (default: on)
+
+Controls whether Reflecto can send browser push notifications.
+
+<Steps>
+### Enable the toggle in Settings
+
+### Grant browser permission when prompted
+
+### Receive notifications for reminders and activity
+</Steps>
+
+<Callout type="info">
+If you previously denied the browser notification prompt, reset permissions in your browser settings before enabling this toggle.
+</Callout>
+
+---
+
+## Daily Reminder
+
+**Setting:** Daily Reminder (default: off)
+
+Sends a daily notification reminding you to write. Requires notifications to be enabled first.
+
+- Delivered once per day
+- Helps build a consistent writing habit
+- Especially useful during your first few weeks of journaling
+
+<Callout>
+Pair the daily reminder with a writing streak goal. Check your streak on the Insights page to track consistency.
+</Callout>
+
+---
+
+## Quick Reference
+
+| Setting | Default | Category |
+|---------|---------|----------|
+| Bulleted Mode | On | Editor |
+| Spell Checking | On | Editor |
+| New Line on Enter | Off | Editor |
+| Autocomplete | On | Editor |
+| Bullet Timestamps | Off | Editor |
+| Highlight Tags and Mentions | On | Editor |
+| Enable Notifications | On | Notifications |
+| Daily Reminder | Off | Notifications |
+
+---
+
+## What's Next?
+
+<Callout type="success">
+Return to the [Settings Overview](/docs/customization/settings) for the full picture, or explore [Appearance & Display](/docs/customization/appearance) to customize the visual theme and layout.
+</Callout>

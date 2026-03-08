@@ -1,0 +1,117 @@
+import { Callout, Steps } from 'nextra/components'
+
+# Settings Overview
+
+Reflecto's settings let you tailor the app to your workflow. From editor behavior to display preferences and notifications, everything is accessible from a single page.
+
+---
+
+## Accessing Settings
+
+Open **Settings** by clicking your profile avatar at the bottom of the sidebar and selecting **Settings**, or navigate directly to `/settings`.
+
+<Callout type="info">
+All settings are saved to your account and sync automatically across devices and browser sessions.
+</Callout>
+
+---
+
+## Setting Categories
+
+The Settings page is organized into four sections:
+
+| Section | What It Controls |
+|---------|-----------------|
+| **Editor** | Writing behavior -- bulleted mode, spell check, Enter key, autocomplete, timestamps, highlighting |
+| **Display** | Visual appearance -- theme, font, navigation, linked items layout, special dates, language |
+| **Features** | Workspace toggles -- enable or disable Dreams and Notes |
+| **Notifications** | Alerts and reminders -- push notifications and daily writing reminders |
+
+Each section is detailed in its own documentation page:
+
+- [Appearance & Display](/docs/customization/appearance) -- Theme, font, layout, and language
+- [Editor Preferences](/docs/customization/preferences) -- Writing behavior, notifications, and feature toggles
+
+---
+
+## Profile Management
+
+Your profile page is separate from settings. Access it via the sidebar avatar menu or navigate to `/profile`.
+
+### Display Name
+
+Edit your display name at any time. This name appears in your profile and is used throughout the app.
+
+### Avatar
+
+Upload a profile photo to personalize your account.
+
+- **Supported formats:** JPEG, PNG, WebP
+- **Maximum size:** 10 MB
+- **Storage:** Uploaded via ImageKit CDN
+- Click your current avatar on the profile page, select a file, and the upload starts automatically.
+
+### Email
+
+Your email address is displayed on the profile page but cannot be changed directly. It is tied to your authentication provider.
+
+### Account Deletion
+
+<Callout type="warning">
+Account deletion is permanent and cannot be undone. All entries, tags, people, preferences, and uploaded images will be erased.
+</Callout>
+
+<Steps>
+### Open Profile
+
+Navigate to `/profile` from the sidebar avatar menu.
+
+### Click Delete Account
+
+Scroll to the bottom and click the **Delete Account** button.
+
+### Confirm Deletion
+
+A confirmation dialog appears. Type the required confirmation text and confirm.
+
+### Account Is Removed
+
+You are signed out and all data is permanently deleted.
+</Steps>
+
+---
+
+## Feature Toggles
+
+Reflecto includes two workspace toggles in Settings that let you simplify the sidebar by hiding entry types you do not use.
+
+| Toggle | Default | Effect |
+|--------|---------|--------|
+| **Enable Dreams** | On | Shows or hides the Dreams workspace in the sidebar and Write page type selector |
+| **Enable Notes** | On | Shows or hides the Notes workspace in the sidebar and Write page type selector |
+
+<Callout>
+Disabling a workspace does not delete existing entries of that type. Your data is preserved and will reappear when you re-enable the toggle.
+</Callout>
+
+Turning off workspaces you rarely use keeps the sidebar focused and reduces visual clutter.
+
+---
+
+## How Settings Sync
+
+Settings are stored in the `UserPreferences` model tied to your account. When you change a setting:
+
+1. The change is saved immediately via the API
+2. The UI updates in real time
+3. Other open tabs pick up the change on their next navigation or refresh
+
+There is no manual save button -- every toggle and selection is persisted the moment you interact with it.
+
+---
+
+## What's Next?
+
+<Callout type="success">
+Explore [Appearance & Display](/docs/customization/appearance) to set your theme and font, or jump to [Editor Preferences](/docs/customization/preferences) to configure how the editor behaves.
+</Callout>

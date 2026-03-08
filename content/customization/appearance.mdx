@@ -1,0 +1,116 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# Appearance & Display
+
+Customize how Reflecto looks and feels. These settings control the visual theme, typography, navigation behavior, content layout, and language.
+
+---
+
+## Theme
+
+Choose between three theme modes in **Settings > Display**.
+
+<Tabs items={['System', 'Light', 'Dark']}>
+  <Tabs.Tab>
+    **System** (default) -- Follows your operating system's appearance setting. If your OS switches between light and dark mode on a schedule, Reflecto switches automatically.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Light** -- A clean, bright interface suitable for daytime use and well-lit environments.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Dark** -- A darker color scheme that reduces eye strain in low-light environments and saves battery on OLED screens.
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="info">
+Theme changes take effect immediately -- no page reload required.
+</Callout>
+
+---
+
+## Font Family
+
+Select a font for the editor and main content area from a curated whitelist:
+
+| Font | Style | Best For |
+|------|-------|----------|
+| **System Default** | Matches your OS | Consistency with native apps |
+| **Inter** | Clean sans-serif | General writing |
+| **Georgia** | Classic serif | Long-form prose |
+| **Merriweather** | Modern serif | Comfortable reading |
+| **Fira Code** | Monospace | Technical notes |
+
+<Callout>
+The font setting applies to the editor and entry content. Navigation and UI elements use the system font for consistency.
+</Callout>
+
+---
+
+## Auto-Hide Navigation
+
+**Setting:** Auto-Hide Navigation (default: off)
+
+When enabled, the sidebar collapses automatically on content-focused pages like Write and Reflect, giving you a full-width writing area.
+
+- The sidebar slides out of view when you navigate to a content page
+- Hover over the left edge or click the menu icon to temporarily reveal it
+- The sidebar stays visible on management pages like Tags, People, and Settings
+
+**Enable this** if you prefer distraction-free writing, use keyboard shortcuts, or work on a smaller screen. **Leave it off** if you switch between workspaces frequently.
+
+---
+
+## Linked Items Display
+
+**Setting:** Linked Items Display (default: Card)
+
+Controls how linked context items appear below your entries in the editor. Linked items include entries from the same date, entries sharing tags, and entries mentioning the same people.
+
+| Mode | Description |
+|------|-------------|
+| **Card** | Visual cards with preview text, entry type badge, and date. Easier to scan but takes more space. |
+| **List** | Compact rows with title and date. Fits more items on screen with less detail. |
+
+---
+
+## Special Dates
+
+**Setting:** Special Dates (default: on)
+
+When enabled, the calendar and journal views display indicators for holidays and notable dates. The feature uses your selected language/locale to determine which holidays to show. Turn this off for a cleaner calendar with only your own entry indicators.
+
+---
+
+## Language
+
+**Setting:** Language (default: English)
+
+Reflecto supports ten languages for the interface:
+
+| Code | Language | Code | Language |
+|------|----------|------|----------|
+| `en` | English | `ko` | Korean |
+| `es` | Spanish | `zh` | Chinese |
+| `fr` | French | `ar` | Arabic |
+| `de` | German | `pt` | Portuguese |
+| `ja` | Japanese | `hi` | Hindi |
+
+<Callout type="info">
+The language setting changes navigation labels, buttons, and system messages. Your entry content is never translated -- you can write in any language regardless of this setting.
+</Callout>
+
+---
+
+## Tips
+
+- **Pair dark theme with auto-hide navigation** for the most immersive writing experience during evening sessions.
+- **Use the System theme** if your OS already switches between light and dark on a schedule -- Reflecto follows along automatically.
+- **Try both linked items modes** to find your preference. Card mode suits fewer connections; list mode scales better.
+
+---
+
+## What's Next?
+
+<Callout type="success">
+Continue to [Editor Preferences](/docs/customization/preferences) to configure how the writing editor behaves, or return to the [Settings Overview](/docs/customization/settings).
+</Callout>
