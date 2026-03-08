@@ -132,7 +132,13 @@ export function LinkedContext({ entryId, date }: LinkedContextProps) {
                       {item.title ?? "Untitled"}
                     </h4>
                     <p className="text-muted-foreground/50 line-clamp-1 text-xs italic">
-                      {item.content?.replace(/<[^>]*>/g, "").slice(0, 60)}...
+                      {item.content
+                        ?.replace(/<[^>]*?>/g, "")
+                        .replace(/&[a-zA-Z]+;/g, " ")
+                        .replace(/\s+/g, " ")
+                        .trim()
+                        .slice(0, 60)}
+                      ...
                     </p>
                   </div>
                 </Link>

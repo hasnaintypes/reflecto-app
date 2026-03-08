@@ -51,6 +51,7 @@ export function DeleteAlertDialog({
               onConfirm();
             }}
             disabled={isDeleting}
+            aria-disabled={isDeleting}
             className="min-w-[100px] flex-1 rounded-xl bg-red-500 bg-none text-white hover:bg-red-600 sm:flex-none"
           >
             {isDeleting ? (

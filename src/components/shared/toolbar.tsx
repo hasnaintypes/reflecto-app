@@ -46,6 +46,7 @@ const ToolbarButton = ({
     <TooltipTrigger asChild>
       <button
         onClick={onClick}
+        aria-label={tooltip}
         className={cn(
           "hover:bg-muted hover:text-foreground flex h-9 w-9 items-center justify-center rounded-xl transition-all",
           isActive ? "bg-muted text-foreground" : "text-muted-foreground",
