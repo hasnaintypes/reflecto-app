@@ -29,7 +29,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@index([userId])
+  @@index([userId, provider])
 }
 
 model Session {
@@ -129,6 +129,7 @@ model Tag {
   userId    String
   name      String
   group     String?
+  color     String?
   createdAt DateTime @default(now())
 
   // Relations
@@ -199,4 +200,5 @@ model Streak {
 
   @@index([userId])
   @@index([userId, isActive])
+  @@index([userId, endDate])
 }

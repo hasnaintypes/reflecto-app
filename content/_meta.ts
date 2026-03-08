@@ -2,6 +2,8 @@ export default {
   "index": "Introduction",
   "getting-started": "Getting Started",
   "writing": "Writing & Editor",
-  "guide": "Guide",
-  "features": "Features"
+  "workspaces": "Workspaces",
+  "insights": "Insights & Analytics",
+  "customization": "Customization",
+  "developer": "Developer Guide"
 };
