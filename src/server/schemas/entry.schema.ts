@@ -93,6 +93,7 @@ export const listEntriesSchema = z.object({
   dateFrom: z.date().optional(),
   dateTo: z.date().optional(),
   metadata: z.record(z.unknown()).optional(),
+  includeRelations: z.boolean().default(true).optional(),
 });
 
 /**

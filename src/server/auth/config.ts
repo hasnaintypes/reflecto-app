@@ -61,6 +61,9 @@ export const authConfig = {
         );
         if (!isValid) return null;
 
+        // Block unverified credential users
+        if (!user.emailVerified) return null;
+
         return {
           id: user.id,
           name: user.name,

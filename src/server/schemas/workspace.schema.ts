@@ -14,8 +14,6 @@ export const journalFiltersSchema = z.object({
  * Dream specific schemas
  */
 export const dreamFiltersSchema = z.object({
-  atmosphere: z.string().optional(),
-  clarity: z.string().optional(),
   limit: z.number().min(1).max(100).default(20),
   cursor: z.string().optional(),
 });
