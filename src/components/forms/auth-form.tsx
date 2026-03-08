@@ -3,6 +3,7 @@
 import type React from "react";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import axios from "axios";
 import useAuth from "@/hooks/use-auth";
 import { AUTH_ERRORS } from "@/constants/errors";
 import type { AuthFormProps, AuthFormState } from "@/types";
@@ -24,6 +26,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
     password: "",
   });
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -47,18 +50,19 @@ export function AuthForm({ type, className }: AuthFormProps) {
         "error" in result &&
         result.error
       ) {
+        const errorStr = String(result.error);
         const isKnownError = (Object.values(AUTH_ERRORS) as string[]).includes(
-          result.error,
+          errorStr,
         );
         const errorMessage = isKnownError
-          ? result.error
+          ? errorStr
           : AUTH_ERRORS.INVALID_CREDENTIALS;
         toast.error(errorMessage);
+      } else if (type === "signup") {
+        toast.success("Check your email to verify your account.");
       } else {
-        toast.success(
-          type === "signin" ? "Welcome back!" : "Account created successfully!",
-        );
-        window.location.href = "/write";
+        toast.success("Welcome back!");
+        router.push("/write");
       }
     } catch {
       toast.dismiss(loadingToast);
@@ -82,7 +86,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
         toast.error(`Failed to sign in with ${provider}`);
       } else if (result?.url) {
         toast.success(`Successfully connected with ${provider}!`);
-        window.location.href = result.url;
+        router.push(result.url);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
@@ -142,11 +146,22 @@ export function AuthForm({ type, className }: AuthFormProps) {
               <button
                 type="button"
                 className="ml-auto cursor-pointer text-sm underline-offset-4 hover:underline"
-                onClick={() =>
-                  toast.info(
-                    "Password reset functionality would be implemented here",
-                  )
-                }
+                onClick={async () => {
+                  const email = authFormState.email;
+                  if (!email) {
+                    toast.error("Please enter your email address first.");
+                    return;
+                  }
+                  const loadingToast = toast.loading("Sending reset link...");
+                  try {
+                    await axios.post("/api/auth/forgot-password", { email });
+                    toast.dismiss(loadingToast);
+                    toast.success("Check your email for reset instructions.");
+                  } catch {
+                    toast.dismiss(loadingToast);
+                    toast.error("Something went wrong. Please try again.");
+                  }
+                }}
               >
                 Forgot your password?
               </button>
@@ -231,7 +246,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
             <button
               type="button"
               className="cursor-pointer underline underline-offset-4"
-              onClick={() => (window.location.href = "/auth/sign-up")}
+              onClick={() => router.push("/auth/sign-up")}
             >
               Sign up
             </button>
@@ -242,7 +257,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
             <button
               type="button"
               className="cursor-pointer underline underline-offset-4"
-              onClick={() => (window.location.href = "/auth/sign-in")}
+              onClick={() => router.push("/auth/sign-in")}
             >
               Sign in
             </button>

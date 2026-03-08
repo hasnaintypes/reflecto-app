@@ -32,5 +32,10 @@ export function PreferencesProvider({
     setLoading(isLoading);
   }, [fetchedPrefs, isLoading, setPreferences, setLoading]);
 
+  // Don't block rendering for unauthenticated users
+  if (status === "authenticated" && isLoading) {
+    return null;
+  }
+
   return <>{children}</>;
 }
