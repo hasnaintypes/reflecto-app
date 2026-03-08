@@ -38,14 +38,17 @@ function checkRateLimit(key: string, maxRequests: number, windowMs: number) {
 }
 
 // Periodically clean up expired entries (every 5 minutes)
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, entry] of rateLimitStore) {
-    if (now > entry.resetTime) {
-      rateLimitStore.delete(key);
+setInterval(
+  () => {
+    const now = Date.now();
+    for (const [key, entry] of rateLimitStore) {
+      if (now > entry.resetTime) {
+        rateLimitStore.delete(key);
+      }
     }
-  }
-}, 5 * 60 * 1000).unref();
+  },
+  5 * 60 * 1000,
+).unref();
 
 /**
  * 1. CONTEXT

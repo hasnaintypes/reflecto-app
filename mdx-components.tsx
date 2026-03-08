@@ -1,1 +1,1 @@
-export { useMDXComponents  } from "nextra-theme-docs";
+export { useMDXComponents } from "nextra-theme-docs";

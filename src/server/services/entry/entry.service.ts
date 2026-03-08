@@ -310,7 +310,10 @@ export class EntryService {
         }
       }
       if (conditions.length > 0) {
-        where.AND = [...(Array.isArray(where.AND) ? where.AND : []), ...conditions];
+        where.AND = [
+          ...(Array.isArray(where.AND) ? where.AND : []),
+          ...conditions,
+        ];
       }
     }
 
@@ -320,22 +323,25 @@ export class EntryService {
       take: limit + 1, // Take one extra to determine if there are more
       ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
       orderBy: { createdAt: "desc" },
-      include: filters.includeRelations !== false ? {
-        tags: {
-          select: { id: true, name: true },
-        },
-        people: {
-          select: { id: true, name: true },
-        },
-        attachments: {
-          select: {
-            id: true,
-            fileUrl: true,
-            fileType: true,
-            thumbnailUrl: true,
-          },
-        },
-      } : undefined,
+      include:
+        filters.includeRelations !== false
+          ? {
+              tags: {
+                select: { id: true, name: true },
+              },
+              people: {
+                select: { id: true, name: true },
+              },
+              attachments: {
+                select: {
+                  id: true,
+                  fileUrl: true,
+                  fileType: true,
+                  thumbnailUrl: true,
+                },
+              },
+            }
+          : undefined,
     });
 
     let nextCursor: string | undefined = undefined;
@@ -412,10 +418,7 @@ export class EntryService {
           } as Prisma.InputJsonValue;
         } else if (input.metadata !== undefined) {
           // If content didn't change but metadata did (with validation)
-          const validatedMeta = validateMetadata(
-            existing.type,
-            input.metadata,
-          );
+          const validatedMeta = validateMetadata(existing.type, input.metadata);
           const existingMetadata =
             (existing.metadata as Record<string, unknown>) ?? {};
           data.metadata = {
@@ -497,10 +500,7 @@ export class EntryService {
   /**
    * Get aggregated insights stats (server-side)
    */
-  async getInsightsStats(
-    db: PrismaClient,
-    userId: string,
-  ) {
+  async getInsightsStats(db: PrismaClient, userId: string) {
     const [entries, totalCount] = await Promise.all([
       db.entry.findMany({
         where: { userId, deletedAt: null },
@@ -546,7 +546,14 @@ export class EntryService {
       include: {
         tags: { select: { id: true, name: true } },
         people: { select: { id: true, name: true } },
-        attachments: { select: { id: true, fileUrl: true, fileType: true, thumbnailUrl: true } },
+        attachments: {
+          select: {
+            id: true,
+            fileUrl: true,
+            fileType: true,
+            thumbnailUrl: true,
+          },
+        },
       },
       skip,
       take: 1,

@@ -21,7 +21,10 @@ export async function POST(request: NextRequest) {
     const rateLimitHeaders = rateLimit.checkNext(request, 3);
     if (rateLimitHeaders.get("x-rl-remaining") === "0") {
       return NextResponse.json(
-        { success: true, message: "If an account exists, a reset link has been sent." },
+        {
+          success: true,
+          message: "If an account exists, a reset link has been sent.",
+        },
         { status: 200, headers: rateLimitHeaders },
       );
     }
@@ -30,7 +33,10 @@ export async function POST(request: NextRequest) {
     const validationResult = forgotPasswordSchema.safeParse(requestBody);
     if (!validationResult.success) {
       return NextResponse.json(
-        { success: true, message: "If an account exists, a reset link has been sent." },
+        {
+          success: true,
+          message: "If an account exists, a reset link has been sent.",
+        },
         { status: 200 },
       );
     }

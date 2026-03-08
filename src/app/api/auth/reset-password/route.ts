@@ -46,7 +46,10 @@ export async function POST(request: Request) {
         },
       });
       return NextResponse.json(
-        { success: false, error: "Reset token has expired. Please request a new one." },
+        {
+          success: false,
+          error: "Reset token has expired. Please request a new one.",
+        },
         { status: 400 },
       );
     }

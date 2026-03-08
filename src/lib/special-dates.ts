@@ -11,7 +11,10 @@ export interface SpecialDate {
   type: string;
 }
 
-export function getSpecialDetails(date: Date, countryCode = "US"): SpecialDate[] {
+export function getSpecialDetails(
+  date: Date,
+  countryCode = "US",
+): SpecialDate[] {
   const hd = new Holidays();
 
   // Initialize with the specified country.

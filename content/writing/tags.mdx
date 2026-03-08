@@ -1,11 +1,12 @@
-import { Callout, Steps, Tabs } from 'nextra/components'
+import { Callout, Steps, Tabs } from "nextra/components";
 
 # Tags
 
 Tags are the connective tissue of your Reflecto experience. Type `#tagname` in any entry to categorize it, and Reflecto automatically extracts and tracks tags across all your entries to reveal patterns over time.
 
 <Callout type="info">
-Tags are private and scoped to your account. No one else can see your tags or how you use them.
+  Tags are private and scoped to your account. No one else can see your tags or
+  how you use them.
 </Callout>
 
 ---
@@ -26,6 +27,7 @@ The dropdown filters to show matching tags. You will also see entry counts next 
 ### Select or create
 
 Press Enter to select an existing tag, or keep typing to create a new one. New tags are added to your tag library when you save the entry.
+
 </Steps>
 
 ```markdown
@@ -42,13 +44,15 @@ When you save this entry, four tags are extracted: `#project-alpha`, `#design`, 
 Tags support letters, numbers, and hyphens. Spaces and special characters are not allowed.
 
 **Guidelines:**
+
 - **Use lowercase** -- tags are case-insensitive but displayed as first typed
 - **Use hyphens** for multi-word tags: `#project-alpha` not `#project alpha`
 - **Be consistent** -- avoid creating `#work`, `#working`, and `#workplace` when one will do
 - **Keep them short** -- `#meditation` is better than `#trying-to-meditate-more`
 
 <Callout type="warning">
-Tag names cannot contain spaces, emoji, or special characters other than hyphens. Stick to alphanumeric characters and hyphens.
+  Tag names cannot contain spaces, emoji, or special characters other than
+  hyphens. Stick to alphanumeric characters and hyphens.
 </Callout>
 
 ---
@@ -81,6 +85,7 @@ Navigate to **Tags** in the sidebar to manage all your tags.
 ### Sorting
 
 Sort your tag list by:
+
 - **Alphabetical** (A-Z or Z-A)
 - **Entry count** (most used or least used)
 
@@ -118,17 +123,18 @@ Enter a name like "Work", "Health", or "Projects".
 ### Done
 
 Tags appear under their group header on the Tags page for easier browsing.
+
 </Steps>
 
 Groups are purely visual organization -- they do not change how tags work in entries. You can rename groups, add or remove tags from them, and delete groups without affecting the tags themselves.
 
 **Example groups:**
 
-| Group | Tags |
-|-------|------|
-| Work | `#meetings`, `#project-alpha`, `#team`, `#deadlines` |
-| Health | `#exercise`, `#nutrition`, `#meditation`, `#sleep` |
-| Learning | `#books`, `#courses`, `#articles`, `#podcasts` |
+| Group    | Tags                                                 |
+| -------- | ---------------------------------------------------- |
+| Work     | `#meetings`, `#project-alpha`, `#team`, `#deadlines` |
+| Health   | `#exercise`, `#nutrition`, `#meditation`, `#sleep`   |
+| Learning | `#books`, `#courses`, `#articles`, `#podcasts`       |
 
 ---
 
@@ -139,7 +145,8 @@ Groups are purely visual organization -- they do not change how tags work in ent
 To rename a tag, click it on the Tags page, then click the edit button in the detail view header. Enter the new name and confirm. The rename applies across all entries that use the tag.
 
 <Callout>
-Renaming is useful for fixing typos or standardizing inconsistent tags. If you rename a tag to match an existing one, the two tags merge automatically.
+  Renaming is useful for fixing typos or standardizing inconsistent tags. If you
+  rename a tag to match an existing one, the two tags merge automatically.
 </Callout>
 
 ### Merging
@@ -153,7 +160,8 @@ To merge duplicate tags, rename one to match the other. The system detects the c
 To delete a tag, open its detail view and click the delete button. A confirmation dialog warns you that the tag will be removed from all entries.
 
 <Callout type="warning">
-Deleting a tag is permanent. It removes the tag from every entry that uses it. If you might want the data later, consider renaming instead.
+  Deleting a tag is permanent. It removes the tag from every entry that uses it.
+  If you might want the data later, consider renaming instead.
 </Callout>
 
 ---
@@ -174,6 +182,7 @@ Journal entries store extracted tags in their metadata. This means tags appear i
     - `#work`, `#personal`, `#health`, `#learning`, `#goals`
 
     Expand your tag vocabulary over time as patterns emerge. Do not try to build a complete taxonomy on day one.
+
   </Tabs.Tab>
   <Tabs.Tab>
     **Staying Organized**
@@ -182,6 +191,7 @@ Journal entries store extracted tags in their metadata. This means tags appear i
     - **Use hierarchical prefixes** -- `#project-alpha`, `#project-beta` keep related tags together
     - **Aim for 3-5 tags per entry** -- too many tags dilute their value
     - **Combine with @mentions** -- `Meeting with @Alice about #project-alpha` creates rich, searchable context
+
   </Tabs.Tab>
   <Tabs.Tab>
     **Power Tips**
@@ -190,5 +200,6 @@ Journal entries store extracted tags in their metadata. This means tags appear i
     - **Check Insights** -- the Insights page shows tag frequency, trends, and correlations with mood
     - **Use tag groups** -- once you pass 20 tags, groups make the Tags page much easier to navigate
     - **Pick one name** -- decide between `#exercise` and `#workout` early and stick with it
+
   </Tabs.Tab>
 </Tabs>

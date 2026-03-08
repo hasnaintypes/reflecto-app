@@ -199,7 +199,9 @@ export function Sidebar() {
               key={item.label}
               {...item}
               isCollapsed={resolvedIsCollapsed}
-              isActive={pathname === item.href || pathname.startsWith(item.href + "/")}
+              isActive={
+                pathname === item.href || pathname.startsWith(item.href + "/")
+              }
             />
           ))}
         </div>

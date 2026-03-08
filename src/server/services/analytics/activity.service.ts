@@ -25,7 +25,12 @@ export class ActivityService {
         });
       } else {
         return db.activityLog.create({
-          data: { userId, date: today, entryCount: 1, entryTypes: { [entryType]: 1 } },
+          data: {
+            userId,
+            date: today,
+            entryCount: 1,
+            entryTypes: { [entryType]: 1 },
+          },
         });
       }
     } catch {
@@ -34,7 +39,8 @@ export class ActivityService {
         where: { userId_date: { userId, date: today } },
       });
       if (existing) {
-        const entryTypes = (existing.entryTypes as Record<string, number>) ?? {};
+        const entryTypes =
+          (existing.entryTypes as Record<string, number>) ?? {};
         entryTypes[entryType] = (entryTypes[entryType] ?? 0) + 1;
         return db.activityLog.update({
           where: { id: existing.id },

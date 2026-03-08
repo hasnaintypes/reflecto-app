@@ -80,9 +80,7 @@ export class UploadService {
     }
 
     if (!validateFileSignature(file, fileType)) {
-      throw new Error(
-        "File content does not match the declared file type",
-      );
+      throw new Error("File content does not match the declared file type");
     }
 
     const safeFileName = sanitizeFileName(fileName);

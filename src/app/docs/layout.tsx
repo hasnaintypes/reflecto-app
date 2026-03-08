@@ -1,4 +1,4 @@
-import {  Layout, Navbar } from "nextra-theme-docs";
+import { Layout, Navbar } from "nextra-theme-docs";
 import { Banner } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import { DM_Sans, Playfair_Display } from "next/font/google";
@@ -30,8 +30,6 @@ const navbar = (
     projectLink="https://github.com/hasnaintypes/reflecto-app"
   />
 );
-
-
 
 export default async function DocsLayout({
   children,

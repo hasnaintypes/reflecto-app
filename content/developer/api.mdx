@@ -1,4 +1,4 @@
-import { Callout, Tabs } from 'nextra/components'
+import { Callout, Tabs } from "nextra/components";
 
 # API Reference
 
@@ -8,21 +8,21 @@ Reflecto exposes a type-safe API through tRPC v11. All procedures are accessed v
 
 The root router combines 13 domain-specific routers:
 
-| Router | Procedures | Auth | Description |
-|--------|-----------|------|-------------|
-| `entry` | 7 | Protected | Core CRUD, insights stats, memory lane |
-| `journal` | -- | Protected | Journal-specific queries |
-| `dream` | -- | Protected | Dream-specific queries |
-| `highlight` | -- | Protected | Highlight-specific queries |
-| `idea` | -- | Protected | Idea-specific queries |
-| `wisdom` | -- | Protected | Wisdom-specific queries |
-| `note` | -- | Protected | Note-specific queries |
-| `tag` | 4 | Protected | Tag CRUD and search |
-| `person` | 4 | Protected | Person CRUD and search |
-| `attachment` | 3 | Protected | Image upload and management |
-| `insights` | 3 | Protected | Heatmap, streaks, entry stats |
-| `preferences` | 2 | Protected | User settings get/update |
-| `user` | -- | Protected | Profile management |
+| Router        | Procedures | Auth      | Description                            |
+| ------------- | ---------- | --------- | -------------------------------------- |
+| `entry`       | 7          | Protected | Core CRUD, insights stats, memory lane |
+| `journal`     | --         | Protected | Journal-specific queries               |
+| `dream`       | --         | Protected | Dream-specific queries                 |
+| `highlight`   | --         | Protected | Highlight-specific queries             |
+| `idea`        | --         | Protected | Idea-specific queries                  |
+| `wisdom`      | --         | Protected | Wisdom-specific queries                |
+| `note`        | --         | Protected | Note-specific queries                  |
+| `tag`         | 4          | Protected | Tag CRUD and search                    |
+| `person`      | 4          | Protected | Person CRUD and search                 |
+| `attachment`  | 3          | Protected | Image upload and management            |
+| `insights`    | 3          | Protected | Heatmap, streaks, entry stats          |
+| `preferences` | 2          | Protected | User settings get/update               |
+| `user`        | --         | Protected | Profile management                     |
 
 ## Authentication
 
@@ -47,10 +47,10 @@ Protected procedures guarantee `ctx.session.user` is non-null. All data-modifyin
 
 The API uses an in-memory sliding window rate limiter:
 
-| Tier | Limit | Window | Key |
-|------|-------|--------|-----|
-| Authenticated | 100 requests | 60 seconds | `user:{userId}` |
-| Unauthenticated | 30 requests | 60 seconds | `ip:{x-forwarded-for}` |
+| Tier            | Limit        | Window     | Key                    |
+| --------------- | ------------ | ---------- | ---------------------- |
+| Authenticated   | 100 requests | 60 seconds | `user:{userId}`        |
+| Unauthenticated | 30 requests  | 60 seconds | `ip:{x-forwarded-for}` |
 
 Exceeding the limit returns a `TOO_MANY_REQUESTS` error. The store is cleaned up every 5 minutes.
 
@@ -65,6 +65,7 @@ Creates a new entry with automatic tag and people extraction.
 **Type:** Mutation (protected)
 
 **Input:**
+
 ```typescript
 {
   type: "journal" | "dream" | "highlight" | "idea" | "wisdom" | "note",
@@ -80,12 +81,13 @@ Creates a new entry with automatic tag and people extraction.
 **Response:** Full entry with `tags`, `people`, and `attachments` relations.
 
 **Side effects:**
+
 - Tags extracted from `#hashtag` patterns and synced
 - People extracted from `@mention` patterns and synced
 - ActivityLog updated for the day
 - Streak recalculated
 - Journal entries enforce one-per-day (returns existing if duplicate)
-</Tabs.Tab>
+  </Tabs.Tab>
 
 <Tabs.Tab>
 ### `entry.getById`
@@ -95,8 +97,11 @@ Fetches a single entry by ID, scoped to the authenticated user.
 **Type:** Query (protected)
 
 **Input:**
+
 ```typescript
-{ id: string }
+{
+  id: string;
+}
 ```
 
 **Response:** Entry with `tags`, `people`, and `attachments`. Throws `NOT_FOUND` if the entry does not exist or belongs to another user.
@@ -116,6 +121,7 @@ Returns a random entry older than 7 days for the "memory lane" feature.
 **Type:** Query (protected)
 
 **Input:** None
+
 </Tabs.Tab>
 
 <Tabs.Tab>
@@ -126,6 +132,7 @@ Updates an entry. Re-extracts tags and people if content changes.
 **Type:** Mutation (protected)
 
 **Input:**
+
 ```typescript
 {
   id: string,
@@ -140,11 +147,12 @@ Updates an entry. Re-extracts tags and people if content changes.
 **Response:** Updated entry with relations.
 
 **Behavior:**
+
 - Verifies ownership before updating
 - If `content` changes: re-syncs tags and people, merges metadata
 - If only `metadata` changes: validates and merges without re-extraction
 - Runs in a transaction with a 10-second timeout
-</Tabs.Tab>
+  </Tabs.Tab>
 
 <Tabs.Tab>
 ### `entry.delete`
@@ -154,17 +162,21 @@ Soft-deletes an entry by setting `deletedAt`.
 **Type:** Mutation (protected)
 
 **Input:**
+
 ```typescript
-{ id: string }
+{
+  id: string;
+}
 ```
 
 **Response:** `{ success: boolean }`
 
 **Behavior:**
+
 1. Verifies ownership
 2. Disconnects all tag and person associations
 3. Sets `deletedAt` to current timestamp
-</Tabs.Tab>
+   </Tabs.Tab>
 
 <Tabs.Tab>
 ### `entry.list`
@@ -174,6 +186,7 @@ Lists entries with filtering, search, and cursor-based pagination.
 **Type:** Query (protected)
 
 **Input:**
+
 ```typescript
 {
   type?: EntryType | EntryType[],  // filter by one or many types
@@ -191,6 +204,7 @@ Lists entries with filtering, search, and cursor-based pagination.
 ```
 
 **Response:**
+
 ```typescript
 {
   entries: EntryWithRelations[],
@@ -201,6 +215,7 @@ Lists entries with filtering, search, and cursor-based pagination.
 ### `entry.count`
 
 Returns entry count for the same filter parameters (without fetching data).
+
 </Tabs.Tab>
 </Tabs>
 
@@ -248,18 +263,21 @@ The implementation fetches `limit + 1` items. If the extra item exists, it becom
 </Tabs>
 
 <Callout type="info">
-Tags and people are primarily created automatically through content extraction. These endpoints manage existing records -- renaming, grouping, and cleanup.
+  Tags and people are primarily created automatically through content
+  extraction. These endpoints manage existing records -- renaming, grouping, and
+  cleanup.
 </Callout>
 
 ## Attachment Endpoints
 
-| Procedure | Type | Description |
-|-----------|------|-------------|
-| `attachment.uploadImage` | Mutation | Upload base64 image to ImageKit, optionally link to entry |
-| `attachment.registerImageAttachment` | Mutation | Register an already-uploaded image in the database |
-| `attachment.delete` | Mutation | Delete attachment record and remove from CDN |
+| Procedure                            | Type     | Description                                               |
+| ------------------------------------ | -------- | --------------------------------------------------------- |
+| `attachment.uploadImage`             | Mutation | Upload base64 image to ImageKit, optionally link to entry |
+| `attachment.registerImageAttachment` | Mutation | Register an already-uploaded image in the database        |
+| `attachment.delete`                  | Mutation | Delete attachment record and remove from CDN              |
 
 **Upload input:**
+
 ```typescript
 {
   fileData: string,    // base64-encoded image data
@@ -272,30 +290,30 @@ Tags and people are primarily created automatically through content extraction. 
 
 ## Insights Endpoints
 
-| Procedure | Type | Input | Description |
-|-----------|------|-------|-------------|
+| Procedure             | Type  | Input            | Description                                |
+| --------------------- | ----- | ---------------- | ------------------------------------------ |
 | `insights.getHeatmap` | Query | `{ from?, to? }` | Activity heatmap data (default: last year) |
-| `insights.getStreak` | Query | -- | Current streak length and longest streak |
-| `insights.getStats` | Query | -- | Entry count grouped by type |
+| `insights.getStreak`  | Query | --               | Current streak length and longest streak   |
+| `insights.getStats`   | Query | --               | Entry count grouped by type                |
 
 ## Preferences Endpoints
 
-| Procedure | Type | Description |
-|-----------|------|-------------|
-| `preferences.get` | Query | Fetch current user preferences |
+| Procedure            | Type     | Description                                  |
+| -------------------- | -------- | -------------------------------------------- |
+| `preferences.get`    | Query    | Fetch current user preferences               |
 | `preferences.update` | Mutation | Update theme, font size, notifications, etc. |
 
 ## Error Handling
 
 tRPC errors use standard codes with Zod validation details:
 
-| Code | When |
-|------|------|
-| `UNAUTHORIZED` | No valid session on protected procedure |
-| `NOT_FOUND` | Entry/tag/person does not exist or wrong owner |
-| `TOO_MANY_REQUESTS` | Rate limit exceeded |
-| `BAD_REQUEST` | Zod validation failure |
-| `INTERNAL_SERVER_ERROR` | Unhandled service error |
+| Code                    | When                                           |
+| ----------------------- | ---------------------------------------------- |
+| `UNAUTHORIZED`          | No valid session on protected procedure        |
+| `NOT_FOUND`             | Entry/tag/person does not exist or wrong owner |
+| `TOO_MANY_REQUESTS`     | Rate limit exceeded                            |
+| `BAD_REQUEST`           | Zod validation failure                         |
+| `INTERNAL_SERVER_ERROR` | Unhandled service error                        |
 
 Validation errors include the flattened Zod error for field-level feedback:
 
@@ -304,7 +322,7 @@ Validation errors include the flattened Zod error for field-level feedback:
   data: {
     zodError: {
       fieldErrors: {
-        title: ["String must contain at most 200 character(s)"]
+        title: ["String must contain at most 200 character(s)"];
       }
     }
   }
@@ -340,5 +358,6 @@ createEntry.mutate({
 ```
 
 <Callout type="warning">
-All dates are serialized through SuperJSON, so you can pass native `Date` objects in inputs and receive them in responses without manual conversion.
+  All dates are serialized through SuperJSON, so you can pass native `Date`
+  objects in inputs and receive them in responses without manual conversion.
 </Callout>

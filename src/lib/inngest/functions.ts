@@ -54,7 +54,10 @@ export const checkInactivityAndRemind = inngest.createFunction(
             });
             return count > 0;
           } catch (error) {
-            console.error(`Failed to check entries for user ${user.id}:`, error);
+            console.error(
+              `Failed to check entries for user ${user.id}:`,
+              error,
+            );
             throw error;
           }
         },

@@ -1,4 +1,4 @@
-import { Callout, Steps } from 'nextra/components'
+import { Callout, Steps } from "nextra/components";
 
 # Architecture Overview
 
@@ -41,6 +41,7 @@ Business logic lives in dedicated service classes (`EntryService`, `TagService`,
 ### Database
 
 Prisma ORM executes queries against PostgreSQL. The `@prisma/adapter-pg` adapter enables connection pooling for serverless deployment on Vercel.
+
 </Steps>
 
 ```
@@ -60,14 +61,15 @@ Client Component
 
 Reflecto uses NextAuth v5 with two authentication strategies:
 
-| Strategy | Flow |
-|----------|------|
-| **Credentials** | Email + password with bcrypt hashing. Requires email verification via token sent through Resend. |
-| **OAuth** | Google and GitHub providers. Account linked to User on first sign-in. No email verification needed. |
+| Strategy        | Flow                                                                                                |
+| --------------- | --------------------------------------------------------------------------------------------------- |
+| **Credentials** | Email + password with bcrypt hashing. Requires email verification via token sent through Resend.    |
+| **OAuth**       | Google and GitHub providers. Account linked to User on first sign-in. No email verification needed. |
 
 Password reset uses the same `VerificationToken` model with a dedicated flow. All sessions are database-backed for server-side invalidation.
 
 The tRPC layer exposes two procedure types:
+
 - **`publicProcedure`** -- No auth required. Rate limited to 30 requests per 60 seconds.
 - **`protectedProcedure`** -- Requires valid session. Rate limited to 100 requests per 60 seconds. Guarantees `ctx.session.user` is non-null.
 
@@ -83,7 +85,8 @@ Image uploads go through a server-side pipeline:
 6. The CDN URL is returned to the client for rendering
 
 <Callout type="warning">
-If the database registration fails after a successful upload, the image becomes orphaned on ImageKit. This edge case is logged for manual cleanup.
+  If the database registration fails after a successful upload, the image
+  becomes orphaned on ImageKit. This edge case is logged for manual cleanup.
 </Callout>
 
 ## Auto-Save Mechanism
@@ -102,10 +105,10 @@ The editor tracks dirty state locally via Zustand, showing a save indicator in t
 
 Reflecto uses a dual-store approach:
 
-| Layer | Tool | Purpose |
-|-------|------|---------|
-| **Server State** | React Query (via tRPC) | Entry data, tags, people, preferences, insights. Handles caching, refetching, pagination. |
-| **Client State** | Zustand | UI state (sidebar open, active filters), editor state (dirty tracking), auth state, user preferences cache. |
+| Layer            | Tool                   | Purpose                                                                                                     |
+| ---------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Server State** | React Query (via tRPC) | Entry data, tags, people, preferences, insights. Handles caching, refetching, pagination.                   |
+| **Client State** | Zustand                | UI state (sidebar open, active filters), editor state (dirty tracking), auth state, user preferences cache. |
 
 Zustand stores are located in `src/stores/`:
 
@@ -119,8 +122,8 @@ Zustand stores are located in `src/stores/`:
 
 Reflecto uses **Inngest** for reliable background job execution:
 
-| Job | Schedule | Description |
-|-----|----------|-------------|
+| Job                       | Schedule         | Description                                                                |
+| ------------------------- | ---------------- | -------------------------------------------------------------------------- |
 | `check-inactivity-remind` | Daily at 9:00 AM | Checks for users inactive for 3+ days and sends reminder emails via Resend |
 
 Inngest provides automatic retries (3 attempts), step-based execution for reliability, and date-based idempotency keys to prevent duplicate emails.
@@ -148,5 +151,7 @@ src/
 ```
 
 <Callout type="info">
-Route groups `(protected)` and `(public)` use Next.js layout nesting. The protected group wraps all pages in an auth check layout that redirects unauthenticated users to sign-in.
+  Route groups `(protected)` and `(public)` use Next.js layout nesting. The
+  protected group wraps all pages in an auth check layout that redirects
+  unauthenticated users to sign-in.
 </Callout>

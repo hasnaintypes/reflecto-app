@@ -1,11 +1,12 @@
-import { Callout, Steps, Tabs } from 'nextra/components'
+import { Callout, Steps, Tabs } from "nextra/components";
 
 # Rich Text Editor
 
 Reflecto's editor is built on [TipTap](https://tiptap.dev), providing a distraction-free writing experience with markdown shortcuts, inline formatting, smart extraction of tags and people, and automatic saving.
 
 <Callout type="info">
-The editor converts markdown as you type, so you never need to switch between editing and preview modes.
+  The editor converts markdown as you type, so you never need to switch between
+  editing and preview modes.
 </Callout>
 
 ---
@@ -14,14 +15,14 @@ The editor converts markdown as you type, so you never need to switch between ed
 
 When you select text, a floating toolbar appears above your selection:
 
-| Button | Action |
-|--------|--------|
-| **B** | Bold |
-| **I** | Italic |
-| **U** | Underline |
-| **H1, H2, H3** | Heading levels |
-| **Bullet list** | Unordered list |
-| **Link** | Insert or edit a hyperlink |
+| Button          | Action                     |
+| --------------- | -------------------------- |
+| **B**           | Bold                       |
+| **I**           | Italic                     |
+| **U**           | Underline                  |
+| **H1, H2, H3**  | Heading levels             |
+| **Bullet list** | Unordered list             |
+| **Link**        | Insert or edit a hyperlink |
 
 The toolbar positions itself above your selection so it never obscures your text.
 
@@ -31,31 +32,31 @@ The toolbar positions itself above your selection so it never obscures your text
 
 Type these patterns followed by a space or enter to convert them instantly:
 
-| Shortcut | Result |
-|----------|--------|
-| `# ` | Heading 1 |
-| `## ` | Heading 2 |
-| `### ` | Heading 3 |
-| `**text**` | **Bold** |
-| `*text*` | *Italic* |
-| `- ` or `* ` | Bullet list |
-| `> ` | Blockquote |
-| `---` | Horizontal rule |
-| `[text](url)` | Hyperlink |
+| Shortcut      | Result          |
+| ------------- | --------------- |
+| `# `          | Heading 1       |
+| `## `         | Heading 2       |
+| `### `        | Heading 3       |
+| `**text**`    | **Bold**        |
+| `*text*`      | _Italic_        |
+| `- ` or `* `  | Bullet list     |
+| `> `          | Blockquote      |
+| `---`         | Horizontal rule |
+| `[text](url)` | Hyperlink       |
 
 ---
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + B` | **Bold** |
-| `Ctrl/Cmd + I` | *Italic* |
-| `Ctrl/Cmd + U` | Underline |
-| `Ctrl/Cmd + K` | Insert or edit link |
-| `Ctrl/Cmd + Z` | Undo |
-| `Ctrl/Cmd + Shift + Z` | Redo |
-| `Ctrl/Cmd + S` | Manual save |
+| Shortcut               | Action              |
+| ---------------------- | ------------------- |
+| `Ctrl/Cmd + B`         | **Bold**            |
+| `Ctrl/Cmd + I`         | _Italic_            |
+| `Ctrl/Cmd + U`         | Underline           |
+| `Ctrl/Cmd + K`         | Insert or edit link |
+| `Ctrl/Cmd + Z`         | Undo                |
+| `Ctrl/Cmd + Shift + Z` | Redo                |
+| `Ctrl/Cmd + S`         | Manual save         |
 
 ---
 
@@ -75,6 +76,7 @@ Use arrow keys to navigate, press Enter to select, or keep typing to create a ne
 ### Auto-extraction on save
 
 When you save, mentioned people are extracted and linked to the entry. They appear on the [People page](/docs/writing/people).
+
 </Steps>
 
 ```markdown
@@ -101,6 +103,7 @@ Choose an existing tag or keep typing to create a new one.
 ### Auto-extraction on save
 
 Tags are extracted when you save and link the entry to the [Tags page](/docs/writing/tags).
+
 </Steps>
 
 ```markdown
@@ -115,15 +118,18 @@ Tags are case-insensitive and support letters, numbers, and hyphens.
 
 Add images to any entry through drag-and-drop, clipboard paste, or the toolbar button.
 
-<Tabs items={['Drag & Drop', 'Paste', 'Toolbar']}>
+<Tabs items={["Drag & Drop", "Paste", "Toolbar"]}>
   <Tabs.Tab>
-    Drag an image file from your file explorer directly into the editor. It uploads automatically and appears inline.
+    Drag an image file from your file explorer directly into the editor. It
+    uploads automatically and appears inline.
   </Tabs.Tab>
   <Tabs.Tab>
-    Copy an image (screenshot, web image) and press `Ctrl/Cmd + V` in the editor. The image uploads and appears at the cursor.
+    Copy an image (screenshot, web image) and press `Ctrl/Cmd + V` in the
+    editor. The image uploads and appears at the cursor.
   </Tabs.Tab>
   <Tabs.Tab>
-    Click the image button in the toolbar, select a file from your device, and it inserts at the cursor position.
+    Click the image button in the toolbar, select a file from your device, and
+    it inserts at the cursor position.
   </Tabs.Tab>
 </Tabs>
 
@@ -134,7 +140,8 @@ Add images to any entry through drag-and-drop, clipboard paste, or the toolbar b
 Images are resizable after upload -- drag the corners to adjust while maintaining aspect ratio.
 
 <Callout type="warning">
-Images are stored on a CDN with secure, private links. Only you can access your uploaded images.
+  Images are stored on a CDN with secure, private links. Only you can access
+  your uploaded images.
 </Callout>
 
 ---
@@ -150,7 +157,8 @@ Your entries save automatically after 3 seconds of inactivity. The cloud icon in
 Press `Ctrl/Cmd + S` to trigger an immediate save without waiting for the debounce timer.
 
 <Callout>
-If you try to close the page with unsaved changes, a warning dialog will ask you to confirm before leaving.
+  If you try to close the page with unsaved changes, a warning dialog will ask
+  you to confirm before leaving.
 </Callout>
 
 When you save, the system extracts tags and people from your content, updates metadata, and syncs everything to the cloud.

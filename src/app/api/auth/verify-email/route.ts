@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
 
     if (!verificationToken) {
       return NextResponse.redirect(
-        new URL("/auth/verify-email?error=Invalid or expired token", request.url),
+        new URL(
+          "/auth/verify-email?error=Invalid or expired token",
+          request.url,
+        ),
       );
     }
 
@@ -36,7 +39,10 @@ export async function GET(request: NextRequest) {
         },
       });
       return NextResponse.redirect(
-        new URL("/auth/verify-email?error=Token has expired. Please sign up again.", request.url),
+        new URL(
+          "/auth/verify-email?error=Token has expired. Please sign up again.",
+          request.url,
+        ),
       );
     }
 

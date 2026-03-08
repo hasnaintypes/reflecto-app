@@ -25,7 +25,9 @@ export class ImageKitStorageService implements IStorageService {
       return result as ImageKitUploadResponse;
     } catch (error) {
       console.error("Storage upload failed:", error);
-      throw new Error(`Failed to upload file: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Failed to upload file: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -34,7 +36,9 @@ export class ImageKitStorageService implements IStorageService {
       await imagekitClient.files.delete(fileId);
     } catch (error) {
       console.error("Storage delete failed:", error);
-      throw new Error(`Failed to delete file: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Failed to delete file: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 

@@ -72,16 +72,14 @@ export const entryRouter = createTRPCRouter({
   /**
    * Get insights stats (server-side aggregation)
    */
-  getInsightsStats: protectedProcedure
-    .query(async ({ ctx }) => {
-      return entryService.getInsightsStats(ctx.db, ctx.session.user.id);
-    }),
+  getInsightsStats: protectedProcedure.query(async ({ ctx }) => {
+    return entryService.getInsightsStats(ctx.db, ctx.session.user.id);
+  }),
 
   /**
    * Get a random old entry for memory lane
    */
-  getRandomOldEntry: protectedProcedure
-    .query(async ({ ctx }) => {
-      return entryService.getRandomOldEntry(ctx.db, ctx.session.user.id);
-    }),
+  getRandomOldEntry: protectedProcedure.query(async ({ ctx }) => {
+    return entryService.getRandomOldEntry(ctx.db, ctx.session.user.id);
+  }),
 });

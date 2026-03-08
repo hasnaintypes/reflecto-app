@@ -1,4 +1,4 @@
-import { Callout, Tabs } from 'nextra/components'
+import { Callout, Tabs } from "nextra/components";
 
 # Database Schema
 
@@ -30,21 +30,22 @@ User
 
 The central model. All six workspace types share a single table, differentiated by `type` and `metadata`.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `userId` | `String` | Owner reference |
-| `type` | `EntryType` enum | `journal`, `dream`, `highlight`, `idea`, `wisdom`, `note` |
-| `title` | `String?` | Optional title (max 200 chars) |
-| `content` | `Text?` | HTML content from TipTap (max 50,000 chars) |
-| `isStarred` | `Boolean` | Favorited by user |
-| `editorMode` | `String?` | `"bullet"` or `"simple"` |
-| `metadata` | `Json?` | Type-specific fields (see Metadata Pattern below) |
-| `createdAt` | `DateTime` | Creation timestamp |
-| `updatedAt` | `DateTime` | Last modification |
-| `deletedAt` | `DateTime?` | Soft delete marker |
+| Field        | Type             | Description                                               |
+| ------------ | ---------------- | --------------------------------------------------------- |
+| `id`         | `String` (cuid)  | Primary key                                               |
+| `userId`     | `String`         | Owner reference                                           |
+| `type`       | `EntryType` enum | `journal`, `dream`, `highlight`, `idea`, `wisdom`, `note` |
+| `title`      | `String?`        | Optional title (max 200 chars)                            |
+| `content`    | `Text?`          | HTML content from TipTap (max 50,000 chars)               |
+| `isStarred`  | `Boolean`        | Favorited by user                                         |
+| `editorMode` | `String?`        | `"bullet"` or `"simple"`                                  |
+| `metadata`   | `Json?`          | Type-specific fields (see Metadata Pattern below)         |
+| `createdAt`  | `DateTime`       | Creation timestamp                                        |
+| `updatedAt`  | `DateTime`       | Last modification                                         |
+| `deletedAt`  | `DateTime?`      | Soft delete marker                                        |
 
 **Indexes:**
+
 - `(userId, type, createdAt DESC)` -- List entries by type
 - `(userId, createdAt DESC)` -- Timeline queries
 - `(userId, isStarred)` -- Starred filter
@@ -53,29 +54,30 @@ The central model. All six workspace types share a single table, differentiated 
 
 ### User
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `email` | `String` (unique) | Login email |
-| `name` | `String?` | Display name |
-| `emailVerified` | `DateTime?` | Verification timestamp |
-| `image` | `String?` | Avatar URL |
-| `hashedPassword` | `String?` | bcrypt hash (null for OAuth-only users) |
-| `createdAt` | `DateTime` | Registration date |
-| `updatedAt` | `DateTime` | Last profile update |
+| Field            | Type              | Description                             |
+| ---------------- | ----------------- | --------------------------------------- |
+| `id`             | `String` (cuid)   | Primary key                             |
+| `email`          | `String` (unique) | Login email                             |
+| `name`           | `String?`         | Display name                            |
+| `emailVerified`  | `DateTime?`       | Verification timestamp                  |
+| `image`          | `String?`         | Avatar URL                              |
+| `hashedPassword` | `String?`         | bcrypt hash (null for OAuth-only users) |
+| `createdAt`      | `DateTime`        | Registration date                       |
+| `updatedAt`      | `DateTime`        | Last profile update                     |
 
 ### Attachment
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `entryId` | `String` | Linked entry |
-| `userId` | `String` | Owner reference |
-| `fileUrl` | `String` | ImageKit CDN URL |
-| `fileType` | `String` | MIME type (`image/png`, etc.) |
-| `fileSize` | `Int` | Size in bytes |
-| `thumbnailUrl` | `String?` | Auto-generated thumbnail URL |
-| `createdAt` | `DateTime` | Upload timestamp |
+| Field          | Type            | Description                   |
+| -------------- | --------------- | ----------------------------- |
+| `id`           | `String` (cuid) | Primary key                   |
+| `entryId`      | `String`        | Linked entry                  |
+| `userId`       | `String`        | Owner reference               |
+| `fileUrl`      | `String`        | ImageKit CDN URL              |
+| `fileType`     | `String`        | MIME type (`image/png`, etc.) |
+| `fileSize`     | `Int`           | Size in bytes                 |
+| `thumbnailUrl` | `String?`       | Auto-generated thumbnail URL  |
+| `createdAt`    | `DateTime`      | Upload timestamp              |
+
 </Tabs.Tab>
 
 <Tabs.Tab>
@@ -83,14 +85,14 @@ The central model. All six workspace types share a single table, differentiated 
 
 Tags are auto-extracted from `#hashtag` syntax in entry content and can be managed manually.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `userId` | `String` | Owner reference |
-| `name` | `String` | Tag name (unique per user) |
-| `group` | `String?` | Grouping label |
-| `color` | `String?` | Display color |
-| `createdAt` | `DateTime` | Creation date |
+| Field       | Type            | Description                |
+| ----------- | --------------- | -------------------------- |
+| `id`        | `String` (cuid) | Primary key                |
+| `userId`    | `String`        | Owner reference            |
+| `name`      | `String`        | Tag name (unique per user) |
+| `group`     | `String?`       | Grouping label             |
+| `color`     | `String?`       | Display color              |
+| `createdAt` | `DateTime`      | Creation date              |
 
 **Constraint:** `@@unique([userId, name])` -- Each user's tags are unique by name.
 
@@ -100,17 +102,18 @@ Tags are auto-extracted from `#hashtag` syntax in entry content and can be manag
 
 People are auto-extracted from `@mention` syntax in entry content.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `userId` | `String` | Owner reference |
-| `name` | `String` | Person name (unique per user) |
-| `group` | `String?` | Grouping label |
-| `createdAt` | `DateTime` | Creation date |
+| Field       | Type            | Description                   |
+| ----------- | --------------- | ----------------------------- |
+| `id`        | `String` (cuid) | Primary key                   |
+| `userId`    | `String`        | Owner reference               |
+| `name`      | `String`        | Person name (unique per user) |
+| `group`     | `String?`       | Grouping label                |
+| `createdAt` | `DateTime`      | Creation date                 |
 
 **Constraint:** `@@unique([userId, name])` -- Each user's people are unique by name.
 
 **Relationship:** Many-to-many with Entry via the implicit `_EntryPeople` join table.
+
 </Tabs.Tab>
 
 <Tabs.Tab>
@@ -118,13 +121,13 @@ People are auto-extracted from `@mention` syntax in entry content.
 
 Tracks daily entry counts for heatmap visualization.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `userId` | `String` | Owner reference |
-| `date` | `Date` | Calendar date |
-| `entryCount` | `Int` | Total entries that day |
-| `entryTypes` | `Json?` | Breakdown by type: `{ journal: 3, note: 1 }` |
+| Field        | Type            | Description                                  |
+| ------------ | --------------- | -------------------------------------------- |
+| `id`         | `String` (cuid) | Primary key                                  |
+| `userId`     | `String`        | Owner reference                              |
+| `date`       | `Date`          | Calendar date                                |
+| `entryCount` | `Int`           | Total entries that day                       |
+| `entryTypes` | `Json?`         | Breakdown by type: `{ journal: 3, note: 1 }` |
 
 **Constraint:** `@@unique([userId, date])` -- One log per user per day.
 
@@ -132,30 +135,31 @@ Tracks daily entry counts for heatmap visualization.
 
 Tracks consecutive days of writing activity.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `userId` | `String` | Owner reference |
-| `startDate` | `Date` | Streak start |
-| `endDate` | `Date?` | Streak end (null if active) |
-| `length` | `Int` | Consecutive day count |
-| `isActive` | `Boolean` | Whether this is the current streak |
-| `createdAt` | `DateTime` | Record creation |
+| Field       | Type            | Description                        |
+| ----------- | --------------- | ---------------------------------- |
+| `id`        | `String` (cuid) | Primary key                        |
+| `userId`    | `String`        | Owner reference                    |
+| `startDate` | `Date`          | Streak start                       |
+| `endDate`   | `Date?`         | Streak end (null if active)        |
+| `length`    | `Int`           | Consecutive day count              |
+| `isActive`  | `Boolean`       | Whether this is the current streak |
+| `createdAt` | `DateTime`      | Record creation                    |
 
 **Indexes:** `(userId, isActive)` for current streak lookup, `(userId, endDate)` for historical queries.
 
 ### UserPreferences
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `userId` | `String` (unique) | One preferences record per user |
-| `theme` | `String` | `"light"`, `"dark"`, or `"system"` |
-| `dailyReminderTime` | `String?` | HH:mm format |
-| `notificationEnabled` | `Boolean` | Email notification opt-in |
-| `fontSize` | `String` | `"small"`, `"medium"`, or `"large"` |
-| `preferences` | `Json?` | Additional settings as JSONB |
-| `updatedAt` | `DateTime` | Last change |
+| Field                 | Type              | Description                         |
+| --------------------- | ----------------- | ----------------------------------- |
+| `id`                  | `String` (cuid)   | Primary key                         |
+| `userId`              | `String` (unique) | One preferences record per user     |
+| `theme`               | `String`          | `"light"`, `"dark"`, or `"system"`  |
+| `dailyReminderTime`   | `String?`         | HH:mm format                        |
+| `notificationEnabled` | `Boolean`         | Email notification opt-in           |
+| `fontSize`            | `String`          | `"small"`, `"medium"`, or `"large"` |
+| `preferences`         | `Json?`           | Additional settings as JSONB        |
+| `updatedAt`           | `DateTime`        | Last change                         |
+
 </Tabs.Tab>
 
 <Tabs.Tab>
@@ -163,15 +167,15 @@ Tracks consecutive days of writing activity.
 
 NextAuth OAuth provider accounts. One user can have multiple accounts (Google + GitHub).
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
-| `userId` | `String` | Linked user |
-| `provider` | `String` | `"google"`, `"github"` |
-| `providerAccountId` | `String` | Provider's user ID |
-| `access_token` | `Text?` | OAuth access token |
-| `refresh_token` | `Text?` | OAuth refresh token |
-| `expires_at` | `Int?` | Token expiration (epoch) |
+| Field               | Type            | Description              |
+| ------------------- | --------------- | ------------------------ |
+| `id`                | `String` (cuid) | Primary key              |
+| `userId`            | `String`        | Linked user              |
+| `provider`          | `String`        | `"google"`, `"github"`   |
+| `providerAccountId` | `String`        | Provider's user ID       |
+| `access_token`      | `Text?`         | OAuth access token       |
+| `refresh_token`     | `Text?`         | OAuth refresh token      |
+| `expires_at`        | `Int?`          | Token expiration (epoch) |
 
 **Constraint:** `@@unique([provider, providerAccountId])`
 
@@ -179,24 +183,25 @@ NextAuth OAuth provider accounts. One user can have multiple accounts (Google + 
 
 Database-backed sessions for NextAuth.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `String` (cuid) | Primary key |
+| Field          | Type              | Description          |
+| -------------- | ----------------- | -------------------- |
+| `id`           | `String` (cuid)   | Primary key          |
 | `sessionToken` | `String` (unique) | Token sent to client |
-| `userId` | `String` | Session owner |
-| `expires` | `DateTime` | Expiration timestamp |
+| `userId`       | `String`          | Session owner        |
+| `expires`      | `DateTime`        | Expiration timestamp |
 
 ### VerificationToken
 
 Used for email verification and password reset flows.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `identifier` | `String` | Email address |
-| `token` | `String` (unique) | Random verification token |
-| `expires` | `DateTime` | Token expiration |
+| Field        | Type              | Description               |
+| ------------ | ----------------- | ------------------------- |
+| `identifier` | `String`          | Email address             |
+| `token`      | `String` (unique) | Random verification token |
+| `expires`    | `DateTime`        | Token expiration          |
 
 **Constraint:** `@@unique([identifier, token])`
+
 </Tabs.Tab>
 </Tabs>
 
@@ -226,19 +231,21 @@ await db.entry.update({
 
 All six entry types share the `Entry` table. Type-specific fields are stored in the `metadata` JSONB column, validated per type:
 
-| Entry Type | Metadata Fields |
-|-----------|----------------|
-| **Journal** | `category` (string), `mood` (1-5), `tags` (string[]) |
-| **Dream** | _(none)_ |
-| **Highlight** | `importance` ("high", "medium", "low"), `linked_entry_id` |
-| **Idea** | `status` (string) |
-| **Wisdom** | `wisdom_type` ("quote", "thought", "fact", "excerpt", "lesson"), `author`, `source` |
-| **Note** | `is_pinned` (boolean), `color` (string) |
+| Entry Type    | Metadata Fields                                                                     |
+| ------------- | ----------------------------------------------------------------------------------- |
+| **Journal**   | `category` (string), `mood` (1-5), `tags` (string[])                                |
+| **Dream**     | _(none)_                                                                            |
+| **Highlight** | `importance` ("high", "medium", "low"), `linked_entry_id`                           |
+| **Idea**      | `status` (string)                                                                   |
+| **Wisdom**    | `wisdom_type` ("quote", "thought", "fact", "excerpt", "lesson"), `author`, `source` |
+| **Note**      | `is_pinned` (boolean), `color` (string)                                             |
 
 Metadata is validated at the service layer using type-specific Zod schemas before persistence. Invalid fields are stripped silently.
 
 <Callout type="info">
-This single-table approach avoids complex joins and makes cross-type queries (timeline, search, insights) efficient while preserving type-specific behavior through validated metadata.
+  This single-table approach avoids complex joins and makes cross-type queries
+  (timeline, search, insights) efficient while preserving type-specific behavior
+  through validated metadata.
 </Callout>
 
 ### Automatic Extraction
@@ -271,5 +278,7 @@ pnpm db:push
 ```
 
 <Callout type="warning">
-Use `db:push` only during early development. For production deployments, always use `db:generate` to create migration files that can be reviewed and version-controlled.
+  Use `db:push` only during early development. For production deployments,
+  always use `db:generate` to create migration files that can be reviewed and
+  version-controlled.
 </Callout>

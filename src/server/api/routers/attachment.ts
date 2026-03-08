@@ -37,7 +37,10 @@ export const attachmentRouter = createTRPCRouter({
             },
           );
         } catch (err) {
-          console.error("DB registration failed after upload, file may be orphaned:", err);
+          console.error(
+            "DB registration failed after upload, file may be orphaned:",
+            err,
+          );
           throw err;
         }
       }

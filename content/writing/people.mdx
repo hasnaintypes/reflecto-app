@@ -1,11 +1,12 @@
-import { Callout, Steps, Tabs } from 'nextra/components'
+import { Callout, Steps, Tabs } from "nextra/components";
 
 # People & Mentions
 
 Track the people in your life by mentioning them with `@` in any entry. Reflecto automatically extracts mentions when you save and builds a searchable record of your interactions over time.
 
 <Callout type="info">
-Your people list is completely private. No one else can see who you mention or how often.
+  Your people list is completely private. No one else can see who you mention or
+  how often.
 </Callout>
 
 ---
@@ -26,6 +27,7 @@ The dropdown filters to show matches along with mention counts, so you can see h
 ### Select or create
 
 Press Enter to select an existing person, or keep typing to create a new one. New people are added to your library when you save the entry.
+
 </Steps>
 
 ```markdown
@@ -43,13 +45,15 @@ Saving this entry extracts three people: @Alice, @Bob, and @Sarah.
 Names support letters, numbers, hyphens, and apostrophes. Spaces and other special characters are not allowed.
 
 **Guidelines:**
+
 - **Be consistent** -- decide on a convention and stick with it (first name, full name with hyphens, or role)
 - **Use hyphens** for multi-word names: `@Alice-Smith` not `@Alice Smith`
 - **Capitalize properly** -- `@Alice` reads better than `@alice`
 - **Disambiguate** when needed: `@Mike-Work` and `@Mike-Gym` for people with the same first name
 
 <Callout type="warning">
-A space after `@` breaks the mention. Type the name immediately after the `@` symbol with no gap.
+  A space after `@` breaks the mention. Type the name immediately after the `@`
+  symbol with no gap.
 </Callout>
 
 ---
@@ -81,6 +85,7 @@ Navigate to **People** in the sidebar to manage everyone you have mentioned.
 ### Sorting
 
 Sort your people list by:
+
 - **Alphabetical** (A-Z or Z-A)
 - **Mention count** (most mentioned or least mentioned)
 
@@ -118,16 +123,17 @@ Enter a name like "Work", "Family", or "Friends".
 ### Done
 
 People appear under their group header on the People page.
+
 </Steps>
 
 Groups are purely for organization on the People page. They do not affect how mentions work in entries. You can rename groups, move people between them, and delete groups without losing any people.
 
 **Example groups:**
 
-| Group | People |
-|-------|--------|
-| Work | @Boss, @Alice, @Team-Lead, @Mentor |
-| Family | @Mom, @Dad, @Sister, @Brother |
+| Group   | People                              |
+| ------- | ----------------------------------- |
+| Work    | @Boss, @Alice, @Team-Lead, @Mentor  |
+| Family  | @Mom, @Dad, @Sister, @Brother       |
 | Friends | @Best-Friend, @Gym-Buddy, @Neighbor |
 
 ---
@@ -139,7 +145,8 @@ Groups are purely for organization on the People page. They do not affect how me
 To rename a person, click them on the People page, then click the edit button. Enter the new name and confirm. The rename updates across all entries that mention them.
 
 <Callout>
-If you rename a person to match an existing name, the two are merged automatically. All entries from both people combine under the single name.
+  If you rename a person to match an existing name, the two are merged
+  automatically. All entries from both people combine under the single name.
 </Callout>
 
 **Example:** You have @Alice (30 mentions) and @Alice-Work (15 mentions). Rename @Alice-Work to @Alice, and you now have @Alice with 45 mentions.
@@ -149,7 +156,8 @@ If you rename a person to match an existing name, the two are merged automatical
 To delete a person, open their detail view and click the delete button. A confirmation dialog warns that the person will be removed from all entries.
 
 <Callout type="warning">
-Deleting a person is permanent and removes them from every entry. Consider renaming instead if you might want the data later.
+  Deleting a person is permanent and removes them from every entry. Consider
+  renaming instead if you might want the data later.
 </Callout>
 
 ---
@@ -172,6 +180,7 @@ Deleting a person is permanent and removes them from every entry. Consider renam
     ```
 
     Over time, your People page reveals patterns in who you interact with most and when.
+
   </Tabs.Tab>
   <Tabs.Tab>
     **Gratitude for People**
@@ -185,6 +194,7 @@ Deleting a person is permanent and removes them from every entry. Consider renam
     ```
 
     Searching a person later shows all the times you were grateful for them.
+
   </Tabs.Tab>
   <Tabs.Tab>
     **Relationship Reflection**
@@ -200,6 +210,7 @@ Deleting a person is permanent and removes them from every entry. Consider renam
     ```
 
     Combining @mentions with #tags creates rich, searchable relationship context.
+
   </Tabs.Tab>
 </Tabs>
 
@@ -215,7 +226,9 @@ Your people data is private by design:
 - **Your data** -- entries and mentions belong to you alone
 
 <Callout>
-Reflecto is a personal reflection tool. While tracking relationships can surface insights, it is not a substitute for genuine communication with the people in your life. Use mention data to prompt real-world connection.
+  Reflecto is a personal reflection tool. While tracking relationships can
+  surface insights, it is not a substitute for genuine communication with the
+  people in your life. Use mention data to prompt real-world connection.
 </Callout>
 
 ---
