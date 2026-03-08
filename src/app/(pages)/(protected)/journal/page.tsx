@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Calendar as CalendarIcon,
@@ -197,13 +198,13 @@ export default function JournalPage() {
               <span className="lowercase">
                 Not sure where to start? Check the
               </span>
-              <a
-                href="#"
+              <Link
+                href="/docs/writing/journal"
                 className="group text-muted-foreground decoration-border/60 hover:text-primary hover:decoration-primary/40 flex items-center gap-1 underline underline-offset-4 transition-colors"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">journaling guide.</span>
-              </a>
+              </Link>
             </div>
 
             <div className="pt-6">

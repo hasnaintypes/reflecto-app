@@ -219,8 +219,8 @@ export default function DreamsPage() {
 
             <div className="text-muted-foreground/80 flex items-center gap-2 text-sm">
               <span>More info in our</span>
-              <a
-                href="#"
+              <Link
+                href="/docs/workspaces/dreams"
                 className="group text-muted-foreground hover:text-primary hover:decoration-primary/50 inline-flex items-center gap-1.5 transition-all"
               >
                 <FileText
@@ -228,7 +228,7 @@ export default function DreamsPage() {
                   className="transition-transform group-hover:-rotate-12"
                 />
                 documentation
-              </a>
+              </Link>
             </div>
           </div>
         )}

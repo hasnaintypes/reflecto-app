@@ -367,13 +367,13 @@ export default function WisdomPage() {
 
             <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
               <span className="lowercase">More info in our</span>
-              <a
-                href="#"
+              <Link
+                href="/docs/workspaces/wisdom"
                 className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#F472B6] hover:decoration-[#F472B6]/40"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">documentation.</span>
-              </a>
+              </Link>
             </div>
 
             {/* Multi-Action Button Stack from reference */}

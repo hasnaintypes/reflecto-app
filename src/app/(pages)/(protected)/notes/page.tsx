@@ -219,13 +219,13 @@ export default function NotesPage() {
             {/* Documentation Link */}
             <div className="text-muted-foreground/80 flex items-center gap-1.5 pt-2 text-sm">
               <span className="lowercase">More info in the</span>
-              <a
-                href="#"
+              <Link
+                href="/docs/workspaces/notes"
                 className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#A78BFA] hover:decoration-[#A78BFA]/40"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">documentation.</span>
-              </a>
+              </Link>
             </div>
 
             {/* Custom Styled Add Button from reference */}

@@ -16,6 +16,7 @@ export default function AppHeader() {
             { name: "Features", href: "#features" },
             { name: "Pricing", href: "#pricing" },
             { name: "About", href: "/about" },
+            { name: "Contact", href: "/contact" },
           ].map((item) => (
             <Link
               key={item.name}
@@ -37,7 +38,7 @@ export default function AppHeader() {
           <Link href="/auth/sign-up">
             <button className="bg-primary text-primary-foreground hover:shadow-primary/20 group relative inline-flex cursor-pointer items-center gap-2 overflow-hidden rounded-full px-5 py-2.5 text-sm font-semibold transition-all hover:scale-105 active:scale-95">
               <span>Get Started</span>
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+              <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
             </button>
           </Link>
         </div>

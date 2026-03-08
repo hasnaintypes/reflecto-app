@@ -74,12 +74,12 @@ export default function CustomFooter() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/docs"
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Documentation
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -105,20 +105,20 @@ export default function CustomFooter() {
                   </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/privacy"
                     className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
                   >
                     Privacy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/contact"
                     className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

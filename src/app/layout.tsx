@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 
-import { type Metadata } from "next";
+import { type Metadata, type Viewport } from "next";
 import { DM_Sans, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
@@ -18,12 +18,15 @@ export const metadata: Metadata = {
     { rel: "apple-touch-icon", url: "/icons/apple-touch-icon.png" },
   ],
   manifest: "/manifest.json",
-  themeColor: "#86A694",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Reflecto",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#86A694",
 };
 
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });

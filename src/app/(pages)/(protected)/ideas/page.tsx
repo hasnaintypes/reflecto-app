@@ -209,13 +209,13 @@ export default function IdeasPage() {
 
             <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
               <span className="lowercase">More info in our</span>
-              <a
-                href="#"
+              <Link
+                href="/docs/workspaces/ideas"
                 className="group text-muted-foreground decoration-border/60 flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-[#10B981] hover:decoration-[#10B981]/40"
               >
                 <FileText size={14} className="opacity-70" />
                 <span className="lowercase">documentation.</span>
-              </a>
+              </Link>
             </div>
 
             <div className="pt-6">

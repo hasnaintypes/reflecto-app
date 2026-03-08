@@ -263,13 +263,13 @@ export default function ReflectPage() {
       <div className="border-border mt-24 border-t pt-8">
         <div className="text-muted-foreground/80 flex items-center gap-1.5 text-sm">
           <span className="lowercase">Curious about the process?</span>
-          <a
-            href="#"
+          <Link
+            href="/docs/insights"
             className="group text-muted-foreground decoration-border/60 hover:text-primary hover:decoration-primary/40 flex items-center gap-1 underline underline-offset-4 transition-colors"
           >
             <FileText size={14} className="opacity-70" />
             <span className="lowercase">read the guide.</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
