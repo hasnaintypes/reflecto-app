@@ -1,18 +1,30 @@
-import { format, eachDayOfInterval, subWeeks, isSameDay } from "date-fns";
+import { format, eachDayOfInterval, subWeeks } from "date-fns";
 import { motion } from "framer-motion";
-import { type InsightsEntry } from "@/types/entry.types";
 
 interface HeatmapProps {
-  entries: InsightsEntry[];
+  activityData: { date: Date; entryCount: number }[];
+  totalEntries: number;
+  currentStreak: number;
 }
 
-export function Heatmap({ entries }: HeatmapProps) {
+export function Heatmap({
+  activityData,
+  totalEntries,
+  currentStreak,
+}: HeatmapProps) {
   const weeksToShow = 52;
   const endDate = new Date();
   const startDate = subWeeks(endDate, weeksToShow - 1);
   startDate.setDate(startDate.getDate() - startDate.getDay() + 1);
 
   const days = eachDayOfInterval({ start: startDate, end: endDate });
+
+  // Build a lookup map from activityData for O(1) access
+  const activityMap = new Map<string, number>();
+  for (const entry of activityData) {
+    const key = format(new Date(entry.date), "yyyy-MM-dd");
+    activityMap.set(key, entry.entryCount);
+  }
 
   const getLevel = (count: number) => {
     if (count === 0) return 0;
@@ -35,34 +47,6 @@ export function Heatmap({ entries }: HeatmapProps) {
   for (let i = 0; i < weeksToShow; i++) {
     const week = days.slice(i * 7, (i + 1) * 7);
     if (week.length > 0) heatmapData.push(week);
-  }
-
-  // Calculate stats
-  const totalEntries = entries.length;
-
-  // Calculate streak
-  let currentStreak = 0;
-  const checkDate = new Date();
-  checkDate.setHours(0, 0, 0, 0);
-
-  // If no entry today, start checking from yesterday
-  const hasEntryToday = entries.some((e) =>
-    isSameDay(new Date(e.createdAt), checkDate),
-  );
-  if (!hasEntryToday) {
-    checkDate.setDate(checkDate.getDate() - 1);
-  }
-
-  while (true) {
-    const hasEntry = entries.some((e) =>
-      isSameDay(new Date(e.createdAt), checkDate),
-    );
-    if (hasEntry) {
-      currentStreak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    } else {
-      break;
-    }
   }
 
   const months = [
@@ -119,9 +103,8 @@ export function Heatmap({ entries }: HeatmapProps) {
               {heatmapData.map((week, weekIndex) => (
                 <div key={weekIndex} className="flex flex-col gap-[5px]">
                   {week.map((day, dayIndex) => {
-                    const count = entries.filter((e) =>
-                      isSameDay(new Date(e.createdAt), day),
-                    ).length;
+                    const key = format(day, "yyyy-MM-dd");
+                    const count = activityMap.get(key) ?? 0;
                     const level = getLevel(count);
                     return (
                       <motion.div

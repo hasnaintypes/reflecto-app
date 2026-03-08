@@ -36,6 +36,8 @@ const tabs = [
 export default function InsightsPage() {
   const [activeTab, setActiveTab] = useState("journal");
   const { data: entryData, isLoading } = api.entry.getInsightsStats.useQuery();
+  const { data: heatmapData } = api.insights.getHeatmap.useQuery({});
+  const { data: streakData } = api.insights.getStreak.useQuery();
 
   const entries = React.useMemo(() => entryData?.entries ?? [], [entryData]);
 
@@ -127,7 +129,11 @@ export default function InsightsPage() {
           {/* Heatmap always shows all entries for overall activity? 
               Or should it also filter? Usually heatmap is overall. 
               Let's keep it overall for now as it makes more sense as a "contribution" graph. */}
-          <Heatmap entries={entries} />
+          <Heatmap
+            activityData={heatmapData ?? []}
+            totalEntries={entryData?.totalCount ?? 0}
+            currentStreak={streakData?.currentStreak ?? 0}
+          />
         </section>
 
         <section className="pt-2">
