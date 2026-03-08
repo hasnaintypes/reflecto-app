@@ -1,5 +1,7 @@
 import Holidays from "date-holidays";
 
+const holidayCache = new Map<string, ReturnType<Holidays["getHolidays"]>>();
+
 /**
  * Utility to identify special dates (holidays, observances, etc.)
  * Using date-holidays for comprehensive coverage.
@@ -9,17 +11,22 @@ export interface SpecialDate {
   type: string;
 }
 
-export function getSpecialDetails(date: Date): SpecialDate[] {
+export function getSpecialDetails(date: Date, countryCode = "US"): SpecialDate[] {
   const hd = new Holidays();
 
-  // Initialize with US as a base.
-  hd.init("US");
+  // Initialize with the specified country.
+  hd.init(countryCode);
 
   const targetYear = date.getFullYear();
   const targetMonth = date.getMonth();
   const targetDay = date.getDate();
 
-  const allHolidays = hd.getHolidays(targetYear);
+  const cacheKey = `${countryCode}-${targetYear}`;
+  let allHolidays = holidayCache.get(cacheKey);
+  if (!allHolidays) {
+    allHolidays = hd.getHolidays(targetYear);
+    holidayCache.set(cacheKey, allHolidays);
+  }
   const results: SpecialDate[] = [];
 
   // Find holidays that match the day and month

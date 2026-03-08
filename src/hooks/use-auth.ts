@@ -11,7 +11,7 @@ type SignUpInput = { name: string; email: string; password: string };
 type SignInInput = { email: string; password: string };
 
 export default function useAuth() {
-  const { signIn: setAuthSignIn, signOut: setAuthSignOut } = useAuthStore();
+  const { signOut: setAuthSignOut } = useAuthStore();
 
   // Sign up mutation
   const signUpMutation = useMutation({
@@ -39,15 +39,6 @@ export default function useAuth() {
         email: formData.email,
         password: formData.password,
       });
-      // If sign in is successful, set user in store (dummy user for now, should be replaced with real user data)
-      if (result && typeof result === "object" && "ok" in result && result.ok) {
-        setAuthSignIn({
-          id: formData.email,
-          email: formData.email,
-          name: null,
-          image: null,
-        });
-      }
       return result;
     },
   });
@@ -66,19 +57,11 @@ export default function useAuth() {
           email,
           password,
         });
-        // If sign up returns user data, set it in store
-        if (signUpResult && signUpResult.success && signUpResult.data) {
-          setAuthSignIn({
-            id: signUpResult.data.id,
-            email: signUpResult.data.email,
-            name: signUpResult.data.name ?? null,
-            image: signUpResult.data.image ?? null,
-          });
-        }
-        return signInMutation.mutateAsync({ email, password });
+        // Return signup result directly — don't auto-sign-in (email verification required)
+        return signUpResult;
       }
     },
-    [signInMutation, signUpMutation, setAuthSignIn],
+    [signInMutation, signUpMutation],
   );
 
   const handleSignOut = useCallback(() => {

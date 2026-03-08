@@ -5,6 +5,7 @@ export const AUTH_ERRORS = {
   SERVER_ERROR: "Something went wrong. Please try again later.",
   INVALID_CREDENTIALS: "Invalid email or password.",
   TOO_MANY_REQUESTS: "Too many requests. Please wait and try again.",
+  EMAIL_NOT_VERIFIED: "Please verify your email before signing in.",
 } as const;
 
 export type AuthErrorKey = keyof typeof AUTH_ERRORS;
