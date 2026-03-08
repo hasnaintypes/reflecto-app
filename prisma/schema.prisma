@@ -1,5 +1,4 @@
 // Reflecto Database Schema
-// Version: 2.1 - Based on Actual UI Analysis
 // Learn more: https://pris.ly/d/prisma-schema
 
 generator client {
