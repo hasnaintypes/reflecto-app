@@ -1,0 +1,193 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Charts & Analytics
+
+The Insights page includes four charts and a stats grid that break down your writing patterns. These appear below the activity heatmap and update based on the currently selected tab filter.
+
+<Callout type="info">
+Charts require at least **5 entries** for the selected tab before they appear. Until then, a "Gathering insights..." message shows your progress toward unlocking them.
+</Callout>
+
+---
+
+## Stats Grid
+
+The stats grid sits between the heatmap and the charts. It provides a high-level summary of your writing.
+
+### Primary Card -- Total Volume
+
+The large card on the left displays:
+
+| Metric | Description |
+|--------|-------------|
+| **Total word count** | Combined words across all filtered entries, with a "words" label |
+| **Highlights** | Number of highlight-type entries |
+| **Tags** | Count of unique tags used across filtered entries |
+| **People** | Count of unique people mentioned across filtered entries |
+
+### Secondary Cards
+
+Three smaller cards on the right show:
+
+| Metric | Description |
+|--------|-------------|
+| **Journal age** | Days since your earliest entry |
+| **Writing frequency** | Average entries per week since your first entry |
+| **Word count** | Total words displayed as a compact number (e.g., "12.4k") |
+
+<Callout>
+Stats respond to the active tab filter. Selecting "Dreams" shows stats for dream entries only, while "Tags" and "People" tabs show stats across all entry types.
+</Callout>
+
+---
+
+## Word Count Chart
+
+An **area chart** showing how many words you wrote each month over the past 12 months.
+
+### What It Shows
+
+- **X-axis:** Month labels (JAN through DEC for the trailing 12 months)
+- **Y-axis:** Word count
+- **Fill:** Gradient area under the curve, from accent color to transparent
+- **Average:** Displayed in the top-right corner as "avg. N"
+
+### How Words Are Counted
+
+Words are extracted from entry titles and content. HTML tags are stripped before counting, so formatting markup does not inflate your numbers.
+
+### What to Look For
+
+- **Upward trends** -- You're writing more over time
+- **Seasonal dips** -- Months where life got busy
+- **Consistent volume** -- A sign of a stable writing habit
+- **Spikes** -- Months with particularly deep or frequent entries
+
+---
+
+## Daytime Distribution
+
+A **bar chart** showing when during the day you tend to write, broken into 3-hour blocks.
+
+### Time Blocks
+
+| Block | Hours |
+|-------|-------|
+| 12am | 12:00 AM -- 2:59 AM |
+| 3am | 3:00 AM -- 5:59 AM |
+| 6am | 6:00 AM -- 8:59 AM |
+| 9am | 9:00 AM -- 11:59 AM |
+| 12pm | 12:00 PM -- 2:59 PM |
+| 3pm | 3:00 PM -- 5:59 PM |
+| 6pm | 6:00 PM -- 8:59 PM |
+| 9pm | 9:00 PM -- 11:59 PM |
+
+### How It Works
+
+Each entry is placed into a block based on the hour it was created. The tallest bar represents your peak writing time, and all other bars are normalized relative to it.
+
+Hover over a bar to see the exact entry count for that time block.
+
+### What to Look For
+
+- **Peak writing time** -- The tallest bar is when you're most productive
+- **Morning vs. evening** -- Are you a dawn writer or a night owl?
+- **Spread** -- Writing distributed across the day suggests you capture thoughts as they come
+- **Single peak** -- A dedicated daily writing session at a consistent time
+
+<Callout>
+If you want to establish a writing routine, use this chart to confirm whether your intended time matches your actual behavior.
+</Callout>
+
+---
+
+## Top Tags (Common Themes)
+
+A **horizontal bar chart** showing your 8 most frequently used tags.
+
+### What It Shows
+
+Each row displays:
+- A `#` badge with the tag name
+- A progress bar scaled relative to your most-used tag
+- The raw count of entries using that tag
+
+### What to Look For
+
+- **Dominant themes** -- Which topics do you write about most?
+- **Balance** -- Are you focused on one area or spread across many?
+- **Missing topics** -- Important areas of your life that aren't represented
+- **Tag cleanup opportunities** -- Similar tags that could be merged
+
+### How Tags Are Counted
+
+Tags are extracted from entries when you save them. Each entry that contains a given tag adds 1 to that tag's count. An entry with 3 tags contributes to all 3 tag counts.
+
+<Callout type="info">
+If no tags appear, start using `#hashtags` in your entries. Tags are automatically extracted on save. See [Tags](/docs/writing/tags) for details.
+</Callout>
+
+---
+
+## Top People (Social Circle)
+
+A **horizontal bar chart** showing your 8 most frequently mentioned people.
+
+### What It Shows
+
+Each row displays:
+- An `@` badge with the person's name
+- A progress bar scaled relative to your most-mentioned person
+- The raw count of entries mentioning that person
+
+### What to Look For
+
+- **Key relationships** -- Who appears most in your writing?
+- **Fading connections** -- People who used to appear often but have dropped off
+- **Work vs. personal balance** -- Are your mentions skewed toward one area?
+- **New relationships** -- People who have recently started appearing
+
+### How People Are Counted
+
+People are extracted from `@mentions` in your entries. Each entry mentioning a person adds 1 to that person's count. An entry mentioning 3 people contributes to all 3.
+
+<Callout type="info">
+If no people appear, start using `@mentions` in your entries. People are automatically extracted on save. See [People](/docs/writing/people) for details.
+</Callout>
+
+---
+
+## Using Analytics to Improve Your Habits
+
+### Review Monthly
+
+Set a monthly reminder to check the Insights page. Look for:
+1. Is your word count trending up, down, or flat?
+2. Are you writing at your preferred time of day?
+3. Do your top tags reflect what matters to you right now?
+4. Are important people in your life showing up in your mentions?
+
+### Adjust Your Routine
+
+If the daytime distribution shows you write at random times but want a consistent habit, pick the time block with the most activity and commit to it.
+
+### Diversify Your Topics
+
+If the top tags chart shows heavy concentration on one or two themes, consider branching out. Use different tags for different areas of life: health, career, relationships, learning.
+
+### Track Relationships Intentionally
+
+If the top people chart is empty or sparse, make a habit of using `@mentions` when writing about interactions. Over time, this builds a valuable record of your social connections.
+
+<Callout>
+Analytics are most useful when reviewed periodically, not obsessed over daily. Check in weekly or monthly to spot trends and adjust your habits.
+</Callout>
+
+---
+
+## Related Features
+
+- [Activity Tracking](/docs/insights/activity) -- The heatmap and Reflect page
+- [Writing Streaks](/docs/insights/streaks) -- Consecutive day tracking
+- [Tags](/docs/writing/tags) -- Managing and organizing your tags
+- [People](/docs/writing/people) -- Managing and organizing your mentions

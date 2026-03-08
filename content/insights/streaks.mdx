@@ -1,0 +1,170 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Writing Streaks
+
+Streaks track how many **consecutive days** you have created at least one entry. They are a simple motivational tool -- write something every day, and watch the number climb.
+
+---
+
+## What Is a Streak?
+
+A streak is a count of consecutive days where you saved at least one entry in Reflecto. It does not matter what type of entry you write -- journals, dreams, highlights, ideas, wisdom, and notes all count equally.
+
+| Term | Meaning |
+|------|---------|
+| **Current Streak** | The number of consecutive days ending today (or yesterday, if you haven't written today yet) |
+| **Longest Streak** | Your all-time record for consecutive writing days |
+
+---
+
+## How Streaks Are Calculated
+
+<Steps>
+### You write an entry
+
+Any entry type counts. Save a journal, log a dream, or capture a quick note.
+
+### The day is marked active
+
+Reflecto checks whether you already have an entry for today. If not, this is a new active day.
+
+### The streak extends
+
+If yesterday was also an active day, your current streak increments by one. If yesterday had no entries, a new streak starts at 1.
+
+### Missing a day resets the streak
+
+If a full calendar day passes without any entry, the current streak resets. Your longest streak is preserved as a separate record.
+</Steps>
+
+<Callout type="info">
+The streak calculation considers the current day and works backward. If you haven't written today yet, Reflecto checks from yesterday. This means your streak won't reset until a full day has actually been missed.
+</Callout>
+
+---
+
+## Where Streaks Appear
+
+### StreakBar on the Journal Page
+
+The primary streak display is the **StreakBar** component at the top of the Journal page. It shows:
+
+```
+ [flame] 12 DAY STREAK                    M  T  W  T  F  S  S
+          Best: 34                         .  .  .  .  .  .  .
+```
+
+**Left side:**
+- Flame icon (animated when streak is active, dimmed when at zero)
+- Current streak count with "DAY STREAK" label
+- Your longest streak displayed below as "Best: N"
+
+**Right side:**
+- Last 7 days with single-letter day labels (M, T, W, T, F, S, S)
+- A dot below each day -- lit up if you wrote that day, dark if not
+
+<Callout>
+The StreakBar can be toggled on or off in Settings under Preferences. It is hidden by default and must be enabled.
+</Callout>
+
+### Insights Page
+
+The Insights page shows your current streak below the activity heatmap, alongside total entry count. This gives you both the macro view (heatmap) and the micro view (streak) in one place.
+
+---
+
+## Streak Mechanics in Detail
+
+### What Counts as a Day
+
+A calendar day in your local timezone. Writing at 11:55 PM counts for that day; writing at 12:05 AM counts for the next day.
+
+### Multiple Entries Per Day
+
+Writing more than one entry on the same day does not give you extra streak credit. One entry is enough to mark the day as active.
+
+### Entry Types That Count
+
+All six entry types contribute to streaks:
+
+| Entry Type | Counts? |
+|------------|---------|
+| Journal | Yes |
+| Dream | Yes |
+| Highlight | Yes |
+| Idea | Yes |
+| Wisdom | Yes |
+| Note | Yes |
+
+### Editing vs. Creating
+
+Only **creating** a new entry counts. Editing an existing entry does not extend or maintain your streak.
+
+---
+
+## Building a Streak
+
+### Start Small
+
+Don't aim for pages of prose every day. A single sentence, three bullet points, or a quick highlight are enough to keep the streak alive.
+
+### Use Bullet Mode
+
+On busy days, switch to bulleted mode on the Write page. Five bullets takes under a minute and keeps your streak going.
+
+### Pick a Consistent Time
+
+Anchor your writing to an existing habit:
+- **Morning:** Write while drinking coffee
+- **Lunch:** Log a midday highlight
+- **Evening:** Reflect on the day before bed
+
+### Use Quick Entry Types
+
+When you're short on time, try these fast options:
+- **Note** -- A sentence or two, no metadata needed
+- **Highlight** -- Name one good thing from your day
+- **Wisdom** -- Save a quote you encountered
+
+<Callout type="info">
+The goal is to build a writing habit, not to produce long entries. Even the smallest entry keeps the chain unbroken.
+</Callout>
+
+---
+
+## Recovering from a Broken Streak
+
+Missing a day happens. Here is how to handle it:
+
+1. **Don't dwell on it.** Streaks are motivational tools, not obligations.
+2. **Start again immediately.** Write something today and begin a new streak.
+3. **Your longest streak is preserved.** Even after a reset, your all-time record stays visible.
+4. **Look at the heatmap.** A single gap in an otherwise consistent heatmap is barely noticeable.
+
+<Callout>
+Consistency over months matters more than any individual streak number. A pattern of 5-day streaks with occasional gaps is better than one long streak followed by burnout.
+</Callout>
+
+---
+
+## Streak Milestones
+
+Use these milestones to celebrate progress:
+
+| Milestone | Meaning |
+|-----------|---------|
+| **3 days** | You've started a habit |
+| **7 days** | One full week of writing |
+| **14 days** | Two consecutive weeks |
+| **30 days** | A full month -- the habit is forming |
+| **60 days** | Two months -- writing is becoming routine |
+| **100 days** | A major milestone worth celebrating |
+| **365 days** | A full year of daily writing |
+
+---
+
+## Related Features
+
+- [Activity Tracking](/docs/insights/activity) -- The heatmap provides the visual counterpart to streaks
+- [Charts & Analytics](/docs/insights/analytics) -- See your word count and writing patterns over time
+- [Daily Journal](/docs/writing/journal) -- Where the StreakBar lives and where most writing happens

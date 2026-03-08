@@ -1,0 +1,105 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Insights & Analytics
+
+Reflecto automatically tracks your writing activity and turns it into visual insights. The **Insights** page gives you a bird's-eye view of your journaling habits, while the **Reflect** page surfaces past entries for re-reading.
+
+<Callout type="info">
+All data is collected automatically based on the entries you create. There is nothing to configure -- just write, and Reflecto handles the rest.
+</Callout>
+
+---
+
+## What You'll Find
+
+The Insights page (`/insights`) brings together several views in one place:
+
+| Section | What It Shows |
+|---------|---------------|
+| **Activity Heatmap** | A year-long grid of your writing frequency |
+| **Stats Grid** | Total word count, highlights, unique tags, unique people, journal age, and writing frequency |
+| **Word Count Chart** | Monthly writing volume over the past 12 months |
+| **Daytime Distribution** | When during the day you tend to write |
+| **Top Tags** | Your most frequently used tags |
+| **Top People** | Your most frequently mentioned people |
+
+---
+
+## Filtering by Type
+
+Use the tab bar at the top of the Insights page to focus on a specific entry type:
+
+<Tabs items={['Journal', 'Dreams', 'Highlights', 'Tags', 'People', 'Wisdom']}>
+  <Tabs.Tab>
+    Shows stats and charts for **journal entries** only. This is the default view.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Filters to **dream entries** so you can see how often you record aspirations and goals.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Focuses on **highlight entries** -- your meaningful moments and milestones.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Shows tag-related analytics across **all entry types**, including your most common themes.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Shows people-related analytics across **all entry types**, including your most mentioned contacts.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Filters to **wisdom entries** -- quotes, lessons, and collected knowledge.
+  </Tabs.Tab>
+</Tabs>
+
+<Callout>
+The heatmap always displays overall activity regardless of which tab is selected. Stats and charts update to reflect the active filter.
+</Callout>
+
+---
+
+## The Reflect Page
+
+The **Reflect** page (`/reflect`) is a companion to Insights. Instead of charts, it focuses on re-reading past entries:
+
+- **Yesterday** -- Quick access to what you wrote the day before
+- **This Week** -- All entries from the current week in pill-style cards
+- **Memory Lane** -- A random throwback entry from at least 7 days ago, surfaced for re-reflection
+
+Memory Lane requires at least 10 total entries before throwbacks appear.
+
+---
+
+## Minimum Data Requirements
+
+Some charts require a minimum amount of data to display meaningful results:
+
+- **Insight charts** (word count, daytime distribution, top tags, top people) need **at least 5 entries** before they appear
+- **Memory Lane** on the Reflect page needs **at least 10 entries**
+- The **activity heatmap** and **stats grid** display immediately with any amount of data
+
+<Callout type="info">
+If you see a "Gathering insights..." message with a progress indicator, keep writing. Charts unlock once you reach the 5-entry threshold for the selected tab.
+</Callout>
+
+---
+
+## How Data Is Collected
+
+Reflecto tracks activity automatically:
+
+1. **Every time you save an entry**, it counts toward that day's activity
+2. **Word counts** are calculated from entry titles and content
+3. **Tags and people** are extracted from your entries on save
+4. **Timestamps** determine daytime distribution and heatmap data
+5. **Up to 500 most recent entries** are used for chart calculations
+
+No manual tracking is needed. Write normally and let the data accumulate.
+
+---
+
+## Learn More
+
+Dive deeper into specific aspects of the insights system:
+
+- [Activity Tracking](/docs/insights/activity) -- Heatmap, daily tracking, and the Reflect timeline
+- [Writing Streaks](/docs/insights/streaks) -- Consecutive day tracking and the StreakBar
+- [Charts & Analytics](/docs/insights/analytics) -- Word count, daytime distribution, tags, and people charts

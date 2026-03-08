@@ -1,0 +1,159 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Activity Tracking
+
+Reflecto tracks your writing activity day by day and visualizes it through a heatmap, timeline, and throwback features. Together, these tools help you see your writing patterns at a glance.
+
+---
+
+## Activity Heatmap
+
+The heatmap is a GitHub-style contribution graph displayed at the top of the Insights page. It shows your writing frequency across the past **52 weeks**.
+
+### How It Looks
+
+```
+        Jan     Feb     Mar     Apr     May ...
+Mon  [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]...
+Wed  [ ][ ][ ][#][ ][ ][ ][#][#][ ][ ][ ]...
+Fri  [ ][#][ ][#][#][ ][ ][ ][#][ ][ ][ ]...
+```
+
+Each square represents a single day. The color intensity corresponds to how many entries you created on that day.
+
+### Intensity Levels
+
+| Level | Entries | Appearance |
+|-------|---------|------------|
+| **0** | None | Empty / muted |
+| **1** | 1 entry | Light accent |
+| **2** | 2 entries | Medium accent |
+| **3** | 3-4 entries | Strong accent |
+| **4** | 5+ entries | Full accent (peak) |
+
+Hover over any square to see the exact date and entry count.
+
+### What the Heatmap Reveals
+
+- **Consistency** -- Are you writing most days, or do you have gaps?
+- **Seasonal patterns** -- Do you write more in certain months?
+- **Burst writing** -- Do you write in intense spurts followed by quiet periods?
+- **Day-of-week habits** -- Are weekdays or weekends more active?
+
+<Callout>
+The heatmap always shows all entry types regardless of which tab is selected on the Insights page. It represents your overall writing activity.
+</Callout>
+
+---
+
+## How Activity Is Logged
+
+Activity tracking happens automatically every time you create an entry:
+
+<Steps>
+### You create an entry
+
+Write a journal entry, log a dream, capture a highlight -- any entry type counts.
+
+### Reflecto records the activity
+
+The day's entry count is incremented. Each entry type (journal, dream, highlight, idea, wisdom, note) contributes to the daily total.
+
+### The heatmap updates
+
+Your activity appears on the heatmap the next time you visit the Insights page.
+</Steps>
+
+There is no manual step required. Every saved entry contributes to your activity data.
+
+---
+
+## Heatmap Summary Stats
+
+Below the heatmap, two key metrics are displayed:
+
+| Metric | Description |
+|--------|-------------|
+| **Total Entries** | The total number of entries loaded for analysis (up to 500 most recent) |
+| **Current Streak** | How many consecutive days you have written at least one entry |
+
+These provide a quick snapshot without scrolling further down the page.
+
+---
+
+## The Reflect Page Timeline
+
+The **Reflect** page (`/reflect`) offers a chronological view of your recent entries, organized into sections:
+
+### Yesterday
+
+Shows all entries from the previous day in a card grid. Each card displays:
+- Entry type icon (journal, dream, highlight, idea, wisdom)
+- Entry title
+- Entry type label
+
+Click any card to open the entry for editing or re-reading.
+
+If no entries exist for yesterday, a prompt appears to create one.
+
+### This Week
+
+Displays all entries from the start of the current week (Monday) through today. Entries appear as compact pill-shaped links showing:
+- Entry type icon
+- Entry title
+- Day of the week abbreviation
+
+This section makes it easy to review everything you have written in the past few days.
+
+<Callout type="info">
+The Reflect page shows entries across all workspaces and all entry types in a single unified timeline.
+</Callout>
+
+---
+
+## Memory Lane
+
+Memory Lane surfaces a **random old entry** for you to revisit. It is designed to spark reflection by bringing back something you wrote in the past.
+
+### How It Works
+
+- A random entry **at least 7 days old** is selected from your history
+- The entry appears as a large card with the title, a content preview, and the date
+- Click the card to revisit the full entry
+
+### Requirements
+
+- You need **at least 10 total entries** before Memory Lane activates
+- Until then, a progress indicator shows how many more entries are needed
+
+### Why It Matters
+
+Re-reading old entries helps you:
+- Notice personal growth over time
+- Recall forgotten ideas or plans
+- Reconnect with past emotions and experiences
+- Identify recurring themes you might not notice day-to-day
+
+<Callout>
+Memory Lane picks a new random entry each time you load the Reflect page. Refresh the page to see a different throwback.
+</Callout>
+
+---
+
+## Tips for Better Activity Tracking
+
+### Write Something Every Day
+
+Even a short note or a few bullets count toward your daily activity. Consistency matters more than length.
+
+### Use Multiple Entry Types
+
+Variety keeps your heatmap active. A journal entry in the morning, a highlight in the evening, and a quick note at lunch all contribute to a full day.
+
+### Check the Heatmap Weekly
+
+Review your heatmap once a week to spot gaps and celebrate active periods. The visual pattern makes it immediately obvious whether your habit is holding.
+
+### Combine with Streaks
+
+The heatmap gives you the big picture; streaks give you the day-to-day motivation. Use both together. See [Writing Streaks](/docs/insights/streaks) for details on the streak system.
