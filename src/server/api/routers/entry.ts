@@ -82,4 +82,11 @@ export const entryRouter = createTRPCRouter({
   getRandomOldEntry: protectedProcedure.query(async ({ ctx }) => {
     return entryService.getRandomOldEntry(ctx.db, ctx.session.user.id);
   }),
+
+  /**
+   * Export all user data (entries, tags, people)
+   */
+  exportAll: protectedProcedure.query(async ({ ctx }) => {
+    return entryService.exportAll(ctx.db, ctx.session.user.id);
+  }),
 });

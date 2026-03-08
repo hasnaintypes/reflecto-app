@@ -16,6 +16,9 @@ import {
   Layout,
   SpellCheck,
   Bell,
+  Download,
+  Database,
+  Loader2,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -86,6 +89,64 @@ const SectionHeader = ({
 );
 
 import { usePreferencesStore } from "@/stores/use-preferences-store";
+
+function ExportDataSection() {
+  const [isExporting, setIsExporting] = React.useState(false);
+  const exportQuery = api.entry.exportAll.useQuery(undefined, {
+    enabled: false,
+  });
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      const result = await exportQuery.refetch();
+      if (result.data) {
+        const json = JSON.stringify(result.data, null, 2);
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `reflecto-export-${new Date().toISOString().split("T")[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast.success("Data exported successfully");
+      }
+    } catch {
+      toast.error("Failed to export data");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  return (
+    <section>
+      <SectionHeader icon={Database} title="Data" />
+      <div className="divide-border/5 divide-y">
+        <SettingItem
+          icon={Download}
+          title="Export Data"
+          isCloud
+          description="Download all your entries, tags, and people as a JSON file."
+        >
+          <button
+            onClick={handleExport}
+            disabled={isExporting}
+            className="bg-primary/10 text-primary hover:bg-primary/20 flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold tracking-wide transition-colors disabled:opacity-50"
+          >
+            {isExporting ? (
+              <Loader2 size={14} className="animate-spin" />
+            ) : (
+              <Download size={14} />
+            )}
+            {isExporting ? "Exporting..." : "Export"}
+          </button>
+        </SettingItem>
+      </div>
+    </section>
+  );
+}
 
 export default function SettingsPage() {
   const { preferences, isLoading, updateLocalPreference } =
@@ -469,6 +530,9 @@ export default function SettingsPage() {
           </SettingItem>
         </div>
       </section>
+
+      {/* --- Data --- */}
+      <ExportDataSection />
     </div>
   );
 }

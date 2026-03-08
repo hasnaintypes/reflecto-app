@@ -620,6 +620,45 @@ export class EntryService {
 
     return db.entry.count({ where });
   }
+
+  /**
+   * Export all user entries with full relations
+   */
+  async exportAll(db: PrismaClient, userId: string) {
+    const [entries, tags, people] = await Promise.all([
+      db.entry.findMany({
+        where: { userId, deletedAt: null },
+        include: {
+          tags: { select: { id: true, name: true, color: true } },
+          people: { select: { id: true, name: true } },
+          attachments: {
+            select: {
+              id: true,
+              fileUrl: true,
+              fileType: true,
+              thumbnailUrl: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      }),
+      db.tag.findMany({
+        where: { userId },
+        select: { id: true, name: true, color: true },
+      }),
+      db.person.findMany({
+        where: { userId },
+        select: { id: true, name: true },
+      }),
+    ]);
+
+    return {
+      entries,
+      tags,
+      people,
+      exportedAt: new Date().toISOString(),
+    };
+  }
 }
 
 export const entryService = new EntryService();
