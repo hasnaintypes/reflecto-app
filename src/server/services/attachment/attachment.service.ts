@@ -56,20 +56,21 @@ export class AttachmentService {
       });
     }
 
-    // Extract fileId from the attachment (assuming it's stored in metadata or a dedicated field)
     const fileId = attachment.fileUrl.split("/").pop()?.split("?")[0];
 
-    // 1. Delete from storage
+    // Delete from database first
+    const result = await db.attachment.delete({
+      where: { id: attachmentId },
+    });
+
+    // Then attempt storage cleanup (non-blocking)
     if (fileId) {
-      await storageService.deleteFile(fileId).catch((err) => {
+      storageService.deleteFile(fileId).catch((err) => {
         console.error("Failed to delete file from storage:", err);
       });
     }
 
-    // 2. Delete from database
-    return db.attachment.delete({
-      where: { id: attachmentId },
-    });
+    return result;
   }
 
   /**

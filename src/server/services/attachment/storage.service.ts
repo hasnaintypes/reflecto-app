@@ -16,17 +16,26 @@ export interface IStorageService {
 
 export class ImageKitStorageService implements IStorageService {
   async uploadFile(input: ImageUploadInput): Promise<ImageKitUploadResponse> {
-    const result = await imagekitClient.files.upload({
-      file: input.file,
-      fileName: input.fileName,
-      folder: "/reflecto-app",
-    });
-
-    return result as ImageKitUploadResponse;
+    try {
+      const result = await imagekitClient.files.upload({
+        file: input.file,
+        fileName: input.fileName,
+        folder: "/reflecto-app",
+      });
+      return result as ImageKitUploadResponse;
+    } catch (error) {
+      console.error("Storage upload failed:", error);
+      throw new Error(`Failed to upload file: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 
   async deleteFile(fileId: string): Promise<void> {
-    await imagekitClient.files.delete(fileId);
+    try {
+      await imagekitClient.files.delete(fileId);
+    } catch (error) {
+      console.error("Storage delete failed:", error);
+      throw new Error(`Failed to delete file: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 
   getFileUrl(
