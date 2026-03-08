@@ -36,7 +36,7 @@ export default function ProfilePage() {
 
   // Form states - initialize from session if available
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [, setEmail] = useState("");
 
   // Sync state with session when it loads
   React.useEffect(() => {
@@ -115,9 +115,8 @@ export default function ProfilePage() {
     try {
       await updateUserMutation.mutateAsync({
         name,
-        email,
       });
-      await updateSession({ name, email });
+      await updateSession({ name });
     } catch (error) {
       console.error(error);
     } finally {

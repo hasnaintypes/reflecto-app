@@ -11,7 +11,8 @@ export async function generateMetadata(props: {
   return metadata;
 }
 
-const Wrapper = getMDXComponents().wrapper;
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const { wrapper: Wrapper } = getMDXComponents();
 
 export default async function Page(props: {
   params: Promise<{ mdxPath?: string[] }>;

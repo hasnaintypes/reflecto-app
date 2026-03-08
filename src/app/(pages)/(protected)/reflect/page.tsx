@@ -47,21 +47,11 @@ export default function ReflectPage() {
   const weekEntries = weekData?.entries ?? [];
   const totalEntries = totalEntriesCount ?? 0;
 
-  // Fetch a random throwback entry for Memory Lane
-  const { data: randomEntry } = api.entry.list.useQuery(
-    { limit: 100 },
+  // Fetch a random throwback entry for Memory Lane (server-side)
+  const { data: throwbackEntry } = api.entry.getRandomOldEntry.useQuery(
+    undefined,
     { enabled: totalEntries >= 10 },
   );
-
-  const throwbackEntry = React.useMemo(() => {
-    if (!randomEntry || randomEntry.entries.length < 10) return null;
-    // Simple way to get a "random" old entry (older than a week)
-    const oldEntries = randomEntry.entries.filter(
-      (e) => new Date(e.createdAt) < subDays(new Date(), 7),
-    );
-    if (oldEntries.length === 0) return null;
-    return oldEntries[Math.floor(Math.random() * oldEntries.length)];
-  }, [randomEntry]);
 
   const getEntryIcon = (type: string) => {
     switch (type) {
