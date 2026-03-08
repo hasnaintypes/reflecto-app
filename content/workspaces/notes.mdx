@@ -1,0 +1,268 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Notes
+
+The Notes workspace is built for speed. Capture quick thoughts, reminders, lists, and anything that does not fit neatly into another workspace. Notes are lightweight, color-coded, and pinnable.
+
+<Callout type="info">
+Think of Notes as your digital sticky notes. They are fast to create, easy to scan, and stay out of the way of your longer-form writing.
+</Callout>
+
+---
+
+## Purpose
+
+Notes are the catch-all workspace for short, practical entries:
+
+- **Quick thoughts** -- A sentence or two that you want to remember
+- **Reminders** -- Things to do, calls to make, errands to run
+- **Lists** -- Shopping lists, packing lists, reading lists
+- **Temporary captures** -- Information you need for a short time
+- **Miscellaneous** -- Anything that does not belong in another workspace
+
+---
+
+## Metadata
+
+Notes have two unique metadata fields beyond the shared fields (title, content, tags, people, date):
+
+### Color
+
+Assign a color to visually categorize your notes. Seven options are available:
+
+| Color | Suggested Use |
+|-------|---------------|
+| **Gray** | Default, general-purpose notes |
+| **Blue** | Work and professional |
+| **Green** | Health, habits, and personal growth |
+| **Yellow** | Reminders and action items |
+| **Red** | Urgent or high-priority |
+| **Purple** | Creative and personal |
+| **Pink** | Social and relationship-related |
+
+These are suggestions -- use colors however they make sense to you. The important thing is consistency so you can scan your notes at a glance.
+
+### Pinned Status
+
+Toggle the pin to keep a note at the top of your Notes workspace page. Pinned notes stay visible regardless of date sorting.
+
+Use pinning for:
+- Notes you reference daily
+- Active to-do lists
+- Reminders that should not scroll away
+
+<Callout>
+Color and pinning work together. A pinned red note at the top of your list is impossible to miss -- perfect for urgent reminders.
+</Callout>
+
+---
+
+## Creating a Note
+
+<Steps>
+### Open the Write Page
+
+Navigate to `/write` or press `Ctrl/Cmd + W`.
+
+### Select "Note" Type
+
+Use the entry type dropdown and choose **Note**.
+
+You can also go directly to `/write?type=note`.
+
+### Choose a Color (Optional)
+
+Pick a color from the color selector. Defaults to gray if unset.
+
+### Toggle Pin (Optional)
+
+Click the pin toggle if you want this note to stay at the top of your Notes page.
+
+### Write Your Note
+
+Keep it short and actionable.
+
+```markdown
+Call @Dr-Smith to reschedule appointment.
+New number: 555-0142.
+Ask about referral for @Partner.
+```
+
+### Auto-Save
+
+Your note saves automatically.
+</Steps>
+
+---
+
+## The Notes Workspace Page
+
+Navigate to **Notes** in the sidebar or go to `/notes` to view all your note entries.
+
+### What You See
+
+- **Pinned notes at the top** -- Always visible, separated from the rest
+- **Color indicators** on each note card matching your chosen color
+- **Content preview** showing the note text
+- **Tags and people** visible at a glance
+- **Star indicator** on starred notes
+
+### Layout
+
+Notes are displayed as compact cards that prioritize scannability:
+
+```
++--------------------+--------------------+
+| [pinned] [red]     | [pinned] [yellow]  |
+| Buy groceries      | Dentist Thu 3pm    |
+| Milk, eggs, bread  |                    |
++--------------------+--------------------+
+| [blue]             | [green]            |
+| Meeting notes from | Workout plan       |
+| standup 3/7        | Mon: Upper body    |
+|                    | Wed: Lower body    |
++--------------------+--------------------+
+```
+
+Pinned notes appear first. Within each group, notes are sorted by date (newest first).
+
+---
+
+## Use Cases
+
+<Tabs items={['Quick Reminders', 'Lists', 'Reference Info', 'Temporary Notes']}>
+  <Tabs.Tab>
+    **Quick Reminders**
+
+    Capture things you need to remember, then unpin or delete when done:
+
+    ```markdown
+    Remind @Alice about the design review on Thursday.
+    Send the updated mockups before EOD Wednesday.
+    ```
+
+    **Color:** Yellow
+    **Pinned:** Yes
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Lists**
+
+    Use bulleted mode for clean, scannable lists:
+
+    ```markdown
+    # Weekend errands
+
+    - Grocery store (see other note for list)
+    - Pick up dry cleaning
+    - Return library books
+    - Drop off donation bag
+    - Hardware store: light bulbs, batteries
+    ```
+
+    **Color:** Green
+    **Pinned:** Yes (until completed)
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Reference Information**
+
+    Store information you need to look up frequently:
+
+    ```markdown
+    # Wifi passwords
+
+    Home: NetworkName / password123
+    Office: CorpWifi / ask-IT-for-password
+    Coffee shop: CafeGuest / no password
+    ```
+
+    **Color:** Blue
+    **Pinned:** Yes
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Temporary Notes**
+
+    Capture information you only need briefly:
+
+    ```markdown
+    @Bob's new address:
+    123 Main St, Apt 4B
+    Portland, OR 97201
+
+    Need this for the housewarming gift delivery.
+    ```
+
+    **Color:** Gray
+    **Pinned:** No
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## Tips for Effective Note-Taking
+
+### 1. Keep Notes Short
+
+If a note is growing past a few paragraphs, it probably belongs in a different workspace. Notes should be quick to write and quick to read.
+
+### 2. Use Colors Consistently
+
+Pick a color system and stick with it. When every yellow note is a reminder and every blue note is work-related, you can scan your workspace in seconds.
+
+### 3. Pin Sparingly
+
+If everything is pinned, nothing is prioritized. Keep your pinned notes to three or four active items at most.
+
+### 4. Clean Up Regularly
+
+Notes are meant to be temporary. Once a reminder is done or information is no longer needed, delete the note or unpin it. A clean Notes workspace is a useful one.
+
+### 5. Use Bulleted Mode
+
+Most notes are natural lists. Toggle bulleted mode for a clean, structured format.
+
+### 6. Tag for Context
+
+Even quick notes benefit from a tag or two. `#errand`, `#work`, `#reference` help you find notes later if you need them.
+
+<Callout type="warning">
+Notes are not designed for sensitive information like passwords or financial data. While Reflecto secures your data with authentication, consider using a dedicated password manager for credentials.
+</Callout>
+
+---
+
+## Notes vs. Journal Entries
+
+| Scenario | Use Notes | Use Journal |
+|----------|-----------|-------------|
+| Quick reminder for tomorrow | Yes | |
+| Reflecting on your day | | Yes |
+| Shopping list | Yes | |
+| Processing an emotional event | | Yes |
+| Phone number to save temporarily | Yes | |
+| Daily gratitude practice | | Yes |
+
+The distinction is simple: **Notes are practical. Journal entries are reflective.**
+
+---
+
+## Notes vs. Ideas
+
+Notes and Ideas can overlap when you jot down a quick thought. Here is how to decide:
+
+- If the thought is something you want to **develop and track** over time, use Ideas
+- If the thought is something you want to **capture and forget about**, use Notes
+
+When in doubt, start with a Note. You can always create an Idea entry later if the thought deserves more attention.
+
+<Callout type="success">
+The best note-taking system is the one you actually use. Keep it simple, keep it fast, and clean up as you go.
+</Callout>
+
+---
+
+## What's Next?
+
+- [Highlights](/docs/workspaces/highlights) -- Record meaningful moments and achievements
+- [Dreams](/docs/workspaces/dreams) -- Capture aspirations and future goals
+- [Ideas](/docs/workspaces/ideas) -- Develop creative thoughts with status tracking
+- [Wisdom](/docs/workspaces/wisdom) -- Collect quotes, facts, and lessons learned

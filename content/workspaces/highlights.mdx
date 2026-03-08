@@ -1,0 +1,205 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Highlights
+
+The Highlights workspace is where you capture meaningful moments -- achievements, milestones, experiences, and memories worth remembering. Each highlight carries an importance level so you can distinguish everyday wins from life-changing events.
+
+<Callout type="info">
+Think of Highlights as your personal hall of fame. When you look back months or years from now, these are the entries that tell the story of what mattered most.
+</Callout>
+
+---
+
+## Purpose
+
+Highlights are designed for moments that stand out from your daily routine:
+
+- **Achievements** -- Completed a project, hit a fitness goal, shipped a feature
+- **Milestones** -- Birthdays, anniversaries, promotions, graduations
+- **Experiences** -- A concert that moved you, a conversation that changed your thinking
+- **Gratitude moments** -- Times you felt especially thankful or lucky
+- **Small victories** -- Overcame a fear, handled a difficult situation well
+
+---
+
+## Metadata
+
+Highlights have one unique metadata field beyond the shared fields (title, content, tags, people, date):
+
+### Importance Level
+
+Rate each highlight by how significant it is:
+
+| Level | When to Use | Examples |
+|-------|-------------|---------|
+| **High** | Life-changing or rare events | Got promoted, bought a house, had a child |
+| **Medium** | Notable moments worth remembering | Great dinner with friends, finished a book, personal best at the gym |
+| **Low** | Small wins and everyday positives | Good coffee, nice weather walk, compliment from a stranger |
+
+Set the importance level from the metadata dropdown on the Write page. It defaults to no selection, so you can leave it unset if you prefer.
+
+<Callout>
+Don't overthink importance levels. They are a rough filter, not a precise ranking. The goal is to make it easier to find your biggest moments when browsing later.
+</Callout>
+
+---
+
+## Creating a Highlight
+
+<Steps>
+### Open the Write Page
+
+Navigate to `/write` or press `Ctrl/Cmd + W`.
+
+### Select "Highlight" Type
+
+Use the entry type dropdown at the top of the editor and choose **Highlight**.
+
+You can also go directly to `/write?type=highlight`.
+
+### Set Importance (Optional)
+
+Choose High, Medium, or Low from the importance dropdown.
+
+### Write Your Entry
+
+Describe the moment. Use `#tags` for context and `@mentions` for people involved.
+
+```markdown
+Finally finished the marathon today! 26.2 miles in 4:12:33.
+
+Months of training with @Coach-Mike paid off. The last 6 miles
+were brutal but the crowd energy at mile 20 carried me through.
+
+#running #marathon #achievement #fitness
+```
+
+### Auto-Save
+
+Your highlight saves automatically. Check the cloud indicator in the header.
+</Steps>
+
+---
+
+## The Highlights Workspace Page
+
+Navigate to **Highlights** in the sidebar or go to `/highlights` to view all your highlight entries.
+
+### What You See
+
+- **Entry cards** sorted by date, newest first
+- **Importance indicator** displayed on each card (High, Medium, Low)
+- **Content preview** showing the first few lines of each entry
+- **Tags and people** visible at a glance
+- **Star indicator** on starred entries
+
+### Filtering
+
+You can filter highlights by importance level to focus on your biggest moments or browse your everyday wins.
+
+---
+
+## Use Cases
+
+<Tabs items={['Achievements', 'Milestones', 'Experiences', 'Gratitude']}>
+  <Tabs.Tab>
+    **Tracking Achievements**
+
+    Record accomplishments as they happen so you never forget them:
+
+    ```markdown
+    Shipped v2.0 of the product today. Six months of work
+    with @Alice and @Bob. Client response has been incredible.
+
+    #work #launch #team-effort
+    ```
+
+    Set importance to **High** for career-defining wins and **Medium** for solid accomplishments.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Recording Milestones**
+
+    Mark the dates that divide your life into before and after:
+
+    ```markdown
+    One year anniversary at the company today. Hard to believe
+    how much has changed since I started. @Boss surprised me
+    with a thoughtful card from the whole team.
+
+    #work #anniversary #milestone
+    ```
+
+    These are almost always **High** importance.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Capturing Experiences**
+
+    Write about moments that moved, surprised, or changed you:
+
+    ```markdown
+    Saw the northern lights for the first time tonight.
+    Standing in the cold with @Partner, watching green waves
+    ripple across the sky. No photo could capture it.
+
+    #travel #nature #bucket-list
+    ```
+
+    Use any importance level based on how significant the experience felt.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Gratitude Highlights**
+
+    Separate from daily gratitude journaling, these are moments of deep thankfulness:
+
+    ```markdown
+    @Mom drove three hours just to bring me soup when I was
+    sick. Didn't even stay long, just wanted to make sure
+    I was okay. Sometimes the small things hit hardest.
+
+    #family #gratitude #love
+    ```
+
+    Great for **Medium** or **High** importance.
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## Tips for Effective Highlights
+
+### 1. Capture It Now
+
+Write highlights the same day they happen. Details fade quickly, and the emotional context is freshest right after the moment.
+
+### 2. Include Sensory Details
+
+What did you see, hear, or feel? Specific details make highlights vivid when you revisit them months later.
+
+### 3. Tag People Involved
+
+Use `@mentions` generously. When you look back, knowing who shared the moment with you adds meaning.
+
+### 4. Use Importance Honestly
+
+Not everything is **High** importance. Giving most highlights a **Medium** or **Low** rating makes the truly significant ones stand out.
+
+### 5. Star the Best
+
+Combine starring with importance for a two-tier system: importance rates the event, starring marks the entries you want to revisit most.
+
+### 6. Review Monthly
+
+Browse your highlights at the end of each month. You will often find you had a better month than you remembered.
+
+<Callout type="success">
+Highlights are one of the most rewarding workspaces to revisit over time. A few minutes of writing today becomes a meaningful record of your life.
+</Callout>
+
+---
+
+## What's Next?
+
+- [Dreams](/docs/workspaces/dreams) -- Capture future aspirations and goals
+- [Ideas](/docs/workspaces/ideas) -- Develop creative thoughts with status tracking
+- [Wisdom](/docs/workspaces/wisdom) -- Collect quotes and lessons
+- [Notes](/docs/workspaces/notes) -- Quick captures and reminders

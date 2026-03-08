@@ -1,0 +1,182 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# Tech Stack
+
+A complete reference of every technology used in Reflecto, organized by layer.
+
+## Stack at a Glance
+
+| Technology | Version | Purpose |
+|-----------|---------|---------|
+| Next.js | 15 | Full-stack React framework with App Router |
+| React | 19 | UI component library |
+| TypeScript | 5.8 | Type-safe development |
+| tRPC | 11 | End-to-end type-safe API layer |
+| Prisma | 6 | ORM and database toolkit |
+| PostgreSQL | -- | Primary relational database |
+| NextAuth | 5 (beta) | Authentication (credentials + OAuth) |
+| TipTap | 3 | Rich text editor framework |
+| Tailwind CSS | 4 | Utility-first CSS framework |
+| Radix UI | -- | Accessible headless UI primitives |
+| Zustand | 5 | Lightweight client state management |
+| React Query | 5 | Server state and cache management |
+| ImageKit | -- | Image CDN, uploads, and transformations |
+| Resend | 6 | Transactional email delivery |
+| Inngest | 3 | Background job orchestration |
+| Framer Motion | 12 | Animation library |
+| Zod | 3 | Runtime schema validation |
+| Vercel | -- | Deployment and hosting platform |
+
+## Frontend
+
+<Tabs items={['UI Framework', 'Editor', 'State Management', 'Styling']}>
+<Tabs.Tab>
+### Next.js 15 + React 19
+
+Reflecto uses the **App Router** with React Server Components. Route groups separate public and protected pages. Turbopack is enabled for fast local development (`next dev --turbo`).
+
+Key patterns:
+- **Route groups** -- `(protected)` and `(public)` for layout-based auth gating
+- **Server Components** -- Default for pages, reducing client bundle size
+- **Client Components** -- Marked with `"use client"` for interactive features (editor, modals)
+
+### React Query (via tRPC)
+
+All server data fetching uses React Query through the tRPC integration. This provides:
+- Automatic caching and background refetching
+- Cursor-based infinite scroll pagination
+- Optimistic updates for instant UI feedback
+- Mutation lifecycle hooks (onSuccess, onError)
+</Tabs.Tab>
+
+<Tabs.Tab>
+### TipTap 3
+
+The journal editor is built on TipTap, a headless rich text editor framework based on ProseMirror.
+
+Installed extensions:
+- `@tiptap/starter-kit` -- Bold, italic, headings, lists, code blocks
+- `@tiptap/extension-link` -- Clickable links with auto-detection
+- `@tiptap/extension-image` -- Inline image embedding
+- `@tiptap/extension-mention` -- `@people` and `#tag` mentions with autocomplete
+- `@tiptap/extension-placeholder` -- Ghost text prompts
+- `@tiptap/extension-underline` -- Underline formatting
+- `@tiptap/extension-character-count` -- Live character counter
+
+Content is stored as HTML in the database `content` field with a 50,000 character limit.
+</Tabs.Tab>
+
+<Tabs.Tab>
+### Zustand 5
+
+Client-side state is managed through five Zustand stores:
+
+| Store | Responsibility |
+|-------|---------------|
+| `use-auth-store` | Session state, login status |
+| `use-entry-store` | Active entry being edited, draft tracking |
+| `use-preferences-store` | Local preferences cache for instant UI |
+| `use-ui-store` | Sidebar, modals, active workspace state |
+| `use-user-store` | Current user profile data |
+
+Zustand was chosen over Redux for its minimal boilerplate and hook-first API. Server state is intentionally kept out of Zustand -- React Query handles all data fetching and caching.
+</Tabs.Tab>
+
+<Tabs.Tab>
+### Tailwind CSS 4
+
+Styling uses Tailwind CSS v4 with the PostCSS plugin and the typography plugin for rich text rendering. The design system is dark-first with serif headings for a premium journal aesthetic.
+
+Additional styling tools:
+- `class-variance-authority` -- Component variant management
+- `tailwind-merge` -- Conflict-free class merging
+- `clsx` -- Conditional class composition
+- `tw-animate-css` -- Tailwind animation utilities
+
+### Radix UI
+
+All interactive primitives (dialogs, dropdowns, tooltips, popovers, tabs, alerts) use Radix UI for accessible, unstyled components that integrate with Tailwind.
+
+### Framer Motion
+
+Page transitions, list animations, and micro-interactions use Framer Motion for declarative, physics-based animations.
+</Tabs.Tab>
+</Tabs>
+
+## Backend
+
+<Tabs items={['API Layer', 'Database', 'Authentication']}>
+<Tabs.Tab>
+### tRPC 11
+
+The API layer uses tRPC v11 with SuperJSON for serialization (handles Dates, Maps, and other JS types). Zod schemas provide runtime validation on all inputs.
+
+The middleware stack applied to every procedure:
+1. **Timing middleware** -- Logs execution time, adds artificial delay in dev
+2. **Rate limiting** -- In-memory sliding window (100/60s authenticated, 30/60s unauthenticated)
+3. **Auth guard** (protected only) -- Verifies session and narrows `ctx.session.user` type
+
+13 routers cover all domain areas: `entry`, `journal`, `dream`, `highlight`, `idea`, `wisdom`, `note`, `tag`, `person`, `attachment`, `insights`, `preferences`, `user`.
+</Tabs.Tab>
+
+<Tabs.Tab>
+### Prisma 6 + PostgreSQL
+
+Prisma provides the ORM layer with type-safe queries generated from the schema. The `@prisma/adapter-pg` adapter enables connection pooling compatible with Vercel's serverless environment.
+
+Key features used:
+- **Transactions** -- Entry creation wraps tag extraction, activity logging, and streak updates in a single transaction
+- **Soft deletes** -- Entries use `deletedAt` instead of hard deletion
+- **JSON columns** -- Entry `metadata` stores type-specific fields as JSONB
+- **Composite indexes** -- Optimized for common query patterns (user + type + date)
+
+Development commands:
+```bash
+pnpm db:generate   # Create and apply migrations
+pnpm db:push       # Push schema changes (dev only)
+pnpm db:studio     # Open Prisma Studio GUI
+```
+</Tabs.Tab>
+
+<Tabs.Tab>
+### NextAuth v5
+
+Authentication uses NextAuth v5 (Auth.js) with the Prisma adapter for database-backed sessions.
+
+**Providers:**
+- **Credentials** -- Email + bcrypt-hashed password with email verification
+- **Google OAuth** -- One-click sign-in with Google account
+- **GitHub OAuth** -- One-click sign-in with GitHub account
+
+**Email delivery** uses Resend for transactional emails:
+- Email verification on sign-up
+- Password reset tokens
+- Inactivity reminder emails (via Inngest)
+</Tabs.Tab>
+</Tabs>
+
+## Infrastructure
+
+| Service | Role |
+|---------|------|
+| **Vercel** | Hosting, serverless functions, edge network, preview deployments |
+| **PostgreSQL** | Primary database (provisioned via Vercel or external provider) |
+| **ImageKit** | Image CDN with on-the-fly transformations and thumbnail generation |
+| **Resend** | Transactional email API for verification and notifications |
+| **Inngest** | Serverless background job runner with cron scheduling and retries |
+
+## Development Tools
+
+| Tool | Purpose |
+|------|---------|
+| pnpm 10 | Package manager |
+| ESLint 9 | Linting with Next.js config |
+| Prettier 3 | Code formatting with Tailwind plugin |
+| TypeScript 5.8 | Type checking (`pnpm typecheck`) |
+| type-coverage | Measures TypeScript coverage (target: 99%) |
+| Prisma Studio | Visual database browser |
+| Turbopack | Fast dev server bundling |
+
+<Callout type="info">
+Run `pnpm check` to execute both linting and type checking in a single command.
+</Callout>

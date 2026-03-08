@@ -1,0 +1,272 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Ideas
+
+The Ideas workspace is where creative thoughts go to grow. Capture ideas at any stage -- from a fleeting spark to a fully formed concept -- and track their maturity with a built-in status progression.
+
+<Callout type="info">
+Ideas are fragile. If you don't write them down, they disappear. The Ideas workspace gives every thought a safe place to land, no matter how rough or unfinished.
+</Callout>
+
+---
+
+## Purpose
+
+The Ideas workspace is designed for creative and strategic thinking:
+
+- **Brainstorming** -- Raw, unfiltered ideas captured in the moment
+- **Project concepts** -- Potential projects, products, or initiatives
+- **Problem solving** -- Approaches to challenges you are working through
+- **Creative writing** -- Story ideas, essay topics, content plans
+- **Process improvements** -- Better ways to do things at work or in life
+
+---
+
+## Metadata
+
+Ideas have one unique metadata field beyond the shared fields (title, content, tags, people, date):
+
+### Status Progression
+
+Track how developed an idea is using four stages:
+
+| Status | Meaning | When to Use |
+|--------|---------|-------------|
+| **Contemplating** | Initial spark, barely formed | You just had the thought and want to capture it before it fades |
+| **Seed** | Planted and taking shape | You have written some details and see potential |
+| **Reflecting** | Actively thinking it through | You are developing the idea, considering angles, doing research |
+| **Draft** | Well-formed and ready to act on | The idea is fleshed out enough to execute or share |
+
+Set the status from the metadata dropdown on the Write page. You can change it at any time as the idea matures.
+
+<Callout>
+The status progression is not a rigid workflow. Skip stages, go backward, or leave status unset entirely. It exists to help you filter, not to constrain your thinking.
+</Callout>
+
+---
+
+## Creating an Idea
+
+<Steps>
+### Open the Write Page
+
+Navigate to `/write` or press `Ctrl/Cmd + W`.
+
+### Select "Idea" Type
+
+Use the entry type dropdown and choose **Idea**.
+
+You can also go directly to `/write?type=idea`.
+
+### Set Status (Optional)
+
+Choose a status from the dropdown. New ideas usually start as **Contemplating** or **Seed**.
+
+### Write Your Idea
+
+Capture the thought. Don't worry about polish -- get it down first.
+
+```markdown
+# Automated weekly review email
+
+What if Reflecto sent a weekly digest email every Sunday
+with stats from the past week? Include:
+
+- Number of entries written
+- Most used tags
+- People mentioned
+- Streak status
+- A random past entry as a "memory"
+
+This would help users who forget to check Insights.
+Could be a premium feature.
+
+@Alice mentioned wanting something like this.
+
+#product #feature-idea #email #automation
+```
+
+### Auto-Save
+
+Your idea saves automatically. Come back to develop it further anytime.
+</Steps>
+
+---
+
+## The Ideas Workspace Page
+
+Navigate to **Ideas** in the sidebar or go to `/ideas` to view all your idea entries.
+
+### What You See
+
+- **Entry cards** sorted by date, newest first
+- **Status badge** displayed on each card (Contemplating, Seed, Reflecting, Draft)
+- **Content preview** showing the opening lines
+- **Tags and people** visible at a glance
+- **Star indicator** on starred entries
+
+### Filtering by Status
+
+Use the status filter to focus on ideas at a specific stage. This is especially useful when you want to:
+
+- Review **Contemplating** ideas to decide which deserve more thought
+- Develop **Seed** ideas into something more concrete
+- Refine **Reflecting** ideas into actionable plans
+- Act on **Draft** ideas that are ready to go
+
+---
+
+## Using the Status Progression
+
+The four-stage progression helps you manage a growing collection of ideas without losing track of what needs attention.
+
+### Recommended Workflow
+
+<Steps>
+### Capture Everything as Contemplating
+
+When an idea strikes, write it down immediately. Set status to **Contemplating**. Don't judge quality -- just capture.
+
+### Weekly Review: Promote or Archive
+
+Once a week, browse your Contemplating ideas. Promote promising ones to **Seed** by adding more detail. Leave others as they are or delete the ones that no longer resonate.
+
+### Develop Seeds into Reflections
+
+When you have time for deeper thinking, pick a Seed idea and expand it. Add research, pros and cons, implementation details. Move it to **Reflecting**.
+
+### Finalize as Draft
+
+When an idea is clear enough to act on or share with someone, set it to **Draft**. This is your signal that the thinking phase is done.
+</Steps>
+
+<Callout type="info">
+You don't need to move every idea through all four stages. Some ideas jump from Contemplating straight to Draft. Others stay as Seeds forever, and that is fine.
+</Callout>
+
+---
+
+## Use Cases
+
+<Tabs items={['Product Ideas', 'Creative Projects', 'Problem Solving', 'Life Improvements']}>
+  <Tabs.Tab>
+    **Product and Feature Ideas**
+
+    ```markdown
+    # Dark mode scheduling
+
+    Let users schedule dark/light mode by time of day.
+    Auto-switch at sunset/sunrise based on location.
+
+    Technical considerations:
+    - Need geolocation permission or manual timezone
+    - CSS variables already support theming
+    - Could tie into system preference detection
+
+    Priority: Low (nice-to-have)
+    Status: Seed
+
+    #product #ui #dark-mode
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Creative Projects**
+
+    ```markdown
+    # Photo essay: Morning routines
+
+    Document 10 different people's morning routines
+    through photos and short interviews.
+
+    People to ask:
+    - @Alice (early riser, yoga)
+    - @Bob (night owl, late mornings)
+    - @Mom (retired, leisurely starts)
+
+    Format: Instagram carousel or blog post series
+
+    #photography #creative #project
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Problem Solving**
+
+    ```markdown
+    # Reducing meeting overload
+
+    Problem: Spending 4+ hours in meetings daily.
+    No time for focused work.
+
+    Possible solutions:
+    1. Decline all meetings without agendas
+    2. Block 2-hour "focus time" on calendar daily
+    3. Propose async updates for status meetings
+    4. Batch meetings into 2 days, keep 3 meeting-free
+
+    Going to try option 4 for two weeks and track results.
+
+    #work #productivity #meetings #experiment
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Life Improvements**
+
+    ```markdown
+    # Kitchen reorganization
+
+    The kitchen layout is not working. I waste time
+    looking for things every morning.
+
+    Plan:
+    - Move coffee supplies next to the kettle
+    - Group baking items together on one shelf
+    - Clear the counter -- only keep daily-use items out
+    - Add drawer dividers for utensils
+
+    Should take one Saturday afternoon.
+
+    #home #organization #weekend-project
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## Tips for Idea Management
+
+### 1. Capture Without Judgment
+
+The moment you think "is this worth writing down?" -- write it down. You can evaluate later. The cost of losing a good idea is higher than the cost of recording a mediocre one.
+
+### 2. One Idea Per Entry
+
+Keep each idea in its own entry. This makes status tracking meaningful and prevents good ideas from getting buried inside long brainstorm documents.
+
+### 3. Tag by Domain
+
+Use tags like `#work`, `#creative`, `#home`, `#product` so you can filter ideas by area of your life.
+
+### 4. Star Your Favorites
+
+When browsing ideas, star the ones that excite you most. Starred ideas become your shortlist for what to pursue next.
+
+### 5. Review Regularly
+
+Set a weekly or monthly habit of browsing your ideas. Fresh eyes often see new connections or realize an old idea's time has come.
+
+### 6. Connect to People
+
+Tag people who might be interested in or helpful for an idea. When you next talk to `@Alice`, you can check if any of your ideas involve her.
+
+<Callout type="success">
+The best ideas often come from combining two older ideas. Reviewing your Ideas workspace regularly increases the chance of these creative collisions.
+</Callout>
+
+---
+
+## What's Next?
+
+- [Highlights](/docs/workspaces/highlights) -- Record meaningful moments and achievements
+- [Dreams](/docs/workspaces/dreams) -- Capture long-term aspirations and goals
+- [Wisdom](/docs/workspaces/wisdom) -- Collect quotes, facts, and lessons learned
+- [Notes](/docs/workspaces/notes) -- Quick captures and color-coded reminders

@@ -1,0 +1,262 @@
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# Wisdom
+
+The Wisdom workspace is your personal library of collected knowledge -- quotes that resonated, lessons you learned the hard way, facts worth remembering, and thoughts distilled from experience.
+
+<Callout type="info">
+Throughout history, thinkers have kept commonplace books to collect the best of what they read and learn. The Wisdom workspace is Reflecto's take on that tradition.
+</Callout>
+
+---
+
+## Purpose
+
+Wisdom entries are for knowledge you want to preserve and revisit:
+
+- **Quotes** -- Lines from books, speeches, conversations, or podcasts
+- **Thoughts** -- Your own distilled observations about how the world works
+- **Facts** -- Data points, statistics, or information worth remembering
+- **Excerpts** -- Longer passages from articles, books, or essays
+- **Lessons** -- Hard-won insights from personal experience
+
+---
+
+## Metadata
+
+Wisdom entries have three unique metadata fields beyond the shared fields (title, content, tags, people, date):
+
+### Wisdom Type
+
+Categorize what kind of knowledge you are saving:
+
+| Type | Description | Example |
+|------|-------------|---------|
+| **Quote** | A specific statement from someone | "The best time to plant a tree was 20 years ago." |
+| **Thought** | Your own original observation | Consistency beats intensity for every habit I have built |
+| **Fact** | A piece of objective information | The human brain processes images 60,000x faster than text |
+| **Excerpt** | A longer passage from a source | A paragraph from an article or book chapter |
+| **Lesson** | Something learned through experience | Never deploy on Fridays -- learned this the hard way in 2024 |
+
+### Author (Optional)
+
+The person who said, wrote, or originated the wisdom. Leave blank for your own thoughts and lessons.
+
+### Source (Optional)
+
+Where you found it -- a book title, article URL, podcast name, or conversation context.
+
+<Callout>
+Author and Source are optional, but filling them in makes your wisdom library far more useful when you revisit it. You will thank yourself later.
+</Callout>
+
+---
+
+## Creating a Wisdom Entry
+
+<Steps>
+### Open the Write Page
+
+Navigate to `/write` or press `Ctrl/Cmd + W`.
+
+### Select "Wisdom" Type
+
+Use the entry type dropdown and choose **Wisdom**.
+
+You can also go directly to `/write?type=wisdom`.
+
+### Set Wisdom Type
+
+Choose Quote, Thought, Fact, Excerpt, or Lesson from the dropdown.
+
+### Fill in Author and Source (Optional)
+
+If the wisdom comes from someone else, add their name and where you found it.
+
+### Write the Entry
+
+Capture the knowledge along with any context or your own commentary.
+
+```markdown
+"You do not rise to the level of your goals. You fall to
+the level of your systems."
+
+This hit hard because I have been setting ambitious goals
+without changing my daily routines. The goal is not the
+problem -- the system is.
+
+I need to redesign my morning routine to support the
+outcomes I want. Starting with #habits and #morning-routine.
+
+#productivity #systems #books
+```
+
+### Auto-Save
+
+Your wisdom entry saves automatically.
+</Steps>
+
+---
+
+## The Wisdom Workspace Page
+
+Navigate to **Wisdom** in the sidebar or go to `/wisdom` to view all your wisdom entries.
+
+### What You See
+
+- **Entry cards** sorted by date, newest first
+- **Wisdom type badge** on each card (Quote, Thought, Fact, Excerpt, Lesson)
+- **Author name** displayed when provided
+- **Source** shown when provided
+- **Content preview** with the opening lines
+- **Tags and people** visible at a glance
+
+### Filtering
+
+Filter your wisdom library by type to browse just quotes, just lessons, or any other category.
+
+---
+
+## Use Cases
+
+<Tabs items={['Quotes', 'Lessons', 'Facts & Excerpts', 'Thoughts']}>
+  <Tabs.Tab>
+    **Building a Quote Collection**
+
+    Save quotes that change how you think:
+
+    ```markdown
+    "The obstacle is the way."
+
+    Simple but keeps proving true. Every hard thing I have
+    pushed through this year taught me something I would
+    not have learned otherwise.
+
+    #stoicism #philosophy #resilience
+    ```
+
+    **Author:** Marcus Aurelius
+    **Source:** Meditations
+    **Type:** Quote
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Recording Hard-Won Lessons**
+
+    Document what experience has taught you:
+
+    ```markdown
+    # Don't optimize before measuring
+
+    Spent two weeks refactoring the caching layer to
+    improve performance. Ran benchmarks afterward and
+    discovered the bottleneck was actually in the database
+    queries, not the cache.
+
+    Lesson: Always profile first. Intuition about
+    performance problems is wrong more often than right.
+
+    #engineering #performance #lessons
+    ```
+
+    **Type:** Lesson
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Saving Facts and Excerpts**
+
+    Keep reference material you want to remember:
+
+    ```markdown
+    # The 85% Rule for Learning
+
+    Research shows the optimal error rate for learning is
+    about 15%. When you get things right 85% of the time,
+    you are in the zone of maximum learning speed.
+
+    Too easy (95%+ correct) = not learning
+    Too hard (50% correct) = frustrated, not retaining
+
+    This explains why stretching just past comfort works
+    better than jumping to expert-level challenges.
+
+    #learning #science #education
+    ```
+
+    **Source:** Wilson et al., Nature Communications (2019)
+    **Type:** Fact
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Capturing Original Thoughts**
+
+    Write down your own observations:
+
+    ```markdown
+    # On consistency vs. motivation
+
+    Motivation is what gets you to start something.
+    Consistency is what makes it part of who you are.
+
+    I notice that every lasting change I have made in
+    my life followed the same pattern: forced at first,
+    then routine, then identity. The forcing phase is
+    the shortest but feels the longest.
+
+    #habits #self-knowledge #growth
+    ```
+
+    **Type:** Thought
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## Tips for Building a Wisdom Library
+
+### 1. Capture in the Moment
+
+When a quote or insight strikes you, open Reflecto immediately. The half-life of "I'll save that later" is about ten minutes.
+
+### 2. Add Your Commentary
+
+Don't just save the quote. Write why it matters to you. Your interpretation is what makes it personal wisdom rather than a bookmark.
+
+### 3. Use Author and Source
+
+Fill in these fields consistently. Six months from now, you will want to know where you found something.
+
+### 4. Tag by Theme
+
+Use tags like `#leadership`, `#relationships`, `#creativity`, `#stoicism` to build thematic collections you can browse.
+
+### 5. Review Periodically
+
+Set a monthly habit of browsing your wisdom library. Re-reading past wisdom with fresh context often reveals new meaning.
+
+### 6. Mix Types
+
+A healthy wisdom library has all five types. Quotes inspire, facts inform, thoughts clarify, excerpts provide depth, and lessons keep you from repeating mistakes.
+
+<Callout type="success">
+Over time, your wisdom library becomes one of your most valuable personal resources -- a curated collection of the best ideas you have encountered and the most important things you have learned.
+</Callout>
+
+---
+
+## Wisdom vs. Other Workspaces
+
+| Content | Use Wisdom | Use Instead |
+|---------|-----------|-------------|
+| A quote you love | Yes -- set type to Quote | |
+| Your own deep reflection | Maybe -- if it is a distilled insight | Journal (if processing emotions) |
+| A fact you read | Yes -- set type to Fact | |
+| An idea for a project | | Ideas workspace |
+| A lesson from a mistake | Yes -- set type to Lesson | |
+| A summary of a book | Yes -- set type to Excerpt | |
+
+---
+
+## What's Next?
+
+- [Highlights](/docs/workspaces/highlights) -- Record meaningful moments and achievements
+- [Dreams](/docs/workspaces/dreams) -- Capture aspirations and future goals
+- [Ideas](/docs/workspaces/ideas) -- Develop creative thoughts with status tracking
+- [Notes](/docs/workspaces/notes) -- Quick captures and color-coded reminders

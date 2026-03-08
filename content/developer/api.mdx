@@ -1,0 +1,344 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# API Reference
+
+Reflecto exposes a type-safe API through tRPC v11. All procedures are accessed via the `api` client -- there are no REST endpoints to document. The tRPC client provides full TypeScript inference from server to client.
+
+## Router Overview
+
+The root router combines 13 domain-specific routers:
+
+| Router | Procedures | Auth | Description |
+|--------|-----------|------|-------------|
+| `entry` | 7 | Protected | Core CRUD, insights stats, memory lane |
+| `journal` | -- | Protected | Journal-specific queries |
+| `dream` | -- | Protected | Dream-specific queries |
+| `highlight` | -- | Protected | Highlight-specific queries |
+| `idea` | -- | Protected | Idea-specific queries |
+| `wisdom` | -- | Protected | Wisdom-specific queries |
+| `note` | -- | Protected | Note-specific queries |
+| `tag` | 4 | Protected | Tag CRUD and search |
+| `person` | 4 | Protected | Person CRUD and search |
+| `attachment` | 3 | Protected | Image upload and management |
+| `insights` | 3 | Protected | Heatmap, streaks, entry stats |
+| `preferences` | 2 | Protected | User settings get/update |
+| `user` | -- | Protected | Profile management |
+
+## Authentication
+
+Every procedure uses one of two base procedures:
+
+```typescript
+// Public -- no auth required, 30 req/60s rate limit
+export const publicProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(rateLimitMiddleware);
+
+// Protected -- auth required, 100 req/60s rate limit
+export const protectedProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(rateLimitMiddleware)
+  .use(authMiddleware); // throws UNAUTHORIZED if no session
+```
+
+Protected procedures guarantee `ctx.session.user` is non-null. All data-modifying operations are protected.
+
+## Rate Limiting
+
+The API uses an in-memory sliding window rate limiter:
+
+| Tier | Limit | Window | Key |
+|------|-------|--------|-----|
+| Authenticated | 100 requests | 60 seconds | `user:{userId}` |
+| Unauthenticated | 30 requests | 60 seconds | `ip:{x-forwarded-for}` |
+
+Exceeding the limit returns a `TOO_MANY_REQUESTS` error. The store is cleaned up every 5 minutes.
+
+## Entry Operations
+
+<Tabs items={['Create', 'Read', 'Update', 'Delete', 'List']}>
+<Tabs.Tab>
+### `entry.create`
+
+Creates a new entry with automatic tag and people extraction.
+
+**Type:** Mutation (protected)
+
+**Input:**
+```typescript
+{
+  type: "journal" | "dream" | "highlight" | "idea" | "wisdom" | "note",
+  title?: string,       // max 200 characters
+  content?: string,     // max 50,000 characters (HTML)
+  isStarred?: boolean,
+  editorMode?: string,  // "bullet" | "simple"
+  metadata?: Record<string, unknown>,
+  createdAt?: Date,     // backdate support
+}
+```
+
+**Response:** Full entry with `tags`, `people`, and `attachments` relations.
+
+**Side effects:**
+- Tags extracted from `#hashtag` patterns and synced
+- People extracted from `@mention` patterns and synced
+- ActivityLog updated for the day
+- Streak recalculated
+- Journal entries enforce one-per-day (returns existing if duplicate)
+</Tabs.Tab>
+
+<Tabs.Tab>
+### `entry.getById`
+
+Fetches a single entry by ID, scoped to the authenticated user.
+
+**Type:** Query (protected)
+
+**Input:**
+```typescript
+{ id: string }
+```
+
+**Response:** Entry with `tags`, `people`, and `attachments`. Throws `NOT_FOUND` if the entry does not exist or belongs to another user.
+
+### `entry.getInsightsStats`
+
+Returns up to 500 recent entries with metadata for client-side insights aggregation.
+
+**Type:** Query (protected)
+
+**Input:** None
+
+### `entry.getRandomOldEntry`
+
+Returns a random entry older than 7 days for the "memory lane" feature.
+
+**Type:** Query (protected)
+
+**Input:** None
+</Tabs.Tab>
+
+<Tabs.Tab>
+### `entry.update`
+
+Updates an entry. Re-extracts tags and people if content changes.
+
+**Type:** Mutation (protected)
+
+**Input:**
+```typescript
+{
+  id: string,
+  title?: string,
+  content?: string,
+  isStarred?: boolean,
+  editorMode?: string,
+  metadata?: Record<string, unknown>,
+}
+```
+
+**Response:** Updated entry with relations.
+
+**Behavior:**
+- Verifies ownership before updating
+- If `content` changes: re-syncs tags and people, merges metadata
+- If only `metadata` changes: validates and merges without re-extraction
+- Runs in a transaction with a 10-second timeout
+</Tabs.Tab>
+
+<Tabs.Tab>
+### `entry.delete`
+
+Soft-deletes an entry by setting `deletedAt`.
+
+**Type:** Mutation (protected)
+
+**Input:**
+```typescript
+{ id: string }
+```
+
+**Response:** `{ success: boolean }`
+
+**Behavior:**
+1. Verifies ownership
+2. Disconnects all tag and person associations
+3. Sets `deletedAt` to current timestamp
+</Tabs.Tab>
+
+<Tabs.Tab>
+### `entry.list`
+
+Lists entries with filtering, search, and cursor-based pagination.
+
+**Type:** Query (protected)
+
+**Input:**
+```typescript
+{
+  type?: EntryType | EntryType[],  // filter by one or many types
+  search?: string,                  // searches title and content
+  tagIds?: string[],                // entries with any of these tags
+  personIds?: string[],             // entries mentioning any of these people
+  isStarred?: boolean,              // starred filter
+  dateFrom?: Date,                  // date range start
+  dateTo?: Date,                    // date range end
+  metadata?: Record<string, unknown>, // filter by metadata fields
+  limit?: number,                   // 1-1000, default 20
+  cursor?: string,                  // entry ID for pagination
+  includeRelations?: boolean,       // default true
+}
+```
+
+**Response:**
+```typescript
+{
+  entries: EntryWithRelations[],
+  nextCursor?: string,  // pass as cursor for next page
+}
+```
+
+### `entry.count`
+
+Returns entry count for the same filter parameters (without fetching data).
+</Tabs.Tab>
+</Tabs>
+
+## Pagination Pattern
+
+All list endpoints use **cursor-based pagination**:
+
+```typescript
+// First page
+const { entries, nextCursor } = await api.entry.list.useQuery({
+  type: "journal",
+  limit: 20,
+});
+
+// Next page
+const page2 = await api.entry.list.useQuery({
+  type: "journal",
+  limit: 20,
+  cursor: nextCursor,
+});
+```
+
+The implementation fetches `limit + 1` items. If the extra item exists, it becomes the `nextCursor`. When `nextCursor` is `undefined`, there are no more pages.
+
+## Tag and Person Endpoints
+
+<Tabs items={['Tags', 'People']}>
+<Tabs.Tab>
+| Procedure | Type | Input | Description |
+|-----------|------|-------|-------------|
+| `tag.list` | Query | -- | All tags for the user with entry counts |
+| `tag.search` | Query | `{ query: string }` | Search tags by name |
+| `tag.update` | Mutation | `{ id, name?, color?, group? }` | Update tag properties |
+| `tag.delete` | Mutation | `{ id: string }` | Delete a tag and remove associations |
+</Tabs.Tab>
+
+<Tabs.Tab>
+| Procedure | Type | Input | Description |
+|-----------|------|-------|-------------|
+| `person.list` | Query | -- | All people for the user with entry counts |
+| `person.search` | Query | `{ query: string }` | Search people by name |
+| `person.update` | Mutation | `{ id, name?, group? }` | Update person properties |
+| `person.delete` | Mutation | `{ id: string }` | Delete a person and remove associations |
+</Tabs.Tab>
+</Tabs>
+
+<Callout type="info">
+Tags and people are primarily created automatically through content extraction. These endpoints manage existing records -- renaming, grouping, and cleanup.
+</Callout>
+
+## Attachment Endpoints
+
+| Procedure | Type | Description |
+|-----------|------|-------------|
+| `attachment.uploadImage` | Mutation | Upload base64 image to ImageKit, optionally link to entry |
+| `attachment.registerImageAttachment` | Mutation | Register an already-uploaded image in the database |
+| `attachment.delete` | Mutation | Delete attachment record and remove from CDN |
+
+**Upload input:**
+```typescript
+{
+  fileData: string,    // base64-encoded image data
+  fileName: string,    // original filename
+  fileType: string,    // MIME type
+  fileSize: number,    // size in bytes
+  entryId?: string,    // link to entry (optional)
+}
+```
+
+## Insights Endpoints
+
+| Procedure | Type | Input | Description |
+|-----------|------|-------|-------------|
+| `insights.getHeatmap` | Query | `{ from?, to? }` | Activity heatmap data (default: last year) |
+| `insights.getStreak` | Query | -- | Current streak length and longest streak |
+| `insights.getStats` | Query | -- | Entry count grouped by type |
+
+## Preferences Endpoints
+
+| Procedure | Type | Description |
+|-----------|------|-------------|
+| `preferences.get` | Query | Fetch current user preferences |
+| `preferences.update` | Mutation | Update theme, font size, notifications, etc. |
+
+## Error Handling
+
+tRPC errors use standard codes with Zod validation details:
+
+| Code | When |
+|------|------|
+| `UNAUTHORIZED` | No valid session on protected procedure |
+| `NOT_FOUND` | Entry/tag/person does not exist or wrong owner |
+| `TOO_MANY_REQUESTS` | Rate limit exceeded |
+| `BAD_REQUEST` | Zod validation failure |
+| `INTERNAL_SERVER_ERROR` | Unhandled service error |
+
+Validation errors include the flattened Zod error for field-level feedback:
+
+```typescript
+{
+  data: {
+    zodError: {
+      fieldErrors: {
+        title: ["String must contain at most 200 character(s)"]
+      }
+    }
+  }
+}
+```
+
+## Client Usage
+
+```typescript
+import { api } from "@/trpc/react";
+
+// Query with React Query integration
+const { data, isLoading } = api.entry.list.useQuery({
+  type: "journal",
+  limit: 20,
+});
+
+// Mutation with callbacks
+const createEntry = api.entry.create.useMutation({
+  onSuccess: () => {
+    // Invalidate and refetch entry lists
+    utils.entry.list.invalidate();
+  },
+});
+
+// Trigger mutation
+createEntry.mutate({
+  type: "journal",
+  title: "My Entry",
+  content: "<p>Today I learned about #typescript with @Sarah</p>",
+  metadata: { category: "Learning", mood: 4 },
+});
+```
+
+<Callout type="warning">
+All dates are serialized through SuperJSON, so you can pass native `Date` objects in inputs and receive them in responses without manual conversion.
+</Callout>

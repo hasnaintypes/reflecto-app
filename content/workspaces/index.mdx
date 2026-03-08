@@ -1,0 +1,137 @@
+import { Callout, Cards } from 'nextra/components'
+
+# Workspaces
+
+Reflecto organizes your entries into six specialized workspaces, each designed for a different kind of reflection. Every workspace filters and displays entries of its type, giving you a focused view of your thoughts.
+
+<Callout type="info">
+All workspaces share the same rich text editor, tags, people mentions, images, starring, and auto-save. The difference is in the **metadata fields** and how entries are displayed.
+</Callout>
+
+---
+
+## The Six Workspaces
+
+<Cards>
+  <Cards.Card title="Highlights" href="/docs/workspaces/highlights">
+    Capture meaningful moments, achievements, and milestones with importance levels
+  </Cards.Card>
+  <Cards.Card title="Dreams" href="/docs/workspaces/dreams">
+    Record future aspirations, goals, and visions for your life
+  </Cards.Card>
+  <Cards.Card title="Ideas" href="/docs/workspaces/ideas">
+    Develop creative thoughts from initial spark to refined concept
+  </Cards.Card>
+  <Cards.Card title="Wisdom" href="/docs/workspaces/wisdom">
+    Collect quotes, lessons, facts, and knowledge worth preserving
+  </Cards.Card>
+  <Cards.Card title="Notes" href="/docs/workspaces/notes">
+    Quick, color-coded captures for anything that needs recording
+  </Cards.Card>
+</Cards>
+
+| Workspace | Purpose | Unique Metadata |
+|-----------|---------|-----------------|
+| **Highlights** | Meaningful moments | Importance (High, Medium, Low) |
+| **Dreams** | Future aspirations | Date only |
+| **Ideas** | Creative thoughts | Status progression |
+| **Wisdom** | Collected knowledge | Type, Author, Source |
+| **Notes** | Quick captures | Color, Pinned status |
+
+<Callout>
+**Journal** entries are the sixth type and are covered in the [Writing & Editor](/docs/writing/journal) section, since they integrate deeply with the calendar and mood tracking systems.
+</Callout>
+
+---
+
+## Creating Entries
+
+There are two ways to create a new entry in any workspace.
+
+### From the Write Page
+
+1. Navigate to `/write` or press `Ctrl/Cmd + W`
+2. Click the entry type dropdown (defaults to Journal)
+3. Select the workspace type you want (Dream, Highlight, Idea, Wisdom, or Note)
+4. The metadata fields update to match the selected type
+5. Write your entry and it auto-saves
+
+### From a Workspace Page
+
+1. Navigate to any workspace page (e.g., `/highlights`)
+2. Click the **New** button
+3. You are taken to the Write page with the type pre-selected
+
+You can also navigate directly with URL parameters:
+
+```
+/write?type=highlight
+/write?type=dream
+/write?type=idea
+/write?type=wisdom
+/write?type=note
+```
+
+---
+
+## Shared Features
+
+Every entry type has access to the same core capabilities:
+
+### Rich Text Editor
+The TipTap-powered editor with markdown shortcuts, formatting toolbar, headings, lists, blockquotes, code blocks, and links. See the [Rich Editor](/docs/writing/editor) guide for details.
+
+### Tags and People
+Use `#tags` and `@mentions` in any entry type to categorize content and track relationships. Tags and people are extracted automatically on save.
+
+### Images
+Drag and drop, paste, or use the toolbar to upload images. All images are stored on ImageKit CDN with automatic thumbnails.
+
+### Starring
+Click the star icon to mark any entry as important for easy retrieval later.
+
+### Auto-Save
+All entries auto-save after a brief debounce. The cloud sync indicator in the header shows save status in real time.
+
+### Bulleted Mode
+Toggle bulleted mode in any workspace for structured, list-style entries. A bullet count appears in the header.
+
+---
+
+## Workspace Pages
+
+Each workspace page displays a filtered list of entries for that type:
+
+- Entries are sorted by date (newest first)
+- Type-specific metadata is shown on each entry card
+- Click any entry to open it in the editor
+- Use the **New** button to create a fresh entry of that type
+
+---
+
+## Choosing the Right Workspace
+
+| You want to... | Use |
+|----------------|-----|
+| Record a special memory or achievement | **Highlights** |
+| Write down a long-term goal or aspiration | **Dreams** |
+| Capture a creative concept and develop it | **Ideas** |
+| Save a quote, lesson, or piece of knowledge | **Wisdom** |
+| Jot down a quick reminder or thought | **Notes** |
+| Write a daily reflection or log | **[Journal](/docs/writing/journal)** |
+
+<Callout type="info">
+There is no wrong choice. If an entry feels like it belongs in multiple workspaces, pick the one that best matches your intent. You can always change the entry type later from the Write page.
+</Callout>
+
+---
+
+## What's Next?
+
+Explore each workspace in detail:
+
+- [Highlights](/docs/workspaces/highlights) -- Meaningful moments with importance levels
+- [Dreams](/docs/workspaces/dreams) -- Future aspirations and goals
+- [Ideas](/docs/workspaces/ideas) -- Creative thoughts with status tracking
+- [Wisdom](/docs/workspaces/wisdom) -- Collected knowledge and quotes
+- [Notes](/docs/workspaces/notes) -- Quick, color-coded captures

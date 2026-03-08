@@ -1,0 +1,275 @@
+import { Callout, Tabs } from 'nextra/components'
+
+# Database Schema
+
+Reflecto uses PostgreSQL with Prisma 6 as the ORM. The schema supports multi-tenant isolation (all queries scoped to `userId`), soft deletes, and polymorphic entry types via JSON metadata.
+
+## Entity Relationship Overview
+
+```
+User
+ ├── 1:N  Entry
+ │         ├── N:M  Tag        (via _EntryTags)
+ │         ├── N:M  Person     (via _EntryPeople)
+ │         └── 1:N  Attachment
+ ├── 1:N  Tag
+ ├── 1:N  Person
+ ├── 1:N  Attachment
+ ├── 1:N  ActivityLog
+ ├── 1:N  Streak
+ ├── 1:1  UserPreferences
+ ├── 1:N  Account            (OAuth providers)
+ └── 1:N  Session            (active sessions)
+```
+
+## Models
+
+<Tabs items={['Core', 'Organization', 'Analytics', 'Auth']}>
+<Tabs.Tab>
+### Entry
+
+The central model. All six workspace types share a single table, differentiated by `type` and `metadata`.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `userId` | `String` | Owner reference |
+| `type` | `EntryType` enum | `journal`, `dream`, `highlight`, `idea`, `wisdom`, `note` |
+| `title` | `String?` | Optional title (max 200 chars) |
+| `content` | `Text?` | HTML content from TipTap (max 50,000 chars) |
+| `isStarred` | `Boolean` | Favorited by user |
+| `editorMode` | `String?` | `"bullet"` or `"simple"` |
+| `metadata` | `Json?` | Type-specific fields (see Metadata Pattern below) |
+| `createdAt` | `DateTime` | Creation timestamp |
+| `updatedAt` | `DateTime` | Last modification |
+| `deletedAt` | `DateTime?` | Soft delete marker |
+
+**Indexes:**
+- `(userId, type, createdAt DESC)` -- List entries by type
+- `(userId, createdAt DESC)` -- Timeline queries
+- `(userId, isStarred)` -- Starred filter
+- `(type)` -- Global type filtering
+- `(deletedAt)` -- Soft delete filtering
+
+### User
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `email` | `String` (unique) | Login email |
+| `name` | `String?` | Display name |
+| `emailVerified` | `DateTime?` | Verification timestamp |
+| `image` | `String?` | Avatar URL |
+| `hashedPassword` | `String?` | bcrypt hash (null for OAuth-only users) |
+| `createdAt` | `DateTime` | Registration date |
+| `updatedAt` | `DateTime` | Last profile update |
+
+### Attachment
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `entryId` | `String` | Linked entry |
+| `userId` | `String` | Owner reference |
+| `fileUrl` | `String` | ImageKit CDN URL |
+| `fileType` | `String` | MIME type (`image/png`, etc.) |
+| `fileSize` | `Int` | Size in bytes |
+| `thumbnailUrl` | `String?` | Auto-generated thumbnail URL |
+| `createdAt` | `DateTime` | Upload timestamp |
+</Tabs.Tab>
+
+<Tabs.Tab>
+### Tag
+
+Tags are auto-extracted from `#hashtag` syntax in entry content and can be managed manually.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `userId` | `String` | Owner reference |
+| `name` | `String` | Tag name (unique per user) |
+| `group` | `String?` | Grouping label |
+| `color` | `String?` | Display color |
+| `createdAt` | `DateTime` | Creation date |
+
+**Constraint:** `@@unique([userId, name])` -- Each user's tags are unique by name.
+
+**Relationship:** Many-to-many with Entry via the implicit `_EntryTags` join table. Tags are synced on every entry create/update by the extraction service.
+
+### Person
+
+People are auto-extracted from `@mention` syntax in entry content.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `userId` | `String` | Owner reference |
+| `name` | `String` | Person name (unique per user) |
+| `group` | `String?` | Grouping label |
+| `createdAt` | `DateTime` | Creation date |
+
+**Constraint:** `@@unique([userId, name])` -- Each user's people are unique by name.
+
+**Relationship:** Many-to-many with Entry via the implicit `_EntryPeople` join table.
+</Tabs.Tab>
+
+<Tabs.Tab>
+### ActivityLog
+
+Tracks daily entry counts for heatmap visualization.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `userId` | `String` | Owner reference |
+| `date` | `Date` | Calendar date |
+| `entryCount` | `Int` | Total entries that day |
+| `entryTypes` | `Json?` | Breakdown by type: `{ journal: 3, note: 1 }` |
+
+**Constraint:** `@@unique([userId, date])` -- One log per user per day.
+
+### Streak
+
+Tracks consecutive days of writing activity.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `userId` | `String` | Owner reference |
+| `startDate` | `Date` | Streak start |
+| `endDate` | `Date?` | Streak end (null if active) |
+| `length` | `Int` | Consecutive day count |
+| `isActive` | `Boolean` | Whether this is the current streak |
+| `createdAt` | `DateTime` | Record creation |
+
+**Indexes:** `(userId, isActive)` for current streak lookup, `(userId, endDate)` for historical queries.
+
+### UserPreferences
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `userId` | `String` (unique) | One preferences record per user |
+| `theme` | `String` | `"light"`, `"dark"`, or `"system"` |
+| `dailyReminderTime` | `String?` | HH:mm format |
+| `notificationEnabled` | `Boolean` | Email notification opt-in |
+| `fontSize` | `String` | `"small"`, `"medium"`, or `"large"` |
+| `preferences` | `Json?` | Additional settings as JSONB |
+| `updatedAt` | `DateTime` | Last change |
+</Tabs.Tab>
+
+<Tabs.Tab>
+### Account
+
+NextAuth OAuth provider accounts. One user can have multiple accounts (Google + GitHub).
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `userId` | `String` | Linked user |
+| `provider` | `String` | `"google"`, `"github"` |
+| `providerAccountId` | `String` | Provider's user ID |
+| `access_token` | `Text?` | OAuth access token |
+| `refresh_token` | `Text?` | OAuth refresh token |
+| `expires_at` | `Int?` | Token expiration (epoch) |
+
+**Constraint:** `@@unique([provider, providerAccountId])`
+
+### Session
+
+Database-backed sessions for NextAuth.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` (cuid) | Primary key |
+| `sessionToken` | `String` (unique) | Token sent to client |
+| `userId` | `String` | Session owner |
+| `expires` | `DateTime` | Expiration timestamp |
+
+### VerificationToken
+
+Used for email verification and password reset flows.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `identifier` | `String` | Email address |
+| `token` | `String` (unique) | Random verification token |
+| `expires` | `DateTime` | Token expiration |
+
+**Constraint:** `@@unique([identifier, token])`
+</Tabs.Tab>
+</Tabs>
+
+## Design Patterns
+
+### Soft Deletes
+
+Entries are never physically deleted. The `deletedAt` field is set to the current timestamp, and all queries include `deletedAt: null` in their where clause.
+
+On soft delete, tag and person associations are disconnected first to keep relation counts accurate:
+
+```typescript
+// 1. Disconnect relations
+await db.entry.update({
+  where: { id: entryId },
+  data: { tags: { set: [] }, people: { set: [] } },
+});
+
+// 2. Set soft delete timestamp
+await db.entry.update({
+  where: { id: entryId },
+  data: { deletedAt: new Date() },
+});
+```
+
+### JSON Metadata Pattern
+
+All six entry types share the `Entry` table. Type-specific fields are stored in the `metadata` JSONB column, validated per type:
+
+| Entry Type | Metadata Fields |
+|-----------|----------------|
+| **Journal** | `category` (string), `mood` (1-5), `tags` (string[]) |
+| **Dream** | _(none)_ |
+| **Highlight** | `importance` ("high", "medium", "low"), `linked_entry_id` |
+| **Idea** | `status` (string) |
+| **Wisdom** | `wisdom_type` ("quote", "thought", "fact", "excerpt", "lesson"), `author`, `source` |
+| **Note** | `is_pinned` (boolean), `color` (string) |
+
+Metadata is validated at the service layer using type-specific Zod schemas before persistence. Invalid fields are stripped silently.
+
+<Callout type="info">
+This single-table approach avoids complex joins and makes cross-type queries (timeline, search, insights) efficient while preserving type-specific behavior through validated metadata.
+</Callout>
+
+### Automatic Extraction
+
+On every `create` and `update` operation, the entry content is scanned for `#tag` and `@mention` patterns. The extraction services:
+
+1. Parse tag/person names from the content HTML
+2. Create new Tag/Person records if they do not exist (upsert by `userId + name`)
+3. Sync the many-to-many relationship (connect new, disconnect removed)
+
+This means tags and people are always in sync with content without manual management.
+
+### Multi-Tenant Isolation
+
+Every model includes a `userId` foreign key. All queries are scoped by `userId` at the service layer. There are no cross-user queries in the application -- each user's data is completely isolated.
+
+### Migration Strategy
+
+Prisma Migrate manages schema changes:
+
+```bash
+# Development: create and apply migration
+pnpm db:generate
+
+# Production: apply pending migrations
+pnpm db:migrate
+
+# Prototyping: push schema without migration file
+pnpm db:push
+```
+
+<Callout type="warning">
+Use `db:push` only during early development. For production deployments, always use `db:generate` to create migration files that can be reviewed and version-controlled.
+</Callout>
