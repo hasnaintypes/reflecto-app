@@ -1,6 +1,6 @@
 export default {
-  "editor": "Rich Editor",
-  "journal": "Journal & Daily Writing",
+  "editor": "Rich Text Editor",
+  "journal": "Daily Journal",
   "tags": "Tags",
-  "people": "People"
+  "people": "People & Mentions"
 };
