@@ -18,14 +18,10 @@ import {
   Cell,
 } from "recharts";
 import { Sparkles } from "lucide-react";
-import {
-  type ComprehensiveEntry,
-  type Tag,
-  type Person,
-} from "@/types/entry.types";
+import { type InsightsEntry } from "@/types/entry.types";
 
 interface InsightChartsProps {
-  entries: ComprehensiveEntry[];
+  entries: InsightsEntry[];
 }
 
 export function InsightCharts({ entries }: InsightChartsProps) {
@@ -113,10 +109,10 @@ export function InsightCharts({ entries }: InsightChartsProps) {
   const personCounts: Record<string, number> = {};
 
   entries.forEach((e) => {
-    e.tags?.forEach((t: Tag) => {
+    e.tags?.forEach((t) => {
       tagCounts[t.name] = (tagCounts[t.name] ?? 0) + 1;
     });
-    e.people?.forEach((p: Person) => {
+    e.people?.forEach((p) => {
       personCounts[p.name] = (personCounts[p.name] ?? 0) + 1;
     });
   });

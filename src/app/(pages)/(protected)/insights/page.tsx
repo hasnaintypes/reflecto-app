@@ -35,9 +35,7 @@ const tabs = [
 
 export default function InsightsPage() {
   const [activeTab, setActiveTab] = useState("journal");
-  const { data: entryData, isLoading } = api.entry.list.useQuery({
-    limit: 1000, // Fetch a large number for insights
-  });
+  const { data: entryData, isLoading } = api.entry.getInsightsStats.useQuery();
 
   const entries = React.useMemo(() => entryData?.entries ?? [], [entryData]);
 

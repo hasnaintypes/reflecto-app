@@ -1,8 +1,8 @@
 import { Heart, Hash, AtSign, TrendingUp, Zap, Calendar } from "lucide-react";
-import { type ComprehensiveEntry } from "@/types/entry.types";
+import { type InsightsEntry } from "@/types/entry.types";
 
 interface StatsGridProps {
-  entries: ComprehensiveEntry[];
+  entries: InsightsEntry[];
 }
 
 export function StatsGrid({ entries }: StatsGridProps) {

@@ -1,9 +1,9 @@
 import { format, eachDayOfInterval, subWeeks, isSameDay } from "date-fns";
 import { motion } from "framer-motion";
-import { type ComprehensiveEntry } from "@/types/entry.types";
+import { type InsightsEntry } from "@/types/entry.types";
 
 interface HeatmapProps {
-  entries: ComprehensiveEntry[];
+  entries: InsightsEntry[];
 }
 
 export function Heatmap({ entries }: HeatmapProps) {
