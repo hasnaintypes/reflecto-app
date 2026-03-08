@@ -15,7 +15,7 @@ export class PersonExtractor {
   extract(content: string): string[] {
     if (!content) return [];
 
-    const pattern = /@(\w+)/g;
+    const pattern = /@([\w\-']+)/g;
     const matches = content.match(pattern) ?? [];
     const personNames = matches.map((mention) =>
       mention.slice(1).toLowerCase(),

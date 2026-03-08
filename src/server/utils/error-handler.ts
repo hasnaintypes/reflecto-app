@@ -6,7 +6,8 @@ export const handleServiceError = (
 ): TRPCError => {
   if (error instanceof TRPCError) return error;
 
-  console.error(`[Service Error]: ${fallbackMessage}`, error);
+  const err = error instanceof Error ? error : new Error(String(error));
+  console.error(`[Service Error]: ${fallbackMessage}`, err.message, err.stack);
 
   return new TRPCError({
     code: "INTERNAL_SERVER_ERROR",

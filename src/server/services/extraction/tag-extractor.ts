@@ -15,7 +15,7 @@ export class TagExtractor {
   extract(content: string): string[] {
     if (!content) return [];
 
-    const pattern = /#(\w+)/g;
+    const pattern = /#([\w\-]+)/g;
     const matches = content.match(pattern) ?? [];
     const tagNames = matches.map((tag) => tag.slice(1).toLowerCase());
 

@@ -36,4 +36,16 @@ export interface ComprehensiveEntry extends SharedEntry {
   attachments: Attachment[];
 }
 
+export interface InsightsEntry {
+  id: string;
+  type: EntryType;
+  title: string | null;
+  content: string | null;
+  isStarred: boolean;
+  metadata: unknown;
+  createdAt: Date;
+  tags: { id: string; name: string }[];
+  people: { id: string; name: string }[];
+}
+
 export type WorkspaceType = EntryType | "all";
