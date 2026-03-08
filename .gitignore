@@ -45,3 +45,6 @@ yarn-error.log*
 .idea
 
 /temp-prisma
+
+# serwist service worker (generated at build time)
+/public/sw.js

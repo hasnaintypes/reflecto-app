@@ -1,6 +1,6 @@
 import { inngest } from "./client";
 import { db } from "@/server/db";
-import { resend } from "@/lib/resend/client";
+import { sendEmail } from "@/lib/email/send";
 import { env } from "@/env";
 import { subDays, format } from "date-fns";
 
@@ -67,8 +67,7 @@ export const checkInactivityAndRemind = inngest.createFunction(
         // 3. Send reminder email with date-based idempotency key
         await step.run(`send-reminder-${user.id}-${todayKey}`, async () => {
           try {
-            return await resend.emails.send({
-              from: "Reflecto <onboarding@resend.dev>",
+            return await sendEmail({
               to: user.email,
               subject: "We miss you! Take a moment to reflect.",
               headers: {

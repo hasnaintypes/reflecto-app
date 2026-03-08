@@ -87,7 +87,8 @@ Creates a new entry with automatic tag and people extraction.
 - ActivityLog updated for the day
 - Streak recalculated
 - Journal entries enforce one-per-day (returns existing if duplicate)
-  </Tabs.Tab>
+
+</Tabs.Tab>
 
 <Tabs.Tab>
 ### `entry.getById`
@@ -152,7 +153,8 @@ Updates an entry. Re-extracts tags and people if content changes.
 - If `content` changes: re-syncs tags and people, merges metadata
 - If only `metadata` changes: validates and merges without re-extraction
 - Runs in a transaction with a 10-second timeout
-  </Tabs.Tab>
+
+</Tabs.Tab>
 
 <Tabs.Tab>
 ### `entry.delete`
@@ -176,7 +178,8 @@ Soft-deletes an entry by setting `deletedAt`.
 1. Verifies ownership
 2. Disconnects all tag and person associations
 3. Sets `deletedAt` to current timestamp
-   </Tabs.Tab>
+
+</Tabs.Tab>
 
 <Tabs.Tab>
 ### `entry.list`
