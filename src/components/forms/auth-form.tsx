@@ -81,7 +81,7 @@ export function AuthForm({ type, className }: AuthFormProps) {
     } catch (error) {
       toast.dismiss(loadingToast);
       if (
-        axios.isAxiosError(error) &&
+        axios.isAxiosError<{ error: string }>(error) &&
         typeof error.response?.data?.error === "string"
       ) {
         toast.error(error.response.data.error);
