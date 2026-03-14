@@ -38,8 +38,9 @@ export async function POST(request: NextRequest) {
     const requestBody: unknown = await request.json();
     const validationResult = signupSchema.safeParse(requestBody);
     if (!validationResult.success) {
+      const firstError = validationResult.error.errors[0]?.message ?? AUTH_ERRORS.INVALID_INPUT;
       return NextResponse.json(
-        { success: false, error: AUTH_ERRORS.INVALID_INPUT },
+        { success: false, error: firstError },
         { status: 400 },
       );
     }

@@ -1,11 +1,11 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Check, X } from "lucide-react";
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
@@ -18,6 +18,13 @@ import useAuth from "@/hooks/use-auth";
 import { AUTH_ERRORS } from "@/constants/errors";
 import type { AuthFormProps, AuthFormState } from "@/types";
 
+const PASSWORD_RULES = [
+  { label: "At least 8 characters", test: (p: string) => p.length >= 8 },
+  { label: "Contains uppercase letter", test: (p: string) => /[A-Z]/.test(p) },
+  { label: "Contains lowercase letter", test: (p: string) => /[a-z]/.test(p) },
+  { label: "Contains a number", test: (p: string) => /\d/.test(p) },
+] as const;
+
 export function AuthForm({ type, className }: AuthFormProps) {
   const { handleSubmit, loading } = useAuth();
   const [authFormState, setAuthFormState] = useState<AuthFormState>({
@@ -27,6 +34,13 @@ export function AuthForm({ type, className }: AuthFormProps) {
   });
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
   const router = useRouter();
+
+  const passwordChecks = useMemo(
+    () => PASSWORD_RULES.map((rule) => ({ ...rule, passed: rule.test(authFormState.password) })),
+    [authFormState.password],
+  );
+  const allPasswordChecksPassed = passwordChecks.every((c) => c.passed);
+  const passwordTouched = authFormState.password.length > 0;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -64,9 +78,16 @@ export function AuthForm({ type, className }: AuthFormProps) {
         toast.success("Welcome back!");
         router.push("/write");
       }
-    } catch {
+    } catch (error) {
       toast.dismiss(loadingToast);
-      toast.error(AUTH_ERRORS.SERVER_ERROR);
+      if (
+        axios.isAxiosError(error) &&
+        typeof error.response?.data?.error === "string"
+      ) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(AUTH_ERRORS.SERVER_ERROR);
+      }
     }
   };
 
@@ -176,11 +197,27 @@ export function AuthForm({ type, className }: AuthFormProps) {
             onChange={handleInputChange}
             disabled={loading}
           />
+          {type === "signup" && passwordTouched && (
+            <ul className="mt-2 space-y-1 text-xs">
+              {passwordChecks.map((check) => (
+                <li key={check.label} className="flex items-center gap-1.5">
+                  {check.passed ? (
+                    <Check className="h-3 w-3 text-green-500" />
+                  ) : (
+                    <X className="h-3 w-3 text-red-500" />
+                  )}
+                  <span className={check.passed ? "text-green-600 dark:text-green-400" : "text-muted-foreground"}>
+                    {check.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <Button
           type="submit"
           className="w-full cursor-pointer"
-          disabled={loading || socialLoading !== null}
+          disabled={loading || socialLoading !== null || (type === "signup" && !allPasswordChecksPassed)}
         >
           {loading ? (
             <>
