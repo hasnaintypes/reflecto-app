@@ -64,7 +64,7 @@
     "date-fns": "^4.1.0",
     "date-holidays": "^3.26.8",
     "framer-motion": "^12.23.12",
-    "inngest": "^3.52.4",
+    "inngest": "^3.54.0",
     "lucide-react": "^0.543.0",
     "motion": "^12.23.12",
     "next": "^15.5.11",
